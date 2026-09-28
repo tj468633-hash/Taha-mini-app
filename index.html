@@ -1,179 +1,304 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#080808">
-<title>TaHa Store</title>
-<style>
-*{box-sizing:border-box}
-:root{--bg:#070707;--card:#111;--card2:#171717;--line:#262626;--text:#fff;--muted:#8c8c8c;--accent:#fff}
-body{margin:0;background:radial-gradient(circle at 50% -10%,#252525 0,#0b0b0b 28%,#070707 58%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
-button,input{font:inherit}
-button{cursor:pointer}
-.app{max-width:520px;margin:auto;padding:18px 16px 100px}
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.logo{font-size:28px;font-weight:900;letter-spacing:-1px}
-.logo span{font-size:11px;color:#777;font-weight:600;display:block;letter-spacing:1px;margin-top:-3px}
-.iconbtn{width:44px;height:44px;border:1px solid var(--line);background:#111;border-radius:15px;color:#fff;font-size:19px;position:relative}
-.badge{position:absolute;top:-4px;left:-4px;background:#fff;color:#000;border-radius:20px;font-size:10px;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-weight:800}
-.hero{background:linear-gradient(135deg,#1d1d1d,#0e0e0e);border:1px solid #2b2b2b;border-radius:26px;padding:24px;overflow:hidden;position:relative;margin-bottom:18px}
-.hero:before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:#fff;opacity:.035;left:-80px;top:-90px}
-.hero small{color:#aaa}
-.hero h1{font-size:29px;margin:8px 0 7px}
-.hero p{color:#999;line-height:1.8;font-size:13px;margin:0 0 17px}
-.hero button,.primary{border:0;background:#fff;color:#000;border-radius:14px;padding:13px 18px;font-weight:800}
-.search{display:flex;gap:9px;margin-bottom:16px}
-.search input{width:100%;background:#111;border:1px solid var(--line);border-radius:15px;color:#fff;padding:13px 15px;outline:none}
-.search input:focus{border-color:#555}
-.categories{display:flex;gap:8px;overflow:auto;padding-bottom:4px;margin-bottom:20px}
-.categories::-webkit-scrollbar{display:none}
-.cat{white-space:nowrap;border:1px solid var(--line);background:#111;color:#aaa;border-radius:13px;padding:9px 14px;font-size:12px}
-.cat.active{background:#fff;color:#000;border-color:#fff;font-weight:800}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin:0 2px 12px}
-.section-head h2{font-size:18px;margin:0}
-.section-head span{font-size:12px;color:#777}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.product{background:linear-gradient(150deg,#151515,#0e0e0e);border:1px solid var(--line);border-radius:20px;overflow:hidden}
-.pic{height:145px;background:linear-gradient(135deg,#232323,#0d0d0d);display:flex;align-items:center;justify-content:center;font-size:55px;position:relative}
-.tag{position:absolute;top:9px;right:9px;background:#fff;color:#000;border-radius:9px;padding:5px 7px;font-size:9px;font-weight:900}
-.info{padding:13px}
-.info h3{font-size:14px;margin:0 0 5px}
-.info p{font-size:11px;color:#777;margin:0 0 10px;min-height:16px}
-.price{display:flex;align-items:center;justify-content:space-between}
-.price b{font-size:14px}
-.add{width:34px;height:34px;border-radius:11px;border:1px solid #333;background:#fff;color:#000;font-size:20px;line-height:1}
-.empty{grid-column:1/-1;text-align:center;color:#777;padding:35px}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,8,.92);backdrop-filter:blur(15px);border-top:1px solid #222}
-.nav{max-width:520px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);padding:9px 8px calc(9px + env(safe-area-inset-bottom))}
-.nav button{border:0;background:transparent;color:#777;font-size:10px;padding:5px}
-.nav button.active{color:#fff}
-.nav i{display:block;font-style:normal;font-size:20px;margin-bottom:3px}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;z-index:10}
-.sheet{width:100%;max-width:520px;margin:auto;background:#111;border:1px solid #292929;border-radius:26px 26px 0 0;padding:20px;max-height:88vh;overflow:auto}
-.close{float:left;border:0;background:#222;color:#fff;width:35px;height:35px;border-radius:12px}
-.sheet h2{margin:4px 0 15px}
-.cart-row{display:flex;align-items:center;gap:12px;border-bottom:1px solid #222;padding:12px 0}
-.cart-emoji{width:50px;height:50px;border-radius:13px;background:#1d1d1d;display:flex;align-items:center;justify-content:center;font-size:25px}
-.cart-row .grow{flex:1}.cart-row small{color:#777}
-.qty{display:flex;align-items:center;gap:8px}.qty button{width:28px;height:28px;border:1px solid #333;background:#191919;color:#fff;border-radius:8px}
-.total{display:flex;justify-content:space-between;margin:18px 0;font-size:18px}
-.toast{position:fixed;bottom:80px;left:50%;transform:translate(-50%,20px);background:#fff;color:#000;padding:12px 17px;border-radius:13px;font-size:12px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:30;white-space:nowrap}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:360px){.pic{height:125px}.hero h1{font-size:25px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>TaHa</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, #222 0%, #090909 35%, #000 70%);
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   Roboto, Arial, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: auto;
+      padding: 24px 18px 30px;
+    }
+
+    /* Header */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .menu {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: #171717;
+      border: 1px solid #292929;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    /* Welcome */
+
+    .welcome {
+      margin-bottom: 22px;
+    }
+
+    .welcome small {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .welcome h1 {
+      margin: 6px 0 0;
+      font-size: 30px;
+      letter-spacing: -1px;
+    }
+
+    /* Main card */
+
+    .main-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, #1c1c1c, #101010);
+      border: 1px solid #2b2b2b;
+      border-radius: 24px;
+      padding: 25px;
+      margin-bottom: 16px;
+    }
+
+    .main-card::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: #fff;
+      opacity: 0.035;
+      border-radius: 50%;
+      left: -60px;
+      top: -70px;
+    }
+
+    .main-icon {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .main-card h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .main-card p {
+      margin: 0;
+      color: #999;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .primary-button {
+      width: 100%;
+      margin-top: 20px;
+      border: none;
+      border-radius: 15px;
+      padding: 15px;
+      background: #fff;
+      color: #000;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .primary-button:active {
+      transform: scale(0.98);
+    }
+
+    /* Features */
+
+    .section-title {
+      font-size: 15px;
+      color: #888;
+      margin: 22px 4px 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid #252525;
+      border-radius: 20px;
+      padding: 20px 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .card:active {
+      transform: scale(0.97);
+      background: #181818;
+    }
+
+    .card-icon {
+      font-size: 25px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin: 0 0 5px;
+      font-size: 15px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #777;
+      font-size: 12px;
+    }
+
+    /* Bottom */
+
+    .footer {
+      text-align: center;
+      color: #555;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+
+    /* Toast */
+
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #fff;
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-<header class="top">
-  <div class="logo">TaHa<span>STORE</span></div>
-  <button class="iconbtn" onclick="openCart()">🛒<b class="badge" id="count">0</b></button>
-</header>
 
-<section class="hero">
-  <small>فروشگاه رسمی TaHa</small>
-  <h1>انتخاب کن، سفارش بده.</h1>
-  <p>محصولات منتخب TaHa را راحت و سریع از داخل تلگرام ببین و به سبد خریدت اضافه کن.</p>
-  <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">مشاهده محصولات ←</button>
-</section>
+  <main class="container">
 
-<div class="search">
-  <input id="search" placeholder="جستجوی محصول..." oninput="render()">
-</div>
+    <header class="header">
+      <div class="logo">TaHa</div>
 
-<div class="categories">
-  <button class="cat active" onclick="setCat('همه',this)">همه</button>
-  <button class="cat" onclick="setCat('دیجیتال',this)">دیجیتال</button>
-  <button class="cat" onclick="setCat('اکسسوری',this)">اکسسوری</button>
-  <button class="cat" onclick="setCat('پوشاک',this)">پوشاک</button>
-  <button class="cat" onclick="setCat('ویژه',this)">ویژه</button>
-</div>
+      <div class="menu">
+        ⋯
+      </div>
+    </header>
 
-<section id="products">
-<div class="section-head"><h2>محصولات منتخب</h2><span id="resultCount"></span></div>
-<div class="grid" id="grid"></div>
-</section>
-</div>
+    <section class="welcome">
+      <small>خوش آمدی 👋</small>
+      <h1>فضای شخصی تو</h1>
+    </section>
 
-<div class="bottom">
-<nav class="nav">
-<button class="active" onclick="scrollTopPage()"><i>⌂</i>خانه</button>
-<button onclick="showToast('صفحه دسته‌بندی‌ها به‌زودی فعال می‌شود')"><i>▦</i>دسته‌ها</button>
-<button onclick="openCart()"><i>🛒</i>سبد خرید</button>
-<button onclick="showToast('حساب کاربری به‌زودی فعال می‌شود')"><i>♙</i>حساب من</button>
-</nav>
-</div>
+    <section class="main-card">
 
-<div class="overlay" id="overlay" onclick="if(event.target===this)closeCart()">
-<div class="sheet">
-<button class="close" onclick="closeCart()">×</button>
-<h2>سبد خرید</h2>
-<div id="cartItems"></div>
-<div class="total"><span>مجموع</span><b id="total">۰ تومان</b></div>
-<button class="primary" style="width:100%" onclick="checkout()">ادامه و ثبت سفارش</button>
-</div>
-</div>
+      <div class="main-icon">💬</div>
 
-<div class="toast" id="toast"></div>
+      <h2>پیام ناشناس</h2>
 
-<script>
-const products=[
-{id:1,name:"پک شروع TaHa",cat:"دیجیتال",price:149000,emoji:"📦",desc:"پک کاربردی دیجیتال",tag:"جدید"},
-{id:2,name:"کارت عضویت TaHa",cat:"ویژه",price:99000,emoji:"💳",desc:"عضویت ویژه TaHa",tag:"ویژه"},
-{id:3,name:"هودی TaHa",cat:"پوشاک",price:699000,emoji:"🧥",desc:"هودی مینیمال TaHa",tag:"پرفروش"},
-{id:4,name:"کیف TaHa",cat:"اکسسوری",price:329000,emoji:"🎒",desc:"کیف روزمره مینیمال",tag:"جدید"},
-{id:5,name:"لیوان TaHa",cat:"اکسسوری",price:189000,emoji:"☕",desc:"ماگ اختصاصی TaHa",tag:""},
-{id:6,name:"استیکر پک",cat:"ویژه",price:79000,emoji:"✨",desc:"پک استیکر TaHa",tag:"ویژه"}
-];
-let cat="همه",cart={};
+      <p>
+        لینک اختصاصی خودت را بساز و اجازه بده
+        دیگران به صورت ناشناس برایت پیام بفرستند.
+      </p>
 
-function money(n){return n.toLocaleString("fa-IR")+" تومان"}
-function setCat(c,el){
- cat=c;document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));el.classList.add("active");render();
-}
-function render(){
- const q=document.getElementById("search").value.trim().toLowerCase();
- const list=products.filter(p=>(cat==="همه"||p.cat===cat)&&(!q||p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)));
- document.getElementById("resultCount").textContent=list.length.toLocaleString("fa-IR")+" محصول";
- document.getElementById("grid").innerHTML=list.length?list.map(p=>`
- <article class="product">
-  <div class="pic">${p.tag?`<span class="tag">${p.tag}</span>`:""}${p.emoji}</div>
-  <div class="info"><h3>${p.name}</h3><p>${p.desc}</p>
-   <div class="price"><b>${money(p.price)}</b><button class="add" onclick="add(${p.id})">+</button></div>
-  </div>
- </article>`).join(""):`<div class="empty">محصولی پیدا نشد.</div>`;
-}
-function add(id){
- cart[id]=(cart[id]||0)+1;updateCount();showToast("به سبد خرید اضافه شد ✓");
-}
-function updateCount(){
- const n=Object.values(cart).reduce((a,b)=>a+b,0);
- document.getElementById("count").textContent=n.toLocaleString("fa-IR");
-}
-function openCart(){
- document.getElementById("overlay").style.display="flex";renderCart();
-}
-function closeCart(){document.getElementById("overlay").style.display="none"}
-function change(id,d){
- cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];updateCount();renderCart();
-}
-function renderCart(){
- const ids=Object.keys(cart);
- if(!ids.length){document.getElementById("cartItems").innerHTML='<div class="empty">سبد خریدت خالیه 🛒</div>';document.getElementById("total").textContent="۰ تومان";return}
- let total=0;
- document.getElementById("cartItems").innerHTML=ids.map(id=>{
-  const p=products.find(x=>x.id==id),q=cart[id];total+=p.price*q;
-  return `<div class="cart-row"><div class="cart-emoji">${p.emoji}</div><div class="grow"><b>${p.name}</b><br><small>${money(p.price)}</small></div><div class="qty"><button onclick="change(${p.id},-1)">−</button><b>${q}</b><button onclick="change(${p.id},1)">+</button></div></div>`;
- }).join("");
- document.getElementById("total").textContent=money(total);
-}
-function checkout(){
- if(!Object.keys(cart).length){showToast("سبد خرید خالی است");return}
- showToast("ثبت سفارش در مرحله بعد به پرداخت وصل می‌شود 🚀");
-}
-function showToast(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>x.classList.remove("show"),2200)}
-function scrollTopPage(){window.scrollTo({top:0,behavior:"smooth"})}
-render();updateCount();
-</script>
+      <button class="primary-button" onclick="showToast('این قابلیت به‌زودی فعال می‌شود 🚀')">
+        شروع کنید
+      </button>
+
+    </section>
+
+    <div class="section-title">
+      امکانات TaHa
+    </div>
+
+    <section class="grid">
+
+      <div class="card" onclick="showToast('پیام‌های من به‌زودی فعال می‌شود')">
+        <div class="card-icon">📥</div>
+        <h3>پیام‌های من</h3>
+        <p>پیام‌های دریافتی</p>
+      </div>
+
+      <div class="card" onclick="showToast('پروفایل به‌زودی فعال می‌شود')">
+        <div class="card-icon">👤</div>
+        <h3>پروفایل</h3>
+        <p>اطلاعات حساب</p>
+      </div>
+
+      <div class="card" onclick="showToast('لینک اختصاصی به‌زودی فعال می‌شود')">
+        <div class="card-icon">🔗</div>
+        <h3>لینک من</h3>
+        <p>اشتراک‌گذاری TaHa</p>
+      </div>
+
+      <div class="card" onclick="showToast('تنظیمات به‌زودی فعال می‌شود')">
+        <div class="card-icon">⚙️</div>
+        <h3>تنظیمات</h3>
+        <p>تنظیمات حساب</p>
+      </div>
+
+    </section>
+
+    <div class="footer">
+      TaHa • ساخته شده برای تلگرام
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+
+    function showToast(message) {
+
+      const toast = document.getElementById("toast");
+
+      toast.textContent = message;
+
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
+
+  </script>
+
 </body>
 </html>
