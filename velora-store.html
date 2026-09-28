@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>VELORA | اکسسوری</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090909;color:#f7f5f2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif}
+button,input{font:inherit}.app{max-width:520px;margin:auto;padding:18px 16px 105px}
+.top{display:flex;align-items:center;justify-content:space-between}.brand{font-size:27px;letter-spacing:4px;font-weight:800}.sub{font-size:9px;color:#777;letter-spacing:3px;margin-top:2px}
+.ico{width:44px;height:44px;border:1px solid #292929;background:#111;border-radius:15px;color:#fff;position:relative}
+.badge{position:absolute;top:-5px;left:-5px;background:#eee;color:#111;width:18px;height:18px;border-radius:50%;font-size:10px;display:grid;place-items:center}
+.hero{margin-top:18px;border:1px solid #292929;border-radius:27px;padding:25px;background:linear-gradient(135deg,#202020,#0e0e0e);position:relative;overflow:hidden}
+.hero:after{content:"V";position:absolute;left:12px;bottom:-45px;font-size:190px;color:#fff;opacity:.035;font-weight:900}
+.kicker{color:#aaa;font-size:12px}.hero h1{font-size:31px;line-height:1.25;margin:9px 0}.hero p{color:#9a9a9a;line-height:1.8;font-size:13px;max-width:350px}.hero button{border:0;background:#fff;color:#111;padding:13px 18px;border-radius:14px;font-weight:800}
+.search{margin:16px 0}.search input{width:100%;padding:14px 16px;border-radius:15px;border:1px solid #292929;background:#111;color:#fff;outline:none}
+.cats{display:flex;gap:8px;overflow:auto;margin-bottom:23px}.cats::-webkit-scrollbar{display:none}.cat{white-space:nowrap;background:#111;border:1px solid #292929;color:#999;border-radius:13px;padding:9px 14px;font-size:12px}.cat.active{background:#fff;color:#111}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.head h2{font-size:18px;margin:0}.head span{color:#666;font-size:11px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.product{background:#111;border:1px solid #252525;border-radius:20px;overflow:hidden}.visual{height:150px;background:linear-gradient(145deg,#252525,#101010);display:grid;place-items:center;font-size:54px}.info{padding:13px}.info h3{font-size:14px;margin:0 0 5px}.info p{color:#777;font-size:11px;margin:0 0 10px}.row{display:flex;align-items:center;justify-content:space-between}.add{border:0;background:#fff;color:#111;width:34px;height:34px;border-radius:11px;font-size:20px}.price{font-weight:800;font-size:13px}
+.section{margin-top:28px}.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.benefit{background:#111;border:1px solid #252525;border-radius:17px;padding:14px 8px;text-align:center}.benefit b{display:block;font-size:20px;margin-bottom:6px}.benefit span{font-size:10px;color:#777}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:rgba(9,9,9,.94);backdrop-filter:blur(18px);border-top:1px solid #222;z-index:5}.nav{max-width:520px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);padding:9px 8px calc(9px + env(safe-area-inset-bottom))}.nav button{background:none;border:0;color:#777;font-size:10px}.nav button.active{color:#fff}.nav i{display:block;font-style:normal;font-size:20px;margin-bottom:3px}
+.overlay{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:10}.sheet{background:#121212;border:1px solid #292929;border-radius:27px 27px 0 0;width:100%;max-width:520px;margin:auto;padding:20px;max-height:85vh;overflow:auto}.close{float:left;border:0;background:#222;color:#fff;border-radius:11px;width:34px;height:34px}.sheet h2{margin:4px 0 18px}.cartline{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #242424}.grow{flex:1}.muted{color:#777;font-size:11px}.qty button{background:#202020;border:1px solid #333;color:#fff;width:28px;height:28px;border-radius:8px}.total{display:flex;justify-content:space-between;font-size:18px;margin:18px 0}.pay{width:100%;padding:14px;border:0;border-radius:14px;background:#fff;color:#111;font-weight:800}
+.toast{position:fixed;bottom:82px;left:50%;transform:translate(-50%,20px);background:#fff;color:#111;padding:12px 17px;border-radius:13px;font-size:12px;font-weight:700;opacity:0;transition:.2s;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
+.empty{text-align:center;color:#777;padding:30px;grid-column:1/-1}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+<div><div class="brand">VELORA</div><div class="sub">ACCESSORIES</div></div>
+<button class="ico" onclick="openCart()">🛒<b class="badge" id="count">0</b></button>
+</header>
+
+<section class="hero">
+<div class="kicker">COLLECTION 01</div>
+<h1>جزئیات،<br>استایل تو را می‌سازند.</h1>
+<p>اکسسوری‌های مینیمال و خاص VELORA برای تکمیل استایل روزمره تو.</p>
+<button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">مشاهده کالکشن</button>
+</section>
+
+<div class="search"><input id="search" placeholder="جستجوی اکسسوری..." oninput="render()"></div>
+<div class="cats">
+<button class="cat active" onclick="setCat('همه',this)">همه</button>
+<button class="cat" onclick="setCat('گردنبند',this)">گردنبند</button>
+<button class="cat" onclick="setCat('دستبند',this)">دستبند</button>
+<button class="cat" onclick="setCat('انگشتر',this)">انگشتر</button>
+<button class="cat" onclick="setCat('گوشواره',this)">گوشواره</button>
+</div>
+
+<section id="products">
+<div class="head"><h2>محصولات VELORA</h2><span id="countText">۰ محصول</span></div>
+<div class="grid" id="grid"></div>
+</section>
+
+<section class="section">
+<div class="head"><h2>چرا VELORA؟</h2></div>
+<div class="benefits">
+<div class="benefit"><b>✦</b><span>طراحی خاص</span></div>
+<div class="benefit"><b>📦</b><span>ارسال سراسر ایران</span></div>
+<div class="benefit"><b>♢</b><span>پرداخت آنلاین</span></div>
+</div>
+</section>
+</div>
+
+<footer class="bottom"><nav class="nav">
+<button class="active" onclick="topPage()"><i>⌂</i>خانه</button>
+<button onclick="showToast('دسته‌بندی‌ها آماده اضافه شدن هستند')"><i>◫</i>دسته‌ها</button>
+<button onclick="openCart()"><i>🛒</i>سبد</button>
+<button onclick="showToast('حساب کاربری در مرحله بعد فعال می‌شود')"><i>♙</i>حساب</button>
+</nav></footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeCart()"><div class="sheet">
+<button class="close" onclick="closeCart()">×</button><h2>سبد خرید</h2><div id="cart"></div>
+<div class="total"><span>مجموع</span><b id="total">۰ تومان</b></div>
+<button class="pay" onclick="checkout()">ادامه ثبت سفارش</button>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const products=[
+{id:1,name:"محصول نمونه",cat:"گردنبند",price:0,emoji:"✦",desc:"محصول شما به‌زودی اینجا قرار می‌گیرد"},
+{id:2,name:"محصول نمونه",cat:"دستبند",price:0,emoji:"◇",desc:"محصول شما به‌زودی اینجا قرار می‌گیرد"},
+{id:3,name:"محصول نمونه",cat:"انگشتر",price:0,emoji:"○",desc:"محصول شما به‌زودی اینجا قرار می‌گیرد"},
+{id:4,name:"محصول نمونه",cat:"گوشواره",price:0,emoji:"✧",desc:"محصول شما به‌زودی اینجا قرار می‌گیرد"}];
+let cat="همه",cart={};
+const money=n=>n.toLocaleString("fa-IR")+" تومان";
+function setCat(c,e){cat=c;document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));e.classList.add("active");render()}
+function render(){
+ let q=document.getElementById("search").value.trim().toLowerCase();
+ let list=products.filter(p=>(cat==="همه"||p.cat===cat)&&(!q||p.name.includes(q)||p.cat.includes(q)));
+ document.getElementById("countText").textContent=list.length.toLocaleString("fa-IR")+" محصول";
+ document.getElementById("grid").innerHTML=list.map(p=>`<article class="product"><div class="visual">${p.emoji}</div><div class="info"><h3>${p.name}</h3><p>${p.desc}</p><div class="row"><span class="price">${p.price?money(p.price):"به‌زودی"}</span><button class="add" onclick="add(${p.id})">+</button></div></div></article>`).join("");
+}
+function add(id){cart[id]=(cart[id]||0)+1;update();showToast("به سبد اضافه شد ✓")}
+function update(){document.getElementById("count").textContent=Object.values(cart).reduce((a,b)=>a+b,0).toLocaleString("fa-IR")}
+function openCart(){document.getElementById("overlay").style.display="flex";renderCart()}
+function closeCart(){document.getElementById("overlay").style.display="none"}
+function renderCart(){
+ let ids=Object.keys(cart);if(!ids.length){document.getElementById("cart").innerHTML='<div class="empty">سبد خرید خالی است 🛒</div>';document.getElementById("total").textContent="۰ تومان";return}
+ let total=0;
+ document.getElementById("cart").innerHTML=ids.map(id=>{let p=products.find(x=>x.id==id),q=cart[id];total+=p.price*q;return `<div class="cartline"><div class="grow"><b>${p.name}</b><div class="muted">${money(p.price)}</div></div><div class="qty"><button onclick="change(${p.id},-1)">−</button> ${q} <button onclick="change(${p.id},1)">+</button></div></div>`}).join("");
+ document.getElementById("total").textContent=money(total)
+}
+function change(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];update();renderCart()}
+function checkout(){showToast(Object.keys(cart).length?"درگاه پرداخت در مرحله اتصال فعال می‌شود":"سبد خرید خالی است")}
+function topPage(){scrollTo({top:0,behavior:"smooth"})}
+function showToast(t){let x=document.getElementById("toast");x.textContent=t;x.classList.add("show");clearTimeout(window.t);window.t=setTimeout(()=>x.classList.remove("show"),2200)}
+render();update();
+</script>
+</body>
+</html>
