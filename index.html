@@ -1,1489 +1,1500 @@
-
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fff7fb">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#ff4f91">
 <title>VELORA STORE | فروشگاه آنلاین</title>
 
 <style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
 :root{
-  --pink:#e95b9f;
-  --pink2:#ff8fc3;
-  --soft:#fff5fa;
-  --ink:#27212a;
-  --muted:#7d727d;
-  --line:#f0dce7;
-  --white:#fff;
-  --shadow:0 18px 50px rgba(95,35,68,.12);
-  --r:22px
-}
-
-*{
-  box-sizing:border-box
-}
-
-html{
-  scroll-behavior:smooth
+  --pink:#ff4f91;
+  --pink2:#ff8ab7;
+  --light:#fff0f6;
+  --dark:#24171e;
+  --gray:#777;
+  --bg:#fff8fb;
+  --border:#f0dfe7;
+  --green:#19a974;
+  --shadow:0 12px 35px rgba(40,10,25,.10);
 }
 
 body{
   margin:0;
-  background:linear-gradient(180deg,#fff8fc,#fff);
-  color:var(--ink);
-  font-family:Tahoma,Arial,sans-serif
+  font-family:Tahoma,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--dark);
 }
 
-button,input,select,textarea{
-  font:inherit
+button,input,textarea,select{
+  font-family:inherit;
 }
 
 button{
   cursor:pointer;
-  border:0
 }
 
-.wrap{
-  max-width:1180px;
+.container{
+  width:min(1180px,calc(100% - 28px));
   margin:auto;
-  padding:0 18px
 }
 
-.top{
+/* TOP BAR */
+
+.topbar{
+  background:var(--dark);
+  color:white;
+  text-align:center;
+  padding:9px;
+  font-size:12px;
+}
+
+/* HEADER */
+
+header{
   position:sticky;
   top:0;
   z-index:50;
-  background:rgba(255,255,255,.9);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--line)
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
 }
 
 .nav{
-  height:72px;
+  min-height:72px;
   display:flex;
   align-items:center;
-  gap:12px
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:900;
-  font-size:20px;
-  color:var(--ink);
-  text-decoration:none
+  gap:14px;
 }
 
 .logo{
-  width:42px;
-  height:42px;
-  border-radius:15px;
-  background:linear-gradient(135deg,#ffd2e6,#e95b9f);
-  display:grid;
-  place-items:center;
-  color:white;
-  box-shadow:0 8px 22px #e95b9f33
+  font-size:23px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.logo span{
+  color:var(--pink);
 }
 
 .search{
   flex:1;
-  max-width:500px;
   position:relative;
-  margin:auto
 }
 
 .search input{
   width:100%;
-  border:1px solid var(--line);
+  height:46px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:0 45px 0 15px;
+  outline:none;
   background:#fff;
-  border-radius:16px;
-  padding:13px 44px 13px 14px;
-  outline:none
 }
 
-.search span{
+.search-icon{
   position:absolute;
-  right:15px;
-  top:12px
+  right:16px;
+  top:13px;
 }
 
-.navbtn{
-  width:44px;
-  height:44px;
+.nav-btn{
+  width:46px;
+  height:46px;
+  border:0;
   border-radius:14px;
-  background:#fff;
-  border:1px solid var(--line);
-  position:relative
+  background:var(--light);
+  position:relative;
 }
 
-.badge{
+.count{
   position:absolute;
   top:-5px;
-  left:-4px;
+  left:-5px;
   background:var(--pink);
-  color:#fff;
-  border-radius:99px;
-  min-width:19px;
-  height:19px;
+  color:white;
+  width:21px;
+  height:21px;
+  border-radius:50%;
   font-size:11px;
   display:grid;
   place-items:center;
-  padding:0 4px
 }
+
+/* HERO */
 
 .hero{
-  padding:36px 0 20px
+  margin:22px 0;
+  min-height:360px;
+  border-radius:30px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 85% 20%,rgba(255,255,255,.8),transparent 25%),
+    linear-gradient(135deg,#fff,#ffe3ee 55%,#ffc7dc);
+  position:relative;
 }
 
-.heroBox{
-  background:
-    radial-gradient(circle at 80% 20%,#ffd9e9,transparent 35%),
-    linear-gradient(135deg,#fff,#fff1f7);
-  border:1px solid var(--line);
-  border-radius:32px;
-  padding:42px;
+.hero-content{
+  min-height:360px;
   display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:25px;
+  grid-template-columns:1.1fr .9fr;
   align-items:center;
-  box-shadow:var(--shadow)
+  padding:40px;
 }
 
 .hero h1{
-  font-size:clamp(30px,5vw,58px);
-  margin:0 0 14px;
-  line-height:1.1
+  font-size:clamp(34px,5vw,60px);
+  line-height:1.1;
+  margin:0 0 15px;
+}
+
+.hero h1 span{
+  color:var(--pink);
 }
 
 .hero p{
-  color:var(--muted);
-  line-height:2
+  max-width:580px;
+  color:#665861;
+  line-height:2;
 }
 
-.heroArt{
-  min-height:240px;
-  border-radius:28px;
-  background:linear-gradient(145deg,#fff,#ffd8e9);
-  display:grid;
-  place-items:center;
-  font-size:120px
+.hero-art{
+  text-align:center;
+  font-size:120px;
+  filter:drop-shadow(0 20px 25px rgba(100,20,60,.18));
 }
 
 .btn{
-  padding:13px 18px;
-  border-radius:15px;
-  font-weight:800;
-  transition:.2s
+  border:0;
+  border-radius:14px;
+  padding:13px 20px;
+  font-weight:bold;
 }
 
-.btn:hover{
-  transform:translateY(-2px)
+.btn-primary{
+  background:var(--pink);
+  color:white;
+  box-shadow:0 10px 25px rgba(255,79,145,.25);
 }
 
-.primary{
-  background:linear-gradient(135deg,var(--pink),var(--pink2));
-  color:#fff;
-  box-shadow:0 10px 25px #e95b9f35
+.btn-light{
+  background:white;
+  color:var(--dark);
 }
 
-.ghost{
-  background:#fff;
-  border:1px solid var(--line);
-  color:var(--ink)
-}
+/* CATEGORIES */
 
-.section{
-  padding:25px 0
-}
-
-.head{
+.section-head{
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:12px;
-  margin-bottom:16px
+  justify-content:space-between;
+  margin:30px 0 15px;
 }
 
-.head h2{
-  margin:0
+.section-head h2{
+  margin:0;
+  font-size:23px;
 }
 
-.cats{
+.section-head span{
+  color:var(--gray);
+  font-size:12px;
+}
+
+.categories{
   display:flex;
   gap:10px;
   overflow:auto;
-  padding-bottom:6px
+  padding-bottom:4px;
 }
 
-.cat{
+.category{
   white-space:nowrap;
-  padding:12px 17px;
-  border-radius:999px;
-  background:#fff;
-  border:1px solid var(--line)
+  border:1px solid var(--border);
+  background:white;
+  border-radius:50px;
+  padding:11px 18px;
 }
 
-.cat.active,
-.cat:hover{
-  background:#ffe3ef;
-  border-color:#ffb5d3
+.category.active,
+.category:hover{
+  background:var(--dark);
+  color:white;
 }
-.grid{
+
+/* PRODUCTS */
+
+.products{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:16px
+  gap:16px;
 }
 
-.card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:22px;
+.product{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:21px;
   overflow:hidden;
-  box-shadow:0 8px 28px rgba(80,30,60,.06);
-  position:relative
+  transition:.2s;
+  box-shadow:0 5px 20px rgba(40,10,25,.04);
 }
 
-.pic{
-  height:230px;
-  background:#fff1f7;
+.product:hover{
+  transform:translateY(-5px);
+  box-shadow:var(--shadow);
+}
+
+.product-img{
+  height:220px;
+  background:linear-gradient(145deg,#fff,#fff0f6);
   display:grid;
   place-items:center;
-  overflow:hidden
+  font-size:85px;
+  position:relative;
 }
 
-.pic img{
-  width:100%;
-  height:100%;
-  object-fit:cover
-}
-
-.pic .emoji{
-  font-size:75px
-}
-
-.heart{
+.product-img .label{
   position:absolute;
   top:12px;
-  left:12px;
-  width:40px;
-  height:40px;
-  border-radius:13px;
-  background:#fff;
-  box-shadow:0 7px 20px #00000012;
-  font-size:19px
+  right:12px;
+  background:var(--pink);
+  color:white;
+  padding:6px 9px;
+  border-radius:9px;
+  font-size:10px;
 }
 
-.heart.on{
-  color:#e95b9f
+.product-body{
+  padding:15px;
 }
 
-.body{
-  padding:15px
+.product-body h3{
+  margin:0 0 8px;
+  font-size:16px;
 }
 
-.body h3{
-  margin:0 0 7px;
-  font-size:16px
-}
-
-.desc{
+.product-description{
+  color:var(--gray);
   font-size:12px;
-  color:var(--muted);
   line-height:1.8;
-  min-height:43px
+  height:43px;
+  overflow:hidden;
+}
+
+.product-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:13px;
 }
 
 .price{
   font-weight:900;
-  color:#c43d7c;
-  font-size:17px;
-  margin:10px 0
+  color:#d52d70;
 }
 
-.stock{
-  font-size:11px;
-  color:#4c8a65
+.add{
+  border:0;
+  border-radius:11px;
+  padding:10px;
+  background:var(--light);
+  color:#d52d70;
+  font-weight:bold;
 }
 
-.actions{
+.add:hover{
+  background:var(--pink);
+  color:white;
+}
+
+.favorite{
+  position:absolute;
+  left:10px;
+  top:10px;
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:50%;
+  background:white;
+}
+
+/* FEATURES */
+
+.features{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:10px
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:30px 0;
 }
 
-.actions .btn{
-  padding:10px 8px;
-  font-size:12px
+.feature{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  text-align:center;
 }
+
+.feature-icon{
+  font-size:30px;
+}
+
+.feature b{
+  display:block;
+  margin:8px 0;
+}
+
+.feature small{
+  color:var(--gray);
+}
+
+/* ABOUT */
+
+.about{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:25px;
+  padding:25px;
+  line-height:2;
+}
+
+.about h2{
+  margin-top:0;
+}
+
+/* REVIEWS */
+
+.reviews{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.review{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+}
+
+.stars{
+  color:#ffad00;
+}
+
+.review p{
+  color:var(--gray);
+  font-size:13px;
+  line-height:1.9;
+}
+
+/* FOOTER */
 
 footer{
-  margin-top:50px;
-  padding:35px 0;
-  background:#241c24;
-  color:#fff
+  margin-top:45px;
+  background:var(--dark);
+  color:white;
+  padding:40px 0 20px;
 }
 
-.foot{
+.footer-grid{
   display:grid;
   grid-template-columns:2fr 1fr 1fr;
-  gap:25px
+  gap:30px;
 }
 
-.foot p{
-  color:#d7cbd3;
-  line-height:2
+footer p{
+  color:#c9bcc2;
+  line-height:2;
+  font-size:13px;
 }
 
-.foot a{
-  color:#fff;
-  text-decoration:none;
-  display:block;
-  margin:9px 0
+.footer-bottom{
+  margin-top:25px;
+  padding-top:18px;
+  border-top:1px solid #ffffff15;
+  color:#aaa;
+  font-size:12px;
 }
+
+/* CART */
 
 .overlay{
   position:fixed;
   inset:0;
-  background:#241b2488;
-  backdrop-filter:blur(5px);
+  background:#0008;
   z-index:100;
   display:none;
-  padding:18px;
-  overflow:auto
 }
 
 .overlay.show{
+  display:block;
+}
+
+.drawer{
+  position:absolute;
+  right:0;
+  top:0;
+  width:min(470px,100%);
+  height:100%;
+  background:white;
+  padding:20px;
+  overflow:auto;
+}
+
+.drawer-head{
   display:flex;
   align-items:center;
-  justify-content:center
-}
-
-.modal{
-  width:min(720px,100%);
-  background:#fff;
-  border-radius:26px;
-  box-shadow:var(--shadow);
-  max-height:92vh;
-  overflow:auto
-}
-
-.modalHead{
-  padding:18px 20px;
-  border-bottom:1px solid var(--line);
-  display:flex;
   justify-content:space-between;
-  align-items:center
 }
 
 .close{
   width:40px;
   height:40px;
+  border:0;
   border-radius:12px;
-  background:#f9edf4
+  background:#f4edf1;
 }
 
-.modalBody{
-  padding:20px
-}
-
-.productView{
+.cart-item{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px
-}
-
-.bigpic{
-  height:380px;
-  border-radius:22px;
-  background:#fff1f7;
-  overflow:hidden;
-  display:grid;
-  place-items:center
-}
-
-.bigpic img{
-  width:100%;
-  height:100%;
-  object-fit:cover
-}
-
-.info h2{
-  margin-top:0
-}
-
-.rating{
-  color:#e7a323
-}
-
-.field{
-  margin-bottom:12px
-}
-
-.field label{
-  display:block;
-  font-size:12px;
-  font-weight:800;
-  margin-bottom:6px
-}
-
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  outline:none;
-  background:#fff
-}
-
-.field textarea{
-  min-height:90px;
-  resize:vertical
-}
-
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px
-}
-
-.drawer{
-  margin-right:auto;
-  width:min(480px,100%);
-  height:100%;
-  background:#fff;
-  box-shadow:var(--shadow);
-  display:flex;
-  flex-direction:column
-}
-
-.drawer .modalHead{
-  flex:none
-}
-
-.cartItems{
-  flex:1;
-  overflow:auto;
-  padding:15px
-}
-
-.cartItem{
-  display:grid;
-  grid-template-columns:72px 1fr auto;
+  grid-template-columns:65px 1fr auto;
   gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid var(--line)
+  align-items:center;
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
 }
 
-.thumb{
-  width:72px;
-  height:72px;
+.cart-image{
+  width:65px;
+  height:65px;
+  background:var(--light);
   border-radius:14px;
-  background:#fff1f7;
-  overflow:hidden;
   display:grid;
-  place-items:center
-}
-
-.thumb img{
-  width:100%;
-  height:100%;
-  object-fit:cover
+  place-items:center;
+  font-size:30px;
 }
 
 .qty{
   display:flex;
   align-items:center;
-  gap:7px;
-  margin-top:7px
+  gap:8px;
+  margin-top:8px;
 }
 
 .qty button{
-  width:27px;
-  height:27px;
+  width:28px;
+  height:28px;
+  border:0;
   border-radius:8px;
-  background:#f8eaf1
 }
 
-.cartFoot{
-  padding:16px;
-  border-top:1px solid var(--line)
-}
-
-.sum{
+.cart-total{
   display:flex;
   justify-content:space-between;
-  font-weight:900;
-  margin-bottom:12px
+  padding:20px 0;
+  font-size:18px;
+  font-weight:bold;
 }
 
-.empty{
-  text-align:center;
-  padding:45px 15px;
-  color:var(--muted)
+.full{
+  width:100%;
 }
+
+/* MODAL */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:150;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal-overlay.show{
+  display:flex;
+}
+
+.modal{
+  background:white;
+  width:min(650px,100%);
+  max-height:92vh;
+  overflow:auto;
+  border-radius:24px;
+  padding:22px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field input,
+.field textarea,
+.field select{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+  outline:none;
+}
+
+.field textarea{
+  min-height:90px;
+}
+
+/* PRODUCT DETAIL */
+
+.detail{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.detail-image{
+  min-height:300px;
+  background:var(--light);
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  font-size:120px;
+}
+
+.detail-info h2{
+  font-size:27px;
+}
+
+.detail-info p{
+  color:var(--gray);
+  line-height:2;
+}
+
+.stock{
+  color:var(--green);
+  font-size:13px;
+}
+
+/* TOAST */
 
 .toast{
   position:fixed;
   bottom:20px;
-  right:20px;
-  background:#241c24;
-  color:#fff;
-  padding:13px 17px;
-  border-radius:14px;
+  left:50%;
+  transform:translate(-50%,80px);
+  background:var(--dark);
+  color:white;
+  padding:13px 20px;
+  border-radius:13px;
   z-index:300;
-  transform:translateY(120px);
-  transition:.25s
+  opacity:0;
+  transition:.25s;
 }
 
 .toast.show{
-  transform:none
-}
-.review{
-  padding:12px 0;
-  border-bottom:1px solid var(--line)
+  opacity:1;
+  transform:translate(-50%,0);
 }
 
-.review b{
-  font-size:13px
-}
-
-.review p{
-  margin:7px 0;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.8
-}
-
-.accountBox{
-  text-align:center
-}
-
-.accountIcon{
-  font-size:55px
-}
-
-.muted{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.8
-}
-
-.notice{
-  background:#fff7df;
-  border:1px solid #f2df9c;
-  padding:12px;
-  border-radius:14px;
-  font-size:12px;
-  line-height:1.8
-}
+/* MOBILE */
 
 @media(max-width:900px){
-
-  .grid{
-    grid-template-columns:repeat(2,1fr)
+  .products{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .heroBox{
-    grid-template-columns:1fr
+  .features{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .heroArt{
-    min-height:170px
+  .hero-content{
+    grid-template-columns:1fr;
   }
 
-  .foot{
-    grid-template-columns:1fr 1fr
+  .hero-art{
+    display:none;
   }
-
 }
 
 @media(max-width:600px){
 
-  .nav{
-    height:64px
-  }
-
-  .brand span{
-    display:none
+  .container{
+    width:calc(100% - 20px);
   }
 
   .search{
-    max-width:none
+    display:none;
   }
 
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px
+  .logo{
+    font-size:19px;
   }
 
-  .pic{
-    height:180px
+  .hero{
+    border-radius:22px;
   }
 
-  .heroBox{
-    padding:25px
+  .hero-content{
+    padding:30px 22px;
   }
 
-  .heroArt{
-    font-size:80px
+  .hero h1{
+    font-size:37px;
   }
 
-  .productView{
-    grid-template-columns:1fr
+  .products{
+    gap:9px;
   }
 
-  .bigpic{
-    height:300px
+  .product-img{
+    height:160px;
+    font-size:65px;
   }
 
-  .row{
-    grid-template-columns:1fr
+  .reviews,
+  .footer-grid{
+    grid-template-columns:1fr;
   }
 
-  .foot{
-    grid-template-columns:1fr
+  .form-grid{
+    grid-template-columns:1fr;
   }
 
-  .actions{
-    grid-template-columns:1fr
+  .detail{
+    grid-template-columns:1fr;
   }
-
-  .body{
-    padding:12px
-  }
-
-  .body h3{
-    font-size:14px
-  }
-
 }
 </style>
 </head>
 
 <body>
 
-<header class="top">
+<div class="topbar">
+🚚 ارسال به سراسر ایران • 💗 پشتیبانی مستقیم • ✨ تجربه خرید VELORA
+</div>
 
-  <div class="wrap nav">
+<header>
+<div class="container nav">
 
-    <a class="brand" href="#">
-      <span class="logo">🌸</span>
-      <span>VELORA STORE</span>
-    </a>
+<div class="logo">
+VELORA <span>STORE</span>
+</div>
 
-    <div class="search">
-      <span>🔎</span>
-      <input
-        id="search"
-        placeholder="جستجوی محصول..."
-      >
-    </div>
+<div class="search">
+<span class="search-icon">🔎</span>
+<input id="searchInput" placeholder="جستجوی محصول، دسته‌بندی و...">
+</div>
 
-    <button
-      class="navbtn"
-      id="accountBtn"
-      title="حساب کاربری"
-    >
-      👤
-    </button>
+<button class="nav-btn" onclick="openCart()">
+🛒
+<span class="count" id="cartCount">0</span>
+</button>
 
-    <button
-      class="navbtn"
-      id="cartBtn"
-      title="سبد خرید"
-    >
-      🛍️
-      <i class="badge" id="cartCount">0</i>
-    </button>
-
-  </div>
-
+</div>
 </header>
 
-<main>
+<main class="container">
+
+<!-- HERO -->
 
 <section class="hero">
 
-  <div class="wrap">
+<div class="hero-content">
 
-    <div class="heroBox">
+<div>
 
-      <div>
+<div style="color:#d52d70;font-weight:bold;margin-bottom:10px">
+✨ خوش آمدی به VELORA
+</div>
 
-        <div class="muted">
-          VELORA STORE • خرید آنلاین با حس خوب
-        </div>
+<h1>
+زیبایی را<br>
+<span>انتخاب کن.</span>
+</h1>
 
-        <h1>
-          جزئیات کوچک،
-          <br>
-          زیبایی بزرگ ✨
-        </h1>
+<p>
+اکسسوری‌های ظریف، محصولات دوست‌داشتنی و انتخاب‌های خاص
+برای تو و خانه‌ات.
+</p>
 
-        <p>
-          گل‌سر، دستبند، تزئینات و لوازم دوست‌داشتنی خانه؛
-          با تجربه‌ای سریع و حرفه‌ای برای خرید آنلاین.
-        </p>
+<button class="btn btn-primary"
+onclick="document.getElementById('products').scrollIntoView()">
+مشاهده محصولات 🛍️
+</button>
 
-        <button
-          class="btn primary"
-          id="shopNow"
-        >
-          مشاهده محصولات
-        </button>
+</div>
 
-      </div>
+<div class="hero-art">
+🎀 💎 🌸
+</div>
 
-      <div class="heroArt">
-        🎀
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 </section>
 
-<section class="section">
+<!-- CATEGORIES -->
 
-  <div class="wrap">
+<div class="section-head">
+<h2>دسته‌بندی‌ها</h2>
+<span>انتخاب سریع</span>
+</div>
 
-    <div class="head">
-      <h2>دسته‌بندی‌ها</h2>
-    </div>
+<div class="categories">
 
-    <div
-      class="cats"
-      id="cats"
-    ></div>
+<button class="category active" onclick="filterCategory('همه',this)">
+همه
+</button>
 
-  </div>
+<button class="category" onclick="filterCategory('گل‌سر',this)">
+🎀 گل‌سر
+</button>
+
+<button class="category" onclick="filterCategory('دستبند',this)">
+💎 دستبند
+</button>
+
+<button class="category" onclick="filterCategory('تزئینات',this)">
+✨ تزئینات
+</button>
+
+<button class="category" onclick="filterCategory('آشپزخانه',this)">
+🍽️ آشپزخانه
+</button>
+
+</div>
+
+<!-- PRODUCTS -->
+
+<div class="section-head" id="products">
+<h2>محصولات VELORA</h2>
+<span id="productCount"></span>
+</div>
+
+<section class="products" id="productList"></section>
+
+<!-- FEATURES -->
+
+<section class="features">
+
+<div class="feature">
+<div class="feature-icon">🚚</div>
+<b>ارسال سراسری</b>
+<small>ارسال به تمام ایران</small>
+</div>
+
+<div class="feature">
+<div class="feature-icon">🔒</div>
+<b>خرید امن</b>
+<small>فرآیند سفارش مطمئن</small>
+</div>
+
+<div class="feature">
+<div class="feature-icon">💬</div>
+<b>پشتیبانی</b>
+<small>ارتباط مستقیم با فروشنده</small>
+</div>
+
+<div class="feature">
+<div class="feature-icon">🎁</div>
+<b>بسته‌بندی زیبا</b>
+<small>آماده برای هدیه</small>
+</div>
 
 </section>
 
-<section
-  class="section"
-  id="productsSec"
->
+<!-- ABOUT -->
 
-  <div class="wrap">
+<section class="about">
 
-    <div class="head">
+<h2>درباره VELORA STORE 💗</h2>
 
-      <h2>
-        محصولات VELORA
-      </h2>
+<p>
+VELORA STORE یک فروشگاه آنلاین برای انتخاب محصولات ظریف،
+زیبا و کاربردی است. تلاش ما این است که خرید برای شما
+ساده، سریع و لذت‌بخش باشد.
+</p>
 
-      <span
-        class="muted"
-        id="resultCount"
-      ></span>
+<button class="btn btn-primary"
+onclick="showToast('به زودی اطلاعات کامل فروشگاه اضافه می‌شود ✨')">
+بیشتر درباره ما
+</button>
 
-    </div>
+</section>
 
-    <div
-      class="grid"
-      id="products"
-    ></div>
+<!-- REVIEWS -->
 
-  </div>
+<div class="section-head">
+<h2>نظر مشتری‌ها ⭐</h2>
+
+<button class="btn btn-light"
+onclick="openReview()">
+ثبت نظر
+</button>
+
+</div>
+
+<section class="reviews" id="reviews">
+
+<div class="review">
+<div class="stars">★★★★★</div>
+<b>سارا</b>
+<p>
+محصول خیلی قشنگ بود و بسته‌بندی هم عالی بود.
+</p>
+</div>
+
+<div class="review">
+<div class="stars">★★★★★</div>
+<b>مریم</b>
+<p>
+از خرید راضی بودم و پاسخگویی فروشنده خیلی خوب بود.
+</p>
+</div>
+
+<div class="review">
+<div class="stars">★★★★☆</div>
+<b>نگار</b>
+<p>
+محصول دقیقاً مثل عکس بود. دوباره خرید می‌کنم.
+</p>
+</div>
 
 </section>
 
 </main>
 
+<!-- FOOTER -->
+
 <footer>
 
-  <div class="wrap foot">
+<div class="container footer-grid">
 
-    <div>
+<div>
+<div class="logo">
+VELORA <span>STORE</span>
+</div>
 
-      <h2>
-        VELORA STORE 🌸
-      </h2>
+<p>
+فروشگاه آنلاین اکسسوری و محصولات منتخب
+با تجربه‌ای ساده و دوست‌داشتنی.
+</p>
+</div>
 
-      <p>
-        فروشگاه آنلاین اکسسوری و محصولات فانتزی.
-        ثبت سفارش، علاقه‌مندی و سبد خرید در همین سایت.
-      </p>
+<div>
+<b>دسترسی سریع</b>
 
-    </div>
+<p>
+<a href="#products">محصولات</a><br>
+<a href="#" onclick="openCart();return false">سبد خرید</a><br>
+<a href="#reviews">نظرات</a>
+</p>
 
-    <div>
+</div>
 
-      <h3>
-        دسترسی سریع
-      </h3>
+<div>
 
-      <a href="#productsSec">
-        محصولات
-      </a>
+<b>ارتباط با ما</b>
 
-      <a
-        href="#"
-        id="footerAccount"
-      >
-        حساب کاربری
-      </a>
+<p>
+<a href="https://t.me/it1tahaBot" target="_blank">
+💬 تلگرام فروشنده
+</a>
+</p>
 
-      <a
-        href="#"
-        id="footerCart"
-      >
-        سبد خرید
-      </a>
+</div>
 
-    </div>
+</div>
 
-    <div>
-
-      <h3>
-        ارتباط با فروشنده
-      </h3>
-
-      <a
-        href="https://t.me/it1tahaBot"
-        target="_blank"
-      >
-        💬 پشتیبانی در تلگرام
-      </a>
-
-      <a
-        href="#"
-        id="contactBtn"
-      >
-        ✉️ پیام به فروشنده
-      </a>
-
-    </div>
-
-  </div>
+<div class="container footer-bottom">
+© 2026 VELORA STORE — تمامی حقوق محفوظ است.
+</div>
 
 </footer>
 
-<div class="overlay" id="productOverlay">
 
-  <div class="modal">
-
-    <div class="modalHead">
-
-      <b id="productModalTitle">
-        محصول
-      </b>
-
-      <button
-        class="close"
-        data-close="productOverlay"
-      >
-        ✕
-      </button>
-
-    </div>
-
-    <div
-      class="modalBody"
-      id="productModalBody"
-    ></div>
-
-  </div>
-
-</div>
-
+<!-- CART -->
 
 <div class="overlay" id="cartOverlay">
 
-  <div class="drawer">
+<div class="drawer">
 
-    <div class="modalHead">
+<div class="drawer-head">
 
-      <b>
-        🛍️ سبد خرید
-      </b>
+<h2>🛒 سبد خرید</h2>
 
-      <button
-        class="close"
-        data-close="cartOverlay"
-      >
-        ✕
-      </button>
+<button class="close" onclick="closeCart()">×</button>
 
-    </div>
+</div>
 
-    <div
-      class="cartItems"
-      id="cartItems"
-    ></div>
+<div id="cartItems"></div>
 
-    <div class="cartFoot">
+<div id="cartFooter"></div>
 
-      <div class="sum">
-
-        <span>
-          جمع کل
-        </span>
-
-        <span id="cartTotal">
-          ۰ تومان
-        </span>
-
-      </div>
-
-      <button
-        class="btn primary"
-        style="width:100%"
-        id="checkoutBtn"
-      >
-        تکمیل فرایند خرید
-      </button>
-
-    </div>
-
-  </div>
+</div>
 
 </div>
 
 
-<div class="overlay" id="checkoutOverlay">
+<!-- CHECKOUT -->
 
-  <div class="modal">
+<div class="modal-overlay" id="checkoutModal">
 
-    <div class="modalHead">
+<div class="modal">
 
-      <b>
-        📦 ثبت و تکمیل سفارش
-      </b>
+<div class="modal-head">
 
-      <button
-        class="close"
-        data-close="checkoutOverlay"
-      >
-        ✕
-      </button>
+<h2>📦 ثبت سفارش</h2>
 
-    </div>
+<button class="close" onclick="closeCheckout()">×</button>
 
-    <div class="modalBody">
+</div>
 
-      <div class="notice">
+<form id="checkoutForm">
 
-        برای ثبت سفارش، ابتدا حساب کاربری
-        با شماره موبایل بسازید یا وارد حساب خود شوید.
+<div class="form-grid">
 
-      </div>
+<label class="field">
+نام و نام خانوادگی
+<input required name="name">
+</label>
 
-      <form
-        id="checkoutForm"
-        style="margin-top:15px"
-      >
+<label class="field">
+شماره موبایل
+<input required name="mobile" inputmode="tel">
+</label>
 
-        <div class="row">
+<label class="field">
+استان
+<input required name="province">
+</label>
 
-          <div class="field">
+<label class="field">
+شهر
+<input required name="city">
+</label>
 
-            <label>
-              نام و نام خانوادگی
-            </label>
+<label class="field full">
+آدرس کامل
+<textarea required name="address"></textarea>
+</label>
 
-            <input
-              name="name"
-              required
-            >
+<label class="field">
+کد پستی
+<input required name="postal" inputmode="numeric">
+</label>
 
-          </div>
+<label class="field">
+توضیحات سفارش
+<input name="note">
+</label>
 
+</div>
 
-          <div class="field">
+<div class="cart-total">
 
-            <label>
-              شماره موبایل
-            </label>
+<span>مبلغ سفارش</span>
 
-            <input
-              name="phone"
-              inputmode="tel"
-              placeholder="09xxxxxxxxx"
-              required
-            >
+<span id="checkoutTotal">
+۰ تومان
+</span>
 
-          </div>
+</div>
 
-        </div>
+<button class="btn btn-primary full">
+ثبت سفارش
+</button>
 
+</form>
 
-        <div class="row">
-
-          <div class="field">
-
-            <label>
-              استان
-            </label>
-
-            <input
-              name="province"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              شهر
-            </label>
-
-            <input
-              name="city"
-              required
-            >
-
-          </div>
-
-        </div>
-
-
-        <div class="field">
-
-          <label>
-            آدرس کامل
-          </label>
-
-          <textarea
-            name="address"
-            required
-          ></textarea>
-
-        </div>
-
-
-        <div class="row">
-
-          <div class="field">
-
-            <label>
-              کد پستی
-            </label>
-
-            <input
-              name="postal"
-              inputmode="numeric"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              یادداشت سفارش
-            </label>
-
-            <input
-              name="note"
-            >
-
-          </div>
-
-        </div>
-
-
-        <button
-          class="btn primary"
-          style="width:100%"
-        >
-          ثبت سفارش
-        </button>
-
-
-        <p class="muted">
-
-          در این نسخه، پرداخت آنلاین واقعی هنوز
-          به درگاه بانکی وصل نشده است.
-
-        </p>
-
-      </form>
-
-    </div>
-
-  </div>
+</div>
 
 </div>
 
 
-<div class="overlay" id="accountOverlay">
+<!-- PRODUCT DETAIL -->
 
-  <div class="modal">
+<div class="modal-overlay" id="productModal">
 
-    <div class="modalHead">
+<div class="modal">
 
-      <b>
-        👤 حساب کاربری
-      </b>
+<div class="modal-head">
 
-      <button
-        class="close"
-        data-close="accountOverlay"
-      >
-        ✕
-      </button>
+<h2>جزئیات محصول</h2>
 
-    </div>
+<button class="close" onclick="closeProduct()">×</button>
 
-    <div
-      class="modalBody"
-      id="accountBody"
-    ></div>
+</div>
 
-  </div>
+<div class="detail" id="productDetail"></div>
+
+</div>
 
 </div>
 
 
-<div class="overlay" id="reviewOverlay">
+<!-- REVIEW -->
 
-  <div class="modal">
+<div class="modal-overlay" id="reviewModal">
 
-    <div class="modalHead">
+<div class="modal">
 
-      <b>
-        ⭐ نظرات کاربران
-      </b>
+<div class="modal-head">
 
-      <button
-        class="close"
-        data-close="reviewOverlay"
-      >
-        ✕
-      </button>
+<h2>⭐ ثبت نظر</h2>
 
-    </div>
+<button class="close" onclick="closeReview()">×</button>
 
-    <div
-      class="modalBody"
-      id="reviewBody"
-    ></div>
+</div>
 
-  </div>
+<form id="reviewForm">
+
+<div class="field">
+نام
+<input required name="name">
+</div>
+
+<br>
+
+<div class="field">
+امتیاز
+<select name="stars">
+<option value="5">★★★★★</option>
+<option value="4">★★★★☆</option>
+<option value="3">★★★☆☆</option>
+<option value="2">★★☆☆☆</option>
+<option value="1">★☆☆☆☆</option>
+</select>
+</div>
+
+<br>
+
+<div class="field">
+نظر شما
+<textarea required name="text"></textarea>
+</div>
+
+<br>
+
+<button class="btn btn-primary full">
+ثبت نظر
+</button>
+
+</form>
+
+</div>
 
 </div>
 
 
-<div class="overlay" id="contactOverlay">
-
-  <div class="modal">
-
-    <div class="modalHead">
-
-      <b>
-        💬 ارتباط با فروشنده
-      </b>
-
-      <button
-        class="close"
-        data-close="contactOverlay"
-      >
-        ✕
-      </button>
-
-    </div>
-
-    <div class="modalBody">
-
-      <p>
-        برای پاسخ سریع، از تلگرام با فروشنده
-        در ارتباط باشید.
-      </p>
-
-      <a
-        class="btn primary"
-        style="display:block;text-align:center;text-decoration:none"
-        href="https://t.me/it1tahaBot"
-        target="_blank"
-      >
-        باز کردن پشتیبانی تلگرام
-      </a>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<div class="overlay" id="successOverlay">
-
-  <div class="modal">
-
-    <div class="modalBody accountBox">
-
-      <div class="accountIcon">
-        🎉
-      </div>
-
-      <h2>
-        سفارش ثبت شد
-      </h2>
-
-      <p id="successText"></p>
-
-      <button
-        class="btn primary"
-        data-close="successOverlay"
-      >
-        باشه
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<div
-  class="toast"
-  id="toast"
-></div>
+<div class="toast" id="toast"></div>
 
 
 <script>
 
+/* PRODUCTS */
+
 const products = [
 
-  {
-    id:1,
-    name:"گل‌سر پاپیونی توری",
-    price:290000,
-    stock:13,
-    cat:"🎀 گل‌سر",
-    emoji:"🎀",
-    img:"",
-    desc:"گل‌سر پاپیونی ظریف با تور گل‌دار و طراحی خاص؛ مناسب استفاده روزمره، مهمانی و هدیه.",
-    reviews:[
-      ["سارا","خیلی ظریف و قشنگه 😍",5],
-      ["مریم","عکسش خیلی شبیه خود محصول بود.",5]
-    ]
-  },
+{
+id:1,
+category:"گل‌سر",
+name:"گل‌سر مرواریدی",
+price:129000,
+stock:12,
+emoji:"🎀",
+description:"گل‌سر ظریف با طراحی مرواریدی، مناسب استفاده روزانه و مهمانی."
+},
 
-  {
-    id:2,
-    name:"دستبند ظریف",
-    price:189000,
-    stock:8,
-    cat:"💎 دستبند",
-    emoji:"💎",
-    desc:"دستبند ظریف و مینیمال برای استفاده روزمره."
-  },
+{
+id:2,
+category:"دستبند",
+name:"دستبند ظریف",
+price:189000,
+stock:8,
+emoji:"💎",
+description:"دستبند مینیمال و ظریف مناسب استایل‌های روزانه."
+},
 
-  {
-    id:3,
-    name:"آویز تزئینی",
-    price:159000,
-    stock:15,
-    cat:"✨ تزئینات",
-    emoji:"✨",
-    desc:"یک انتخاب فانتزی برای زیباتر کردن فضای اتاق."
-  },
+{
+id:3,
+category:"تزئینات",
+name:"آویز تزئینی",
+price:159000,
+stock:6,
+emoji:"✨",
+description:"آویز زیبا برای دکور اتاق، میز و فضای شخصی."
+},
 
-  {
-    id:4,
-    name:"ست آشپزخانه",
-    price:349000,
-    stock:6,
-    cat:"🍽️ آشپزخانه",
-    emoji:"🍽️",
-    desc:"ست کاربردی و زیبا برای آشپزخانه."
-  },
+{
+id:4,
+category:"آشپزخانه",
+name:"ست آشپزخانه",
+price:349000,
+stock:5,
+emoji:"🍽️",
+description:"ست کاربردی و زیبا برای آشپزخانه."
+},
 
-  {
-    id:5,
-    name:"گل‌سر صورتی",
-    price:99000,
-    stock:20,
-    cat:"🎀 گل‌سر",
-    emoji:"🌸",
-    desc:"گل‌سر صورتی سبک و دوست‌داشتنی."
-  },
+{
+id:5,
+category:"گل‌سر",
+name:"گل‌سر صورتی",
+price:99000,
+stock:15,
+emoji:"🌸",
+description:"گل‌سر صورتی ظریف و دخترانه."
+},
 
-  {
-    id:6,
-    name:"دستبند مرواریدی",
-    price:219000,
-    stock:9,
-    cat:"💎 دستبند",
-    emoji:"🤍",
-    desc:"ترکیب لطیف مروارید و طراحی ظریف."
-  },
+{
+id:6,
+category:"دستبند",
+name:"دستبند مرواریدی",
+price:219000,
+stock:7,
+emoji:"🤍",
+description:"دستبند مرواریدی شیک برای استفاده شخصی یا هدیه."
+},
 
-  {
-    id:7,
-    name:"شمع دکوراتیو",
-    price:179000,
-    stock:10,
-    cat:"✨ تزئینات",
-    emoji:"🕯️",
-    desc:"برای دکور میز و اتاق."
-  },
+{
+id:7,
+category:"تزئینات",
+name:"شمع دکوراتیو",
+price:179000,
+stock:10,
+emoji:"🕯️",
+description:"شمع دکوراتیو زیبا برای اتاق و میز."
+},
 
-  {
-    id:8,
-    name:"لیوان فانتزی",
-    price:149000,
-    stock:14,
-    cat:"🍽️ آشپزخانه",
-    emoji:"☕",
-    desc:"لیوان فانتزی مناسب نوشیدنی‌های روزانه."
-  },
-
-  {
-    id:9,
-    name:"گیره موی مرواریدی",
-    price:119000,
-    stock:17,
-    cat:"🎀 گل‌سر",
-    emoji:"🎀",
-    desc:"گیره موی شیک با جزئیات مرواریدی."
-  },
-
-  {
-    id:10,
-    name:"دستبند صورتی",
-    price:199000,
-    stock:11,
-    cat:"💎 دستبند",
-    emoji:"💗",
-    desc:"دستبند صورتی لطیف برای استایل روزانه."
-  },
-
-  {
-    id:11,
-    name:"گلدان رومیزی",
-    price:249000,
-    stock:7,
-    cat:"✨ تزئینات",
-    emoji:"🪴",
-    desc:"گلدان کوچک مناسب میز و شلف."
-  },
-
-  {
-    id:12,
-    name:"ماگ فانتزی",
-    price:169000,
-    stock:13,
-    cat:"🍽️ آشپزخانه",
-    emoji:"🍵",
-    desc:"ماگ فانتزی برای نوشیدنی گرم."
-  }
+{
+id:8,
+category:"آشپزخانه",
+name:"لیوان فانتزی",
+price:149000,
+stock:9,
+emoji:"☕",
+description:"لیوان فانتزی زیبا برای نوشیدنی‌های مورد علاقه."
+}
 
 ];
 
-
 let cart =
-  JSON.parse(
-    localStorage.getItem("velora_cart") || "[]"
-  );
+JSON.parse(localStorage.getItem("velora_cart") || "{}");
+
+let selectedCategory="همه";
+let searchText="";
 
 
-let fav =
-  JSON.parse(
-    localStorage.getItem("velora_fav") || "[]"
-  );
+function toman(number){
 
-
-let user =
-  JSON.parse(
-    localStorage.getItem("velora_user") || "null"
-  );
-
-
-let activeCat = "همه";
-
-let searchTerm = "";
-
-
-const $ = s =>
-  document.querySelector(s);
-
-
-const fmt = n =>
-  new Intl.NumberFormat("fa-IR").format(n)
-  + " تومان";
-
-
-function save(){
-
-  localStorage.setItem(
-    "velora_cart",
-    JSON.stringify(cart)
-  );
-
-  localStorage.setItem(
-    "velora_fav",
-    JSON.stringify(fav)
-  );
+return number.toLocaleString("fa-IR")+" تومان";
 
 }
 
 
-function toast(t){
+/* TOAST */
 
-  const e = $("#toast");
+function showToast(message){
 
-  e.textContent = t;
+const toast=document.getElementById("toast");
 
-  e.classList.add("show");
+toast.textContent=message;
 
-  setTimeout(
-    () => e.classList.remove("show"),
-    2200
-  );
+toast.classList.add("show");
 
-}
-
-
-function open(id){
-
-  $("#" + id).classList.add("show");
+setTimeout(()=>{
+toast.classList.remove("show");
+},2300);
 
 }
 
 
-function close(id){
+/* PRODUCTS */
 
-  $("#" + id).classList.remove("show");
+function renderProducts(){
+
+const list=products.filter(product=>{
+
+const categoryOK=
+selectedCategory==="همه" ||
+product.category===selectedCategory;
+
+const searchOK=
+(product.name+" "+product.description)
+.toLowerCase()
+.includes(searchText.toLowerCase());
+
+return categoryOK && searchOK;
+
+});
+
+document.getElementById("productCount").textContent=
+list.length+" محصول";
+
+document.getElementById("productList").innerHTML=
+
+list.map(product=>`
+
+<article class="product">
+
+<div class="product-img">
+
+<span class="label">
+${product.stock>0?"موجود":"ناموجود"}
+</span>
+
+<button class="favorite"
+onclick="favorite(${product.id})">
+♡
+</button>
+
+${product.emoji}
+
+</div>
+
+<div class="product-body">
+
+<h3>${product.name}</h3>
+
+<div class="product-description">
+${product.description}
+</div>
+
+<div class="product-row">
+
+<span class="price">
+${toman(product.price)}
+</span>
+
+<button class="add"
+onclick="addToCart(${product.id})">
+🛒 افزودن
+</button>
+
+</div>
+
+<div style="margin-top:9px;color:#999;font-size:11px">
+موجودی: ${product.stock}
+</div>
+
+<button
+style="margin-top:10px;width:100%;background:none;border:0;color:#d52d70"
+onclick="openProduct(${product.id})">
+
+مشاهده جزئیات ←
+
+</button>
+
+</div>
+
+</article>
+
+`).join("");
 
 }
 
 
-function productById(id){
+/* CATEGORY */
 
-  return products.find(
-    p => p.id == id
-  );
+function filterCategory(category,button){
+
+selectedCategory=category;
+
+document.querySelectorAll(".category")
+.forEach(x=>x.classList.remove("active"));
+
+button.classList.add("active");
+
+renderProducts();
+
+}
+
+
+/* SEARCH */
+
+document
+.getElementById("searchInput")
+.addEventListener("input",function(){
+
+searchText=this.value;
+
+renderProducts();
+
+});
+
+
+/* CART */
+
+function saveCart(){
+
+localStorage.setItem(
+"velora_cart",
+JSON.stringify(cart)
+);
+
+updateCart();
 
 }
 
 
-function isFav(id){
+function updateCart(){
 
-  return fav.includes(id);
+let count=0;
+
+Object.values(cart).forEach(item=>{
+count+=item.qty;
+});
+
+document.getElementById("cartCount")
+.textContent=count;
+
+renderCart();
 
 }
 
 
-function cartQty(id){
+function addToCart(id){
 
-  return (
-    cart.find(x => x.id == id) || {}
-  ).qty || 0;
+const product=
+products.find(p=>p.id===id);
+
+if(!product)return;
+
+if(!cart[id]){
+cart[id]={qty:1};
+}else{
+
+if(cart[id].qty>=product.stock){
+
+showToast("موجودی این محصول کافی نیست");
+
+return;
 
 }
+
+cart[id].qty++;
+
+}
+
+saveCart();
+
+showToast(
+"محصول به سبد خرید اضافه شد 💗"
+);
+
+}
+
+
+function changeQty(id,value){
+
+if(!cart[id])return;
+
+cart[id].qty+=value;
+
+if(cart[id].qty<=0){
+
+delete cart[id];
+
+}
+
+saveCart();
+
+}
+
+
+function removeCart(id){
+
+delete cart[id];
+
+saveCart();
+
+showToast("محصول حذف شد");
+
+}
+
+
+function getCartItems(){
+
+return Object.entries(cart)
+.map(([id,item])=>{
+
+const product=
+products.find(p=>p.id==id);
+
+return {
+product,
+qty:item.qty
+};
+
+})
+.filter(x=>x.product);
+
+}
+
+
+function getTotal(){
+
+return getCartItems()
+.reduce(
+(sum,item)=>
+sum+
+item.product.price*
+item.qty,
+0
+);
+
+}
+
+
+/* RENDER CART */
+
+function renderCart(){
+
+const items=getCartItems();
+
+const box=document.getElementById("cartItems");
+
+const footer=document.getElementById("cartFooter");
+
+if(items.length===0){
+
+box.innerHTML=`
+
+<div style="
+text-align:center;
+padding:80px 10px;
+color:#999">
+
+<div style="font-size:55px">
+🛒
+</div>
+
+<br>
+
+سبد خرید شما خالی است.
+
+</div>
+
+`;
+
+  
