@@ -1,1 +1,1189 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>پنل مدیریت | VELORA STORE</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      font-family:Tahoma,Arial,sans-serif;
+    }
+
+    body{
+      margin:0;
+      background:#fff7fb;
+      color:#342530;
+    }
+
+    button,input,select,textarea{
+      font:inherit;
+    }
+
+    .topbar{
+      background:linear-gradient(135deg,#ff7eb3,#ff4f91);
+      color:white;
+      padding:18px;
+      position:sticky;
+      top:0;
+      z-index:20;
+      box-shadow:0 5px 20px #0001;
+    }
+
+    .topbar-inner{
+      max-width:1100px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .brand{
+      font-size:22px;
+      font-weight:900;
+    }
+
+    .brand small{
+      display:block;
+      font-size:11px;
+      opacity:.85;
+      margin-top:4px;
+    }
+
+    .logout{
+      border:0;
+      background:white;
+      color:#e83d7e;
+      padding:10px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+      padding:20px;
+    }
+
+    .login-box{
+      max-width:430px;
+      margin:70px auto;
+      background:white;
+      padding:28px;
+      border-radius:24px;
+      box-shadow:0 10px 40px #e83d7e18;
+    }
+
+    h1,h2{
+      margin-top:0;
+    }
+
+    .login-logo{
+      text-align:center;
+      color:#e83d7e;
+      font-size:30px;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .muted{
+      color:#8d7b85;
+      font-size:13px;
+    }
+
+    label{
+      display:block;
+      margin:15px 0 7px;
+      font-weight:bold;
+      font-size:14px;
+    }
+
+    input,select,textarea{
+      width:100%;
+      border:1px solid #ead8e1;
+      background:#fffafd;
+      border-radius:12px;
+      padding:13px;
+      outline:none;
+    }
+
+    input:focus,select:focus,textarea:focus{
+      border-color:#ff6da5;
+      box-shadow:0 0 0 3px #ff6da51c;
+    }
+
+    textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .btn{
+      border:0;
+      border-radius:12px;
+      padding:12px 18px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .btn-primary{
+      background:#ff5b9d;
+      color:white;
+    }
+
+    .btn-secondary{
+      background:#f8e8ef;
+      color:#a52d62;
+    }
+
+    .btn-danger{
+      background:#ffe1e8;
+      color:#c52b4d;
+    }
+
+    .btn-full{
+      width:100%;
+      margin-top:18px;
+    }
+
+    .hidden{
+      display:none!important;
+    }
+
+    .dashboard{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:15px;
+      margin-bottom:20px;
+    }
+
+    .stat{
+      background:white;
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 5px 25px #00000008;
+    }
+
+    .stat span{
+      display:block;
+      color:#8d7b85;
+      font-size:13px;
+      margin-bottom:8px;
+    }
+
+    .stat strong{
+      font-size:28px;
+      color:#e83d7e;
+    }
+
+    .panel{
+      background:white;
+      border-radius:22px;
+      padding:20px;
+      margin-bottom:20px;
+      box-shadow:0 5px 25px #00000008;
+    }
+
+    .panel-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:15px;
+      flex-wrap:wrap;
+    }
+
+    .products{
+      display:grid;
+      gap:12px;
+    }
+
+    .product-row{
+      display:grid;
+      grid-template-columns:70px 1fr auto;
+      align-items:center;
+      gap:14px;
+      border:1px solid #f0e2e8;
+      border-radius:16px;
+      padding:12px;
+    }
+
+    .product-row img{
+      width:70px;
+      height:70px;
+      object-fit:cover;
+      border-radius:14px;
+      background:#fff0f6;
+    }
+
+    .product-name{
+      font-weight:bold;
+      margin-bottom:6px;
+    }
+
+    .product-info{
+      color:#8d7b85;
+      font-size:12px;
+      line-height:1.8;
+    }
+
+    .actions{
+      display:flex;
+      gap:7px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .actions button{
+      padding:9px 12px;
+      font-size:12px;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:#0007;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:15px;
+      z-index:100;
+    }
+
+    .modal-box{
+      width:100%;
+      max-width:560px;
+      max-height:92vh;
+      overflow:auto;
+      background:white;
+      border-radius:24px;
+      padding:22px;
+    }
+
+    .modal-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:10px;
+    }
+
+    .close{
+      border:0;
+      background:#ffe8f1;
+      color:#d92d6d;
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      cursor:pointer;
+      font-size:20px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .form-grid .full{
+      grid-column:1/-1;
+    }
+
+    .error{
+      background:#ffe5ea;
+      color:#b52648;
+      padding:11px;
+      border-radius:12px;
+      margin-top:12px;
+      font-size:13px;
+      line-height:1.8;
+    }
+
+    .success{
+      background:#e8fff3;
+      color:#14734a;
+      padding:11px;
+      border-radius:12px;
+      margin-top:12px;
+      font-size:13px;
+    }
+
+    .empty{
+      text-align:center;
+      padding:30px;
+      color:#98868f;
+    }
+
+    @media(max-width:700px){
+      .dashboard{
+        grid-template-columns:1fr;
+      }
+
+      .product-row{
+        grid-template-columns:60px 1fr;
+      }
+
+      .product-row .actions{
+        grid-column:1/-1;
+        justify-content:stretch;
+      }
+
+      .product-row .actions button{
+        flex:1;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .form-grid .full{
+        grid-column:auto;
+      }
+
+      .container{
+        padding:12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <section id="loginScreen">
+    <div class="login-box">
+
+      <div class="login-logo">VELORA</div>
+
+      <h2 style="text-align:center">پنل مدیریت فروشگاه</h2>
+
+      <p class="muted" style="text-align:center">
+        ورود مخصوص مدیریت VELORA STORE
+      </p>
+
+      <label>ایمیل</label>
+      <input
+        id="loginEmail"
+        type="email"
+        placeholder="ایمیل مدیریت"
+        autocomplete="username"
+      >
+
+      <label>رمز عبور</label>
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="رمز عبور"
+        autocomplete="current-password"
+      >
+
+      <button
+        id="loginBtn"
+        class="btn btn-primary btn-full"
+      >
+        ورود به پنل
+      </button>
+
+      <div id="loginMessage"></div>
+
+    </div>
+  </section>
+
+
+  <!-- ADMIN -->
+  <section id="adminScreen" class="hidden">
+
+    <header class="topbar">
+      <div class="topbar-inner">
+
+        <div class="brand">
+          VELORA STORE
+          <small>مدیریت فروشگاه</small>
+        </div>
+
+        <button id="logoutBtn" class="logout">
+          خروج
+        </button>
+
+      </div>
+    </header>
+
+
+    <main class="container">
+
+      <!-- STATS -->
+      <div class="dashboard">
+
+        <div class="stat">
+          <span>تعداد محصولات</span>
+          <strong id="statProducts">۰</strong>
+        </div>
+
+        <div class="stat">
+          <span>محصولات موجود</span>
+          <strong id="statStock">۰</strong>
+        </div>
+
+        <div class="stat">
+          <span>ارزش تقریبی موجودی</span>
+          <strong id="statValue">۰</strong>
+        </div>
+
+      </div>
+
+
+      <!-- PRODUCTS -->
+      <section class="panel">
+
+        <div class="panel-head">
+
+          <div>
+            <h2>مدیریت محصولات</h2>
+            <div class="muted">
+              اضافه، ویرایش و حذف محصولات فروشگاه
+            </div>
+          </div>
+
+          <button
+            id="addProductBtn"
+            class="btn btn-primary"
+          >
+            + افزودن محصول
+          </button>
+
+        </div>
+
+        <div id="productsList" class="products"></div>
+
+      </section>
+
+    </main>
+
+  </section>
+
+
+  <!-- PRODUCT MODAL -->
+  <div id="productModal" class="modal hidden">
+
+    <div class="modal-box">
+
+      <div class="modal-head">
+
+        <h2 id="modalTitle">
+          افزودن محصول
+        </h2>
+
+        <button id="closeModal" class="close">
+          ×
+        </button>
+
+      </div>
+
+      <input id="productId" type="hidden">
+
+      <div class="form-grid">
+
+        <div class="full">
+          <label>نام محصول</label>
+          <input
+            id="productName"
+            placeholder="مثلاً گل‌سر پاپیونی توری"
+          >
+        </div>
+
+        <div>
+          <label>قیمت (تومان)</label>
+          <input
+            id="productPrice"
+            type="number"
+            min="0"
+            placeholder="290000"
+          >
+        </div>
+
+        <div>
+          <label>موجودی</label>
+          <input
+            id="productStock"
+            type="number"
+            min="0"
+            placeholder="13"
+          >
+        </div>
+
+        <div>
+          <label>دسته‌بندی</label>
+          <select id="productCategory">
+            <option value="اکسسوری">اکسسوری</option>
+            <option value="تزئینات">تزئینات</option>
+            <option value="آشپزخانه">آشپزخانه</option>
+          </select>
+        </div>
+
+        <div>
+          <label>زیر دسته</label>
+          <input
+            id="productSubcategory"
+            placeholder="گیر سر"
+          >
+        </div>
+
+        <div class="full">
+          <label>آدرس عکس محصول</label>
+          <input
+            id="productImage"
+            placeholder="https://..."
+          >
+          <div class="muted" style="margin-top:6px">
+            فعلاً آدرس عکس را وارد می‌کنیم؛ آپلود مستقیم عکس را در مرحله بعد اضافه می‌کنیم.
+          </div>
+        </div>
+
+        <div class="full">
+          <label>توضیحات</label>
+          <textarea
+            id="productDescription"
+            placeholder="توضیحات محصول..."
+          ></textarea>
+        </div>
+
+      </div>
+
+      <div id="formMessage"></div>
+
+      <div style="
+        display:flex;
+        gap:10px;
+        margin-top:18px;
+      ">
+
+        <button
+          id="saveProductBtn"
+          class="btn btn-primary"
+          style="flex:1"
+        >
+          ذخیره محصول
+        </button>
+
+        <button
+          id="cancelProductBtn"
+          class="btn btn-secondary"
+          style="flex:1"
+        >
+          انصراف
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://wyqxeoscfaypyghrtumf.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_rsIfojM5qx8_vlE82eHL0w_jzymrVX4";
+
+const { createClient } = supabase;
+
+const db = createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const loginScreen =
+  document.getElementById("loginScreen");
+
+const adminScreen =
+  document.getElementById("adminScreen");
+
+const loginEmail =
+  document.getElementById("loginEmail");
+
+const loginPassword =
+  document.getElementById("loginPassword");
+
+const loginBtn =
+  document.getElementById("loginBtn");
+
+const loginMessage =
+  document.getElementById("loginMessage");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+const productsList =
+  document.getElementById("productsList");
+
+const productModal =
+  document.getElementById("productModal");
+
+const modalTitle =
+  document.getElementById("modalTitle");
+
+const formMessage =
+  document.getElementById("formMessage");
+
+
+let products = [];
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function money(value){
+
+  return Number(value || 0)
+    .toLocaleString("fa-IR") + " تومان";
+
+}
+
+
+function showLoginMessage(message){
+
+  loginMessage.innerHTML =
+    `<div class="error">${escapeHtml(message)}</div>`;
+
+}
+
+
+function showFormMessage(message,type="error"){
+
+  formMessage.innerHTML =
+    `<div class="${type}">
+      ${escapeHtml(message)}
+    </div>`;
+
+}
+
+
+/* =========================
+   CHECK SESSION
+========================= */
+
+async function checkSession(){
+
+  const {
+    data,
+    error
+  } = await db.auth.getSession();
+
+  if(error){
+    showLoginMessage(error.message);
+    return;
+  }
+
+  if(!data.session){
+
+    showLogin();
+
+    return;
+  }
+
+  await checkAdmin();
+
+}
+
+
+/* =========================
+   CHECK ADMIN
+========================= */
+
+async function checkAdmin(){
+
+  const {
+    data,
+    error
+  } = await db
+    .rpc("is_admin");
+
+  if(error){
+
+    showLoginMessage(
+      "خطا در بررسی دسترسی مدیر: " +
+      error.message
+    );
+
+    return;
+  }
+
+  if(!data){
+
+    await db.auth.signOut();
+
+    showLogin();
+
+    showLoginMessage(
+      "این حساب دسترسی مدیر ندارد."
+    );
+
+    return;
+  }
+
+  showAdmin();
+
+}
+
+
+/* =========================
+   SHOW LOGIN / ADMIN
+========================= */
+
+function showLogin(){
+
+  loginScreen.classList.remove("hidden");
+  adminScreen.classList.add("hidden");
+
+}
+
+
+function showAdmin(){
+
+  loginScreen.classList.add("hidden");
+  adminScreen.classList.remove("hidden");
+
+  loadProducts();
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+loginBtn.addEventListener(
+  "click",
+  async function(){
+
+    loginMessage.innerHTML = "";
+
+    const email =
+      loginEmail.value.trim();
+
+    const password =
+      loginPassword.value;
+
+    if(!email || !password){
+
+      showLoginMessage(
+        "ایمیل و رمز عبور را وارد کن."
+      );
+
+      return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = "در حال ورود...";
+
+    const {
+      data,
+      error
+    } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    loginBtn.disabled = false;
+    loginBtn.textContent = "ورود به پنل";
+
+    if(error){
+
+      showLoginMessage(
+        "ورود ناموفق بود: " +
+        error.message
+      );
+
+      return;
+    }
+
+    if(!data.session){
+
+      showLoginMessage(
+        "جلسه ورود ساخته نشد."
+      );
+
+      return;
+    }
+
+    await checkAdmin();
+
+  }
+);
+
+
+/* =========================
+   ENTER KEY LOGIN
+========================= */
+
+loginPassword.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter"){
+      loginBtn.click();
+    }
+
+  }
+);
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+logoutBtn.addEventListener(
+  "click",
+  async function(){
+
+    await db.auth.signOut();
+
+    showLogin();
+
+  }
+);
+
+
+/* =========================
+   LOAD PRODUCTS
+========================= */
+
+async function loadProducts(){
+
+  productsList.innerHTML =
+    `<div class="empty">
+      در حال دریافت محصولات...
+    </div>`;
+
+  const {
+    data,
+    error
+  } = await db
+    .from("products")
+    .select("*")
+    .order("created_at", {
+      ascending:false
+    });
+
+  if(error){
+
+    productsList.innerHTML =
+      `<div class="error">
+        خطا در دریافت محصولات:
+        ${escapeHtml(error.message)}
+      </div>`;
+
+    return;
+  }
+
+  products = data || [];
+
+  renderProducts();
+
+  updateStats();
+
+}
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
+function renderProducts(){
+
+  if(!products.length){
+
+    productsList.innerHTML =
+      `<div class="empty">
+        هنوز محصولی وجود ندارد.
+      </div>`;
+
+    return;
+  }
+
+  productsList.innerHTML =
+    products.map(product => {
+
+      const image =
+        product.image_url ||
+        "https://placehold.co/150x150?text=VELORA";
+
+      return `
+        <div class="product-row">
+
+          <img
+            src="${escapeHtml(image)}"
+            alt=""
+            onerror="this.src='https://placehold.co/150x150?text=VELORA'"
+          >
+
+          <div>
+
+            <div class="product-name">
+              ${escapeHtml(product.name)}
+            </div>
+
+            <div class="product-info">
+
+              قیمت:
+              ${money(product.price)}
+              <br>
+
+              موجودی:
+              ${Number(product.stock || 0).toLocaleString("fa-IR")}
+              <br>
+
+              دسته:
+              ${escapeHtml(product.category || "-")}
+
+              ${
+                product.subcategory
+                  ? " / " +
+                    escapeHtml(product.subcategory)
+                  : ""
+              }
+
+            </div>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-secondary"
+              onclick="editProduct('${product.id}')"
+            >
+              ✏️ ویرایش
+            </button>
+
+            <button
+              class="btn btn-danger"
+              onclick="deleteProduct('${product.id}')"
+            >
+              🗑️ حذف
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats(){
+
+  const count =
+    products.length;
+
+  const stock =
+    products.reduce(
+      (sum,p) =>
+        sum + Number(p.stock || 0),
+      0
+    );
+
+  const value =
+    products.reduce(
+      (sum,p) =>
+        sum +
+        Number(p.stock || 0) *
+        Number(p.price || 0),
+      0
+    );
+
+  document.getElementById(
+    "statProducts"
+  ).textContent =
+    count.toLocaleString("fa-IR");
+
+  document.getElementById(
+    "statStock"
+  ).textContent =
+    stock.toLocaleString("fa-IR");
+
+  document.getElementById(
+    "statValue"
+  ).textContent =
+    money(value);
+
+}
+
+
+/* =========================
+   OPEN ADD MODAL
+========================= */
+
+document.getElementById(
+  "addProductBtn"
+).addEventListener(
+  "click",
+  function(){
+
+    clearForm();
+
+    modalTitle.textContent =
+      "افزودن محصول";
+
+    productModal.classList.remove(
+      "hidden"
+    );
+
+  }
+);
+
+
+/* =========================
+   CLEAR FORM
+========================= */
+
+function clearForm(){
+
+  document.getElementById(
+    "productId"
+  ).value = "";
+
+  document.getElementById(
+    "productName"
+  ).value = "";
+
+  document.getElementById(
+    "productPrice"
+  ).value = "";
+
+  document.getElementById(
+    "productStock"
+  ).value = "";
+
+  document.getElementById(
+    "productCategory"
+  ).value = "اکسسوری";
+
+  document.getElementById(
+    "productSubcategory"
+  ).value = "";
+
+  document.getElementById(
+    "productImage"
+  ).value = "";
+
+  document.getElementById(
+    "productDescription"
+  ).value = "";
+
+  formMessage.innerHTML = "";
+
+}
+
+
+/* =========================
+   EDIT PRODUCT
+========================= */
+
+window.editProduct =
+  function(id){
+
+    const product =
+      products.find(
+        p => String(p.id) === String(id)
+      );
+
+    if(!product) return;
+
+    document.getElementById(
+      "productId"
+    ).value =
+      product.id;
+
+    document.getElementById(
+      "productName"
+    ).value =
+      product.name || "";
+
+    document.getElementById(
+      "productPrice"
+    ).value =
+      product.price || "";
+
+    document.getElementById(
+      "productStock"
+    ).value =
+      product.stock || "";
+
+    document.getElementById(
+      "productCategory"
+    ).value =
+      product.category || "اکسسوری";
+
+    document.getElementById(
+      "productSubcategory"
+    ).value =
+      product.subcategory || "";
+
+    document.getElementById(
+      "productImage"
+    ).value =
+      product.image_url || "";
+
+    document.getElementById(
+      "productDescription"
+    ).value =
+      product.description || "";
+
+    modalTitle.textContent =
+      "ویرایش محصول";
+
+    formMessage.innerHTML = "";
+
+    productModal.classList.remove(
+      "hidden"
+    );
+
+  };
+
+
+/* =========================
+   SAVE PRODUCT
+========================= */
+
+document.getElementById(
+  "saveProductBtn"
+).addEventListener(
+  "click",
+  async function(){
+
+    const id =
+      document.getElementById(
+        "productId"
+      ).value;
+
+    const name =
+      document.getElemen
