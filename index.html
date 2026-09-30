@@ -1,79 +1,669 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fff0f6">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#e96b9a">
 <title>VELORA STORE</title>
+
+<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--p:#e96b9a;--bg:#fff9fb;--soft:#fff0f6;--dark:#30232a;--muted:#806b74;--line:#f1dce5}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--dark);font-family:Tahoma,Arial,sans-serif}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0}
-.wrap{max-width:1100px;margin:auto;padding:0 16px}
-header{position:sticky;top:0;z-index:20;background:#fffc;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
-.nav{height:68px;display:flex;align-items:center;gap:9px}
-.logo{margin-left:auto;color:var(--p);font-size:21px;font-weight:900}
-.navbtn{width:44px;height:44px;border-radius:14px;background:var(--soft);color:var(--p);font-size:19px;position:relative}
-.badge{position:absolute;top:-3px;left:-3px;background:var(--dark);color:#fff;border-radius:99px;font-size:10px;min-width:18px;height:18px;padding:2px}
-.search{display:flex;align-items:center;gap:8px;margin:14px 0}
-.search input{flex:1;border:1px solid var(--line);border-radius:16px;padding:13px 16px;background:white;outline:none}
-.hero{margin:10px 0 18px;padding:28px 22px;border-radius:26px;background:linear-gradient(135deg,#ffe4ef,#fff);box-shadow:0 10px 30px #7c3a5515}
-.hero h1{margin:0 0 8px;font-size:29px}
-.hero p{margin:0;color:var(--muted);line-height:1.9}
-.cats{display:flex;gap:8px;overflow:auto;padding-bottom:8px}
-.cat{white-space:nowrap;background:white;border:1px solid var(--line);padding:9px 15px;border-radius:99px;color:var(--muted)}
-.cat.active{background:var(--p);color:#fff;border-color:var(--p)}
-.sectiontitle{display:flex;align-items:center;justify-content:space-between;margin:18px 0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-bottom:40px}
-.card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 6px 20px #7c3a5510}
-.pic{height:190px;background:linear-gradient(135deg,#fff0f6,#fff);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.pic img{width:100%;height:100%;object-fit:cover}
-.ph{font-size:52px}
-.fav{position:absolute;top:9px;left:9px;background:#fff;box-shadow:0 3px 12px #0001;border-radius:50%;width:38px;height:38px;color:#bbb;font-size:19px}
-.fav.on{color:#e94d88}
-.info{padding:13px}
-.name{font-weight:800;min-height:42px;line-height:1.6}
-.desc{font-size:12px;color:var(--muted);line-height:1.7;height:40px;overflow:hidden}
-.price{font-weight:900;color:var(--p);margin:8px 0}
-.stock{font-size:11px;color:#68846e}
-.add{width:100%;background:var(--dark);color:#fff;padding:11px;border-radius:13px;margin-top:9px}
-.add:disabled{opacity:.4}
-.overlay{position:fixed;inset:0;background:#0006;z-index:50;display:none}
-.overlay.show{display:block}
-.panel{position:absolute;right:0;top:0;height:100%;width:min(430px,94vw);background:#fff;padding:18px;overflow:auto;box-shadow:-10px 0 40px #0002}
-.modal{position:absolute;inset:5%;max-width:650px;margin:auto;background:#fff;border-radius:25px;overflow:auto;padding:20px;height:max-content;max-height:90vh}
-.close{float:left;background:#f7e8ee;border-radius:12px;width:38px;height:38px}
-.cartrow{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
-.thumb{width:70px;height:70px;border-radius:14px;object-fit:cover}
-.qty{display:flex;align-items:center;gap:7px;margin-top:7px}
-.qty button{width:30px;height:30px;border-radius:9px;background:#f9e6ee}
-.total{display:flex;justify-content:space-between;font-weight:900;font-size:18px;padding:18px 0}
-.primary{background:var(--p);color:#fff;border-radius:14px;padding:13px;width:100%}
-.secondary{background:#f8eaf0;color:var(--dark);border-radius:14px;padding:11px;width:100%;margin-top:8px}
-.form{display:grid;gap:10px}
-.form input,.form textarea,.form select{width:100%;padding:12px;border:1px solid var(--line);border-radius:13px;outline:none;background:#fff}
-.empty{text-align:center;padding:50px 10px;color:var(--muted)}
-.muted{color:var(--muted);font-size:13px;line-height:1.8}
-.loading{text-align:center;padding:40px;color:var(--muted)}
-.order{border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0;background:#fff}
-.toast{position:fixed;bottom:22px;right:50%;transform:translateX(50%) translateY(30px);background:var(--dark);color:#fff;padding:12px 18px;border-radius:99px;z-index:100;opacity:0;transition:.25s}
-.toast.show{opacity:1;transform:translateX(50%) translateY(0)}
-hr{border:0;border-top:1px solid var(--line);margin:20px 0}
-@media(max-width:800px){
-.grid{grid-template-columns:repeat(2,1fr)}
-.pic{height:165px}
-.hero h1{font-size:25px}
+:root{
+  --pink:#e96b9a;
+  --pink2:#f7a8c4;
+  --light:#fff5f9;
+  --white:#ffffff;
+  --text:#292329;
+  --muted:#777078;
+  --border:#efd9e3;
+  --shadow:0 10px 35px rgba(160,70,110,.10);
+  --radius:22px;
 }
-@media(max-width:420px){
-.grid{gap:9px}
-.card{border-radius:16px}
-.pic{height:145px}
-.info{padding:10px}
-.name{font-size:13px}
-.price{font-size:13px}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--light);
+  color:var(--text);
+  font-family:
+    Tahoma,
+    Arial,
+    sans-serif;
+}
+
+button,input,select,textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.wrap{
+  width:min(1100px,94%);
+  margin:auto;
+}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav{
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo{
+  margin-right:auto;
+  color:var(--pink);
+  font-size:27px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.navbtn{
+  width:48px;
+  height:48px;
+  border:0;
+  border-radius:16px;
+  background:#fff1f6;
+  position:relative;
+  font-size:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.badge{
+  position:absolute;
+  top:-5px;
+  left:-4px;
+  min-width:23px;
+  height:23px;
+  padding:0 5px;
+  border-radius:50px;
+  background:#252025;
+  color:#fff;
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* SEARCH */
+.searchbox{
+  margin:24px 0 16px;
+  position:relative;
+}
+
+.searchbox input{
+  width:100%;
+  height:60px;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:0 55px 0 18px;
+  background:#fff;
+  outline:none;
+  font-size:17px;
+}
+
+.searchbox span{
+  position:absolute;
+  right:18px;
+  top:16px;
+  font-size:25px;
+}
+
+/* HERO */
+.hero{
+  background:
+    linear-gradient(135deg,#fff0f6,#fff);
+  border:1px solid #f2dce6;
+  border-radius:30px;
+  padding:34px 25px;
+  margin:18px 0 30px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.hero h1{
+  margin:0 0 15px;
+  font-size:34px;
+}
+
+.hero p{
+  margin:0;
+  line-height:2;
+  color:var(--muted);
+  font-size:17px;
+}
+
+/* CATEGORIES */
+.categories{
+  display:flex;
+  gap:9px;
+  overflow:auto;
+  padding:4px 1px 15px;
+  scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.cat{
+  flex:0 0 auto;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  padding:10px 17px;
+  border-radius:50px;
+}
+
+.cat.active{
+  background:var(--pink);
+  color:white;
+  border-color:var(--pink);
+}
+
+/* SECTION */
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:25px 0 18px;
+}
+
+.section-title h2{
+  margin:0;
+  font-size:25px;
+}
+
+.section-title small{
+  color:var(--muted);
+}
+
+/* PRODUCTS */
+.products{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:23px;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(160,70,110,.07);
+  transition:.2s;
+}
+
+.card:active{
+  transform:scale(.98);
+}
+
+.product-image{
+  width:100%;
+  aspect-ratio:1/1;
+  background:#fff0f6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.product-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.no-image{
+  font-size:55px;
+}
+
+.card-body{
+  padding:14px;
+}
+
+.card-title{
+  font-size:16px;
+  font-weight:800;
+  line-height:1.8;
+  min-height:55px;
+}
+
+.price{
+  color:var(--pink);
+  font-size:18px;
+  font-weight:900;
+  margin:6px 0;
+}
+
+.stock{
+  color:#777;
+  font-size:12px;
+}
+
+.card-actions{
+  display:flex;
+  gap:7px;
+  margin-top:12px;
+}
+
+.card-actions button{
+  border:0;
+  border-radius:13px;
+  height:42px;
+}
+
+.add{
+  flex:1;
+  background:var(--pink);
+  color:#fff;
+}
+
+.like{
+  width:44px;
+  background:#fff0f5;
+  color:#d65b89;
+}
+
+/* LOADING */
+.loading{
+  text-align:center;
+  padding:45px 10px;
+  color:var(--muted);
+  grid-column:1/-1;
+}
+
+.spinner{
+  width:35px;
+  height:35px;
+  border:4px solid #f5d9e4;
+  border-top-color:var(--pink);
+  border-radius:50%;
+  margin:0 auto 15px;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* EMPTY */
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:50px 15px;
+  color:var(--muted);
+}
+
+/* DRAWER */
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.38);
+  z-index:500;
+}
+
+.overlay.show{
+  display:block;
+}
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:min(440px,100%);
+  height:100%;
+  background:#fff;
+  z-index:600;
+  transition:.3s;
+  display:flex;
+  flex-direction:column;
+}
+
+.drawer.show{
+  right:0;
+}
+
+.drawer-head{
+  padding:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+
+.drawer-head h3{
+  margin:0;
+}
+
+.close{
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:14px;
+  background:#fff0f5;
+  font-size:22px;
+}
+
+.drawer-body{
+  flex:1;
+  overflow:auto;
+  padding:16px;
+}
+
+.drawer-foot{
+  padding:16px;
+  border-top:1px solid var(--border);
+}
+
+.cart-item{
+  display:flex;
+  gap:10px;
+  padding:13px 0;
+  border-bottom:1px solid #f2e5eb;
+}
+
+.cart-item-img{
+  width:72px;
+  height:72px;
+  border-radius:15px;
+  overflow:hidden;
+  background:#fff0f6;
+  flex:none;
+}
+
+.cart-item-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.cart-info{
+  flex:1;
+}
+
+.cart-info strong{
+  display:block;
+  line-height:1.7;
+}
+
+.cart-price{
+  color:var(--pink);
+  font-weight:800;
+  margin:4px 0;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.qty button{
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:10px;
+  background:#fff0f5;
+}
+
+.remove{
+  border:0;
+  background:none;
+  color:#d33;
+  font-size:12px;
+  margin-top:4px;
+}
+
+.total{
+  display:flex;
+  justify-content:space-between;
+  font-weight:900;
+  font-size:19px;
+  margin-bottom:12px;
+}
+
+.primary{
+  width:100%;
+  height:50px;
+  border:0;
+  border-radius:17px;
+  background:var(--pink);
+  color:#fff;
+  font-weight:800;
+}
+
+.secondary{
+  width:100%;
+  height:48px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:#fff;
+  margin-top:9px;
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:700;
+  background:rgba(0,0,0,.4);
+  align-items:flex-end;
+  justify-content:center;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(650px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:28px 28px 0 0;
+  padding:20px;
+}
+
+.modal-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-img{
+  width:100%;
+  aspect-ratio:1/1;
+  max-height:430px;
+  object-fit:cover;
+  border-radius:22px;
+  background:#fff0f5;
+  margin:12px 0;
+}
+
+.modal h2{
+  margin:10px 0;
+}
+
+.description{
+  color:var(--muted);
+  line-height:2;
+}
+
+/* FORM */
+.form{
+  display:grid;
+  gap:11px;
+}
+
+.form input,
+.form select,
+.form textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:13px;
+  outline:none;
+  background:#fff;
+}
+
+.form textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+/* ACCOUNT */
+.account-box{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:20px;
+}
+
+.account-box h3{
+  margin-top:0;
+}
+
+/* REVIEWS */
+.reviews{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+  margin-bottom:40px;
+}
+
+.review{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:17px;
+}
+
+.stars{
+  color:#e7a52b;
+  letter-spacing:2px;
+}
+
+.review p{
+  line-height:1.9;
+  color:#666;
+}
+
+/* FOOTER */
+footer{
+  margin-top:50px;
+  padding:30px 0;
+  border-top:1px solid var(--border);
+  text-align:center;
+  color:var(--muted);
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translate(-50%,120px);
+  background:#282128;
+  color:#fff;
+  padding:13px 20px;
+  border-radius:50px;
+  z-index:1000;
+  transition:.3s;
+  max-width:90%;
+  text-align:center;
+}
+
+.toast.show{
+  transform:translate(-50%,0);
+}
+
+/* ORDERS */
+.order{
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:15px;
+  margin-bottom:10px;
+}
+
+.order strong{
+  color:var(--pink);
+}
+
+/* MOBILE */
+@media(max-width:850px){
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .reviews{
+    grid-template-columns:1fr;
+  }
+
+  .logo{
+    font-size:22px;
+  }
+}
+
+@media(max-width:430px){
+  .nav{
+    gap:6px;
+  }
+
+  .navbtn{
+    width:43px;
+    height:43px;
+  }
+
+  .hero h1{
+    font-size:27px;
+  }
+
+  .products{
+    gap:10px;
+  }
+
+  .card-body{
+    padding:11px;
+  }
+
+  .card-title{
+    font-size:14px;
+  }
+
+  .price{
+    font-size:16px;
+  }
 }
 </style>
 </head>
@@ -81,1288 +671,581 @@ hr{border:0;border-top:1px solid var(--line);margin:20px 0}
 <body>
 
 <header>
-<div class="wrap nav">
-<div class="logo">VELORA STORE 🌸</div>
-<button class="navbtn" id="accountBtn">👤</button>
-<button class="navbtn" id="favBtn">♡<span class="badge" id="favCount">0</span></button>
-<button class="navbtn" id="cartBtn">🛒<span class="badge" id="cartCount">0</span></button>
-</div>
+  <div class="wrap nav">
+
+    <button class="navbtn" id="cartBtn" aria-label="سبد خرید">
+      🛒
+      <span class="badge" id="cartCount">0</span>
+    </button>
+
+    <button class="navbtn" id="favoritesBtn" aria-label="علاقه‌مندی‌ها">
+      ♡
+      <span class="badge" id="favCount">0</span>
+    </button>
+
+    <button class="navbtn" id="accountBtn" aria-label="حساب">
+      👤
+    </button>
+
+    <div class="logo">🌸 VELORA STORE</div>
+
+  </div>
 </header>
 
 <main class="wrap">
 
-<div class="search">
-<input id="search" placeholder="جستجوی محصول...">
-<span>🔍</span>
-</div>
+  <div class="searchbox">
+    <span>🔎</span>
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="جستجوی محصول..."
+    >
+  </div>
 
-<section class="hero">
-<h1>خرید با حس خوب 🌷</h1>
-<p>محصولات خاص و دوست‌داشتنی VELORA STORE با طراحی ظریف و ارسال به سراسر ایران.</p>
-</section>
+  <section class="hero">
+    <h1>خرید با حس خوب 🌷</h1>
+    <p>
+      محصولات خاص و دوست‌داشتنی VELORA STORE
+      <br>
+      با طراحی ظریف و ارسال به سراسر ایران.
+    </p>
+  </section>
 
-<div class="cats" id="cats"></div>
+  <div class="categories" id="categories"></div>
 
-<div class="sectiontitle">
-<h2>محصولات</h2>
-<span class="muted" id="status"></span>
-</div>
+  <div class="section-title">
+    <h2 id="productsTitle">محصولات</h2>
+    <small id="productCount"></small>
+  </div>
 
-<div id="products" class="grid">
-<div class="loading">در حال بارگذاری محصولات...</div>
-</div>
+  <section class="products" id="products">
+    <div class="loading">
+      <div class="spinner"></div>
+      در حال آماده‌سازی فروشگاه...
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">
+      <h2>نظر مشتریان 💕</h2>
+    </div>
+
+    <div class="reviews">
+
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>
+          کیفیت محصول خیلی خوب بود و بسته‌بندی هم واقعاً قشنگ بود.
+        </p>
+        <strong>سارا</strong>
+      </div>
+
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>
+          دقیقاً مطابق عکس بود. برای هدیه خریدم و خیلی دوستش داشت.
+        </p>
+        <strong>مریم</strong>
+      </div>
+
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>
+          طراحی محصولات خیلی ظریف و خاصه. حتماً دوباره خرید می‌کنم.
+        </p>
+        <strong>نگار</strong>
+      </div>
+
+    </div>
+  </section>
 
 </main>
 
-<div class="overlay" id="drawer">
-<div class="panel">
-<button class="close" id="drawerClose">✕</button>
-<div id="drawerBody"></div>
-</div>
+<footer>
+  <div class="wrap">
+    🌸 VELORA STORE
+    <br>
+    فروشگاه آنلاین محصولات خاص
+    <br><br>
+    <button class="secondary" id="contactBtn">
+      💬 تماس با فروشنده
+    </button>
+  </div>
+</footer>
+
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+
+<!-- CART DRAWER -->
+<aside class="drawer" id="cartDrawer">
+
+  <div class="drawer-head">
+    <h3>🛒 سبد خرید</h3>
+    <button class="close" id="closeCart">×</button>
+  </div>
+
+  <div class="drawer-body" id="cartItems"></div>
+
+  <div class="drawer-foot">
+
+    <div class="total">
+      <span>مبلغ کل</span>
+      <span id="cartTotal">۰ تومان</span>
+    </div>
+
+    <button class="primary" id="checkoutBtn">
+      ادامه و ثبت سفارش
+    </button>
+
+  </div>
+
+</aside>
+
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="productModal">
+
+  <div class="modal-box">
+
+    <div class="modal-top">
+      <strong>جزئیات محصول</strong>
+      <button class="close" id="closeProduct">×</button>
+    </div>
+
+    <div id="productDetails"></div>
+
+  </div>
+
 </div>
 
-<div class="overlay" id="modalOverlay">
-<div class="modal">
-<button class="close" id="modalClose">✕</button>
-<div id="modalBody"></div>
-</div>
+
+<!-- ACCOUNT MODAL -->
+<div class="modal" id="accountModal">
+
+  <div class="modal-box">
+
+    <div class="modal-top">
+      <strong>👤 حساب کاربری</strong>
+      <button class="close" id="closeAccount">×</button>
+    </div>
+
+    <div id="accountContent"></div>
+
+  </div>
+
 </div>
 
-<div class="overlay" id="accountOverlay">
-<div class="panel">
-<button class="close" id="accountClose">✕</button>
-<div id="accountBody"></div>
-</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal" id="checkoutModal">
+
+  <div class="modal-box">
+
+    <div class="modal-top">
+      <strong>📦 ثبت سفارش</strong>
+      <button class="close" id="closeCheckout">×</button>
+    </div>
+
+    <br>
+
+    <form class="form" id="checkoutForm">
+
+      <input
+        id="customerName"
+        required
+        placeholder="نام و نام خانوادگی"
+      >
+
+      <input
+        id="customerMobile"
+        required
+        inputmode="tel"
+        placeholder="شماره موبایل"
+      >
+
+      <select id="province" required>
+        <option value="">انتخاب استان</option>
+        <option>آذربایجان شرقی</option>
+        <option>آذربایجان غربی</option>
+        <option>اردبیل</option>
+        <option>اصفهان</option>
+        <option>البرز</option>
+        <option>ایلام</option>
+        <option>بوشهر</option>
+        <option>تهران</option>
+        <option>چهارمحال و بختیاری</option>
+        <option>خراسان جنوبی</option>
+        <option>خراسان رضوی</option>
+        <option>خراسان شمالی</option>
+        <option>خوزستان</option>
+        <option>زنجان</option>
+        <option>سمنان</option>
+        <option>سیستان و بلوچستان</option>
+        <option>فارس</option>
+        <option>قزوین</option>
+        <option>قم</option>
+        <option>کردستان</option>
+        <option>کرمان</option>
+        <option>کرمانشاه</option>
+        <option>کهگیلویه و بویراحمد</option>
+        <option>گلستان</option>
+        <option>گیلان</option>
+        <option>لرستان</option>
+        <option>مازندران</option>
+        <option>مرکزی</option>
+        <option>هرمزگان</option>
+        <option>همدان</option>
+        <option>یزد</option>
+      </select>
+
+      <input
+        id="city"
+        required
+        placeholder="شهر"
+      >
+
+      <textarea
+        id="address"
+        required
+        placeholder="آدرس کامل"
+      ></textarea>
+
+      <input
+        id="postalCode"
+        inputmode="numeric"
+        placeholder="کد پستی"
+      >
+
+      <textarea
+        id="orderNote"
+        placeholder="توضیحات سفارش (اختیاری)"
+      ></textarea>
+
+      <button class="primary" type="submit">
+        ثبت سفارش
+      </button>
+
+    </form>
+
+  </div>
+
 </div>
 
+
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+
 <script>
+/* =========================================================
+   VELORA STORE
+   SUPABASE CONFIG
+   ========================================================= */
 
-const SUPABASE_URL="https://wyqxeoscfaypyghrtumf.supabase.co";
+const SUPABASE_URL =
+  "https://wyqxeoscfaypyghrtumf.supabase.co";
 
-const SUPABASE_KEY="sb_publishable_rsIfojM5qx8_vlE82eHL0w_jzymrVX4";
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_rsIfojM5qx8_vlE82eHL0w_jzymrVX4";
 
-const db=window.supabase?.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
 
-const DEFAULT_PRODUCTS=[
+/* =========================================================
+   SUPABASE CLIENT
+   ========================================================= */
 
-{
-id:1,
-name:"گل‌سر پاپیونی توری",
-price:290000,
-stock:13,
-category:"اکسسوری",
-sub:"گیر سر",
-description:"گل‌سر پاپیونی ظریف با تور گل‌دار و طراحی خاص؛ مناسب استفاده روزمره، مهمانی و هدیه.",
-image_url:"product1.jpg"
-},
-
-{
-id:2,
-name:"دستبند مینیمال صورتی",
-price:189000,
-stock:8,
-category:"اکسسوری",
-sub:"دستبند",
-description:"دستبند ظریف و مینیمال برای استایل روزمره.",
-emoji:"🎀"
-},
-
-{
-id:3,
-name:"دستبند مرواریدی",
-price:219000,
-stock:9,
-category:"اکسسوری",
-sub:"دستبند",
-description:"ترکیب ظریف مروارید و رنگ‌های لطیف.",
-emoji:"🤍"
-},
-
-{
-id:4,
-name:"گیر سر مرواریدی",
-price:119000,
-stock:17,
-category:"اکسسوری",
-sub:"گیر سر",
-description:"گیر سر شیک و مناسب مهمانی.",
-emoji:"✨"
-},
-
-{
-id:5,
-name:"کش مو ساتن صورتی",
-price:79000,
-stock:25,
-category:"اکسسوری",
-sub:"کش مو",
-description:"کش موی ساتن لطیف و ضدکشیدگی.",
-emoji:"🌸"
-},
-
-{
-id:6,
-name:"کش مو پاپیونی",
-price:89000,
-stock:19,
-category:"اکسسوری",
-sub:"کش مو",
-description:"کش موی پاپیونی دخترانه و خاص.",
-emoji:"🎀"
-},
-
-{
-id:7,
-name:"آویز دکوراتیو",
-price:159000,
-stock:15,
-category:"تزئینات",
-sub:"",
-description:"آویز دکوراتیو برای زیباتر کردن فضای خانه.",
-emoji:"🪻"
-},
-
-{
-id:8,
-name:"شمع دکوراتیو",
-price:179000,
-stock:10,
-category:"تزئینات",
-sub:"",
-description:"شمع دکوراتیو با ظاهر لطیف و جذاب.",
-emoji:"🕯️"
-},
-
-{
-id:9,
-name:"گلدان رومیزی",
-price:249000,
-stock:7,
-category:"تزئینات",
-sub:"",
-description:"گلدان کوچک و شیک مناسب میز و اتاق.",
-emoji:"🪴"
-},
-
-{
-id:10,
-name:"ماگ فانتزی",
-price:169000,
-stock:13,
-category:"آشپزخانه",
-sub:"",
-description:"ماگ دوست‌داشتنی برای نوشیدنی‌های روزانه.",
-emoji:"☕"
-},
-
-{
-id:11,
-name:"لیوان فانتزی",
-price:149000,
-stock:14,
-category:"آشپزخانه",
-sub:"",
-description:"لیوان سبک و کاربردی با ظاهر جذاب.",
-emoji:"🥛"
-},
-
-{
-id:12,
-name:"ست کاربردی آشپزخانه",
-price:349000,
-stock:6,
-category:"آشپزخانه",
-sub:"",
-description:"ست کاربردی برای آشپزخانه مدرن.",
-emoji:"🍳"
-}
-
-];
-
-let products=[...DEFAULT_PRODUCTS];
-
-let category="همه";
-let query="";
-
-let cart=JSON.parse(
-localStorage.getItem("velora_cart")||"[]"
-);
-
-let favorites=JSON.parse(
-localStorage.getItem("velora_favorites")||"[]"
-);
-
-let orders=JSON.parse(
-localStorage.getItem("velora_orders")||"[]"
-);
-
-let user=JSON.parse(
-localStorage.getItem("velora_user")||"null"
-);
-
-const $=id=>document.getElementById(id);
-
-function money(n){
-return Number(n||0).toLocaleString("fa-IR")+" تومان";
-}
-
-function saveAll(){
-
-localStorage.setItem(
-"velora_cart",
-JSON.stringify(cart)
-);
-
-localStorage.setItem(
-"velora_favorites",
-JSON.stringify(favorites)
-);
-
-localStorage.setItem(
-"velora_orders",
-JSON.stringify(orders)
-);
-
-localStorage.setItem(
-"velora_user",
-JSON.stringify(user)
-);
-
-updateBadges();
-
-}
-
-function toast(message){
-
-const el=$("toast");
-
-el.textContent=message;
-
-el.classList.add("show");
-
-setTimeout(()=>{
-el.classList.remove("show");
-},2200);
-
-}
-
-function openPanel(id){
-$(id).classList.add("show");
-}
-
-function closePanel(id){
-$(id).classList.remove("show");
-}
-
-function updateBadges(){
-
-$("cartCount").textContent=
-cart.reduce((sum,item)=>sum+item.qty,0);
-
-$("favCount").textContent=
-favorites.length;
-
-}
-
-function findProduct(id){
-
-return products.find(
-p=>String(p.id)===String(id)
-);
-
-}
-
-function imageHTML(product){
-
-if(!product.image_url)return "";
-
-return `
-<img
-src="${product.image_url}"
-alt="${product.name}"
-onerror="
-this.style.display='none';
-this.parentElement.querySelector('.ph').style.display='block';
-">
-`;
-
-}
-
-function renderCategories(){
-
-const categories=[
-"همه",
-"اکسسوری",
-"دستبند",
-"گیر سر",
-"کش مو",
-"تزئینات",
-"آشپزخانه"
-];
-
-$("cats").innerHTML=
-
-categories.map(c=>`
-
-<button
-class="cat ${c===category?"active":""}"
-data-category="${c}">
-${c}
-</button>
-
-`).join("");
-
-}
-
-function getFilteredProducts(){
-
-const q=query.trim().toLowerCase();
-
-return products.filter(product=>{
-
-const categoryOK=
-category==="همه"||
-product.category===category||
-product.sub===category;
-
-const text=(
-product.name+
-" "+
-(product.description||"")+
-" "+
-(product.category||"")+
-" "+
-(product.sub||"")
-).toLowerCase();
-
-const searchOK=
-!q||text.includes(q);
-
-return categoryOK&&searchOK;
-
-});
-
-}
-
-function renderProducts(){
-
-const list=getFilteredProducts();
-
-$("status").textContent=
-list.length+" محصول";
-
-if(!list.length){
-
-$("products").innerHTML=`
-
-<div
-class="loading"
-style="grid-column:1/-1">
-محصولی پیدا نشد 🌸
-</div>
-
-`;
-
-return;
-
-}
-
-$("products").innerHTML=
-
-list.map(product=>{
-
-const liked=
-favorites.includes(product.id);
-
-return `
-
-<article
-class="card"
-data-product="${product.id}">
-
-<div class="pic">
-
-${imageHTML(product)}
-
-<span
-class="ph"
-style="${product.image_url?"display:none":""}">
-${product.emoji||"🌸"}
-</span>
-
-<button
-class="fav ${liked?"on":""}"
-data-favorite="${product.id}">
-${liked?"♥":"♡"}
-</button>
-
-</div>
-
-<div class="info">
-
-<div class="name">
-${product.name}
-</div>
-
-<div class="desc">
-${product.description||""}
-</div>
-
-<div class="price">
-${money(product.price)}
-</div>
-
-<div class="stock">
-${product.stock>0?
-"موجودی: "+product.stock:
-"ناموجود"}
-</div>
-
-<button
-class="add"
-data-add="${product.id}"
-${product.stock<1?"disabled":""}>
-افزودن به سبد 🛒
-</button>
-
-</div>
-
-</article>
-
-`;
-
-}).join("");
-
-}
-
-function addToCart(id){
-
-const product=findProduct(id);
-
-if(!product)return;
-
-const existing=
-cart.find(item=>String(item.id)===String(id));
-
-if(existing){
-
-if(existing.qty>=product.stock){
-
-toast("بیشتر از موجودی نمی‌توانی اضافه کنی");
-
-return;
-
-}
-
-existing.qty++;
-
-}else{
-
-cart.push({
-id:product.id,
-qty:1
-});
-
-}
-
-saveAll();
-
-toast("محصول به سبد اضافه شد 🌸");
-
-renderCart();
-
-}
-
-function changeQuantity(id,direction){
-
-const item=
-cart.find(x=>String(x.id)===String(id));
-
-const product=findProduct(id);
-
-if(!item||!product)return;
-
-item.qty+=direction;
-
-if(item.qty<=0){
-
-cart=
-cart.filter(
-x=>String(x.id)!==String(id)
-);
-
-}
-
-if(item.qty>product.stock){
-
-item.qty=product.stock;
-
-}
-
-saveAll();
-
-renderCart();
-
-}
-
-function removeFromCart(id){
-
-cart=
-cart.filter(
-item=>String(item.id)!==String(id)
-);
-
-saveAll();
-
-renderCart();
-
-toast("محصول حذف شد");
-
-}
-
-function renderCart(){
-
-if(!cart.length){
-
-$("drawerBody").innerHTML=`
-
-<h2>سبد خرید 🛒</h2>
-
-<div class="empty">
-
-سبد خریدت خالیه 🌸
-
-<br><br>
-
-<button
-class="primary"
-id="continueShopping">
-مشاهده محصولات
-</button>
-
-</div>
-
-`;
-
-return;
-
-}
-
-let total=0;
-
-const rows=cart.map(item=>{
-
-const product=findProduct(item.id);
-
-if(!product)return "";
-
-const sum=
-product.price*item.qty;
-
-total+=sum;
-
-return `
-
-<div class="cartrow">
-
-<div
-class="pic"
-style="width:70px;height:70px;border-radius:14px">
-
-${imageHTML(product)}
-
-<span
-class="ph"
-style="${product.image_url?"display:none":""}">
-${product.emoji||"🌸"}
-</span>
-
-</div>
-
-<div>
-
-<b>
-${product.name}
-</b>
-
-<div class="muted">
-${money(product.price)}
-</div>
-
-<div class="qty">
-
-<button
-data-minus="${product.id}">
-−
-</button>
-
-<b>
-${item.qty}
-</b>
-
-<button
-data-plus="${product.id}">
-+
-</button>
-
-</div>
-
-</div>
-
-<button
-data-remove="${product.id}">
-🗑️
-</button>
-
-</div>
-
-`;
-
-}).join("");
-
-$("drawerBody").innerHTML=`
-
-<h2>سبد خرید 🛒</h2>
-
-${rows}
-
-<div class="total">
-
-<span>مجموع</span>
-
-<span>
-${money(total)}
-</span>
-
-</div>
-
-<button
-class="primary"
-id="checkoutBtn">
-ثبت سفارش
-</button>
-
-`;
-
-}
-
-function openProduct(id){
-
-const product=findProduct(id);
-
-if(!product)return;
-
-$("modalBody").innerHTML=`
-
-<div
-class="pic"
-style="height:300px;border-radius:20px">
-
-${imageHTML(product)}
-
-<span
-class="ph"
-style="${product.image_url?"display:none":""}">
-${product.emoji||"🌸"}
-</span>
-
-</div>
-
-<h2>
-${product.name}
-</h2>
-
-<p class="muted">
-${product.description||""}
-</p>
-
-<div class="price">
-${money(product.price)}
-</div>
-
-<p class="stock">
-موجودی: ${product.stock}
-</p>
-
-<button
-class="primary"
-data-modal-add="${product.id}"
-${product.stock<1?"disabled":""}>
-افزودن به سبد 🛒
-</button>
-
-`;
-
-openPanel("modalOverlay");
-
-}
-
-function renderAccount(){
-
-$("accountBody").innerHTML=`
-
-<h2>
-پنل کاربری 👤
-</h2>
-
-${user?
-
-`
-
-<p class="muted">
-سلام ${user.name||"دوست VELORA"} 🌷
-<br>
-${user.phone||""}
-</p>
-
-<button
-class="secondary"
-id="logoutBtn">
-خروج از حساب
-</button>
-
-`
-
-:
-
-`
-
-<p class="muted">
-برای ذخیره اطلاعات سفارش‌ها، نام و موبایلت را ثبت کن.
-</p>
-
-<div class="form">
-
-<input
-id="userName"
-placeholder="نام و نام خانوادگی">
-
-<input
-id="userPhone"
-placeholder="شماره موبایل">
-
-<button
-class="primary"
-id="createAccount">
-ساخت حساب
-</button>
-
-</div>
-
-`
-
-}
-
-<hr>
-
-<h3>
-سفارش‌های من
-</h3>
-
-${
-orders.length?
-
-orders.slice().reverse().map(order=>`
-
-<div class="order">
-
-<b>
-${order.code}
-</b>
-
-<div class="muted">
-
-${new Date(order.date).toLocaleString("fa-IR")}
-
-<br>
-
-${money(order.total)}
-
-—
-
-${order.status}
-
-</div>
-
-</div>
-
-`).join("")
-
-:
-
-`
-<div class="empty">
-هنوز سفارشی ثبت نشده.
-</div>
-`
-
-}
-
-`;
-
-}
-
-function checkout(){
-
-if(!cart.length){
-
-toast("سبد خرید خالی است");
-
-return;
-
-}
-
-$("drawerBody").innerHTML=`
-
-<h2>
-ثبت سفارش 🧾
-</h2>
-
-<div class="form">
-
-<input
-id="customerName"
-placeholder="نام و نام خانوادگی"
-value="${user?.name||""}">
-
-<input
-id="customerPhone"
-placeholder="شماره موبایل"
-value="${user?.phone||""}">
-
-<select id="province">
-
-<option value="">
-استان
-</option>
-
-<option>تهران</option>
-<option>البرز</option>
-<option>اصفهان</option>
-<option>فارس</option>
-<option>خراسان رضوی</option>
-<option>آذربایجان شرقی</option>
-<option>مازندران</option>
-<option>گیلان</option>
-<option>سایر</option>
-
-</select>
-
-<input
-id="city"
-placeholder="شهر">
-
-<textarea
-id="address"
-rows="3"
-placeholder="آدرس کامل">
-</textarea>
-
-<input
-id="postal"
-placeholder="کد پستی">
-
-<textarea
-id="note"
-rows="2"
-placeholder="توضیحات سفارش (اختیاری)">
-</textarea>
-
-<button
-class="primary"
-id="confirmOrder">
-ثبت نهایی سفارش
-</button>
-
-<button
-class="secondary"
-id="backCart">
-بازگشت به سبد
-</button>
-
-</div>
-
-`;
-
-}
-
-async function saveOrderToSupabase(order){
+let db = null;
 
 try{
 
-if(!db)return false;
+  if(
+    window.supabase &&
+    typeof window.supabase.createClient === "function"
+  ){
 
-const {
-data:{user:supabaseUser}
-}=await db.auth.getUser();
+    db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth:{
+          persistSession:true,
+          autoRefreshToken:true,
+          detectSessionInUrl:true
+        }
+      }
+    );
 
-if(!supabaseUser)return false;
-
-const {
-data:createdOrder,
-error
-}=await db
-.from("orders")
-.insert({
-
-user_id:supabaseUser.id,
-total_amount:order.total,
-status:"pending"
-
-})
-.select()
-.single();
-
-if(error)throw error;
-
-const items=
-order.items.map(item=>({
-
-order_id:createdOrder.id,
-product_id:item.id,
-quantity:item.qty,
-unit_price:item.price
-
-}));
-
-const {
-error:itemError
-}=await db
-.from("order_items")
-.insert(items);
-
-if(itemError)throw itemError;
-
-return true;
+  }
 
 }catch(error){
 
-console.warn(
-"Supabase order error:",
-error
-);
-
-return false;
+  console.error("Supabase initialization error:",error);
 
 }
 
-}
 
-async function confirmOrder(){
+/* =========================================================
+   DEFAULT PRODUCTS
+   اگر Supabase در دسترس نباشد، فروشگاه خالی نمی‌ماند.
+   ========================================================= */
+
+const DEFAULT_PRODUCTS = [
+
+  {
+    id:"local-1",
+    name:"گل‌سر پاپیونی توری",
+    price:290000,
+    stock:13,
+    category:"اکسسوری",
+    subcategory:"گیر سر",
+    description:
+      "گل‌سر پاپیونی ظریف با تور گل‌دار و طراحی خاص؛ مناسب استفاده روزمره، مهمانی و هدیه.",
+    image_url:"product1.jpg",
+    is_active:true
+  },
+
+  {
+    id:"local-2",
+    name:"دستبند مینیمال صورتی",
+    price:189000,
+    stock:8,
+    category:"اکسسوری",
+    subcategory:"دستبند",
+    description:"دستبند ظریف و مینیمال مناسب استفاده روزمره.",
+    image_url:"",
+    is_active:true
+  },
+
+  {
+    id:"local-3",
+    name:"دستبند مرواریدی",
+    price:219000,
+    stock:9,
+    category:"اکسسوری",
+    subcategory:"دستبند",
+    description:"دستبند مرواریدی ظریف برای استایل‌های خاص.",
+    image_url:"",
+    is_active:true
+  },
+
+  {
+    id:"local-4",
+    name:"گیر سر مرواریدی",
+    price:119000,
+    stock:17,
+    category:"اکسسوری",
+    subcategory:"گیر سر",
+    description:"گیر سر مرواریدی زیبا و ظریف.",
+    image_url:"",
+    is_active:true
+  },
+
+  {
+    id:"local-5",
+    name:"کش مو ساتن صورتی",
+    price:79000,
+    stock:25,
+    category:"اکسسوری",
+    subcategory:"کش مو",
+    description:"کش موی ساتن لطیف مناسب استفاده روزمره.",
+    image_url:"",
+    is_active:true
+  },
+
+  {
+    id:"local-6",
+    name:"کش مو پاپیونی",
+    price:89000,
+    stock:19,
+    category:"اکسسوری",
+    subcategory:"کش مو",
+    description:"کش موی پاپیونی دخترانه و ظریف.",
+    image_url:"",
+    is_active:true
+  },
+
+  {
+    id:"local-7",
+    name:"آویز دکوراتیو",
+    price:159000,
+    stock:15,
+    category:"تزئینات",
+    subcategory:"",
+    description:"آویز دکوراتیو مناسب اتاق و میز.",
+    image_url:"",
+    is_active:true
+  },
+
+  {
+    id:"local-8",
+    name:"شمع دکوراتیو",
+    price:179000,
+    stock:10,
+    category:"تزئینات",
+    subcategory:"",
+    description:"شمع دکوراتیو زیبا برای فضای خانه.",
+    image_url:"",
+    is_active:true
+  },
 
-const name=
-$("customerName").value.trim();
+  {
+    id:"local-9",
+    name:"گلدان رومیزی",
+    price:249000,
+    stock:7,
+    category:"تزئینات",
+    subcategory:"",
+    description:"گلدان رومیزی برای دکور منزل.",
+    image_url:"",
+    is_active:true
+  },
 
-const phone=
-$("customerPhone").value.trim();
+  {
+    id:"local-10",
+    name:"ماگ فانتزی",
+    price:169000,
+    stock:13,
+    category:"آشپزخانه",
+    subcategory:"",
+    description:"ماگ فانتزی مناسب نوشیدنی‌های روزمره.",
+    image_url:"",
+    is_active:true
+  },
 
-const province=
-$("province").value;
+  {
+    id:"local-11",
+    name:"لیوان فانتزی",
+    price:149000,
+    stock:14,
+    category:"آشپزخانه",
+    subcategory:"",
+    description:"لیوان فانتزی و کاربردی.",
+    image_url:"",
+    is_active:true
+  },
 
-const city=
-$("city").value.trim();
+  {
+    id:"local-12",
+    name:"ست کاربردی آشپزخانه",
+    price:349000,
+    stock:6,
+    category:"آشپزخانه",
+    subcategory:"",
+    description:"ست کاربردی و زیبا برای آشپزخانه.",
+    image_url:"",
+    is_active:true
+  }
 
-const address=
-$("address").value.trim();
+];
 
-const postal=
-$("postal").value.trim();
 
-const note=
-$("note").value.trim();
+/* =========================================================
+   STATE
+   ========================================================= */
 
-if(
-!name||
-!phone||
-!province||
-!city||
-!address||
-!postal
-){
+let products = [];
 
-toast(
-"لطفاً اطلاعات ضروری را کامل کن"
-);
+let activeCategory = "همه";
 
-return;
+let searchText = "";
 
-}
+let currentProduct = null;
 
-let total=0;
+let showingFavorites = false;
 
-const items=
-cart.map(item=>{
+let cart = loadJSON("velora_cart",[]);
 
-const product=
-findProduct(item.id);
+let favorites = loadJSON("velora_favorites",[]);
 
-if(product){
+let localOrders = loadJSON("velora_orders",[]);
 
-total+=
-product.price*item.qty;
+let localUser = loadJSON("velora_user",null);
 
-return {
 
-id:product.id,
-qty:item.qty,
-price:product.price
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
-};
+function loadJSON(key,fallback){
 
-}
+  try{
 
-return null;
+    const value = localStorage.getItem(key);
 
-}).filter(Boolean);
+    return value ? JSON.parse(value) : fallback;
 
-const order={
+  }catch(e){
 
-code:
-"VLR-"+Date.now().toString().slice(-8),
+    return fallback;
 
-date:
-new Date().toISOString(),
-
-name,
-phone,
-province,
-city,
-address,
-postal,
-note,
-
-total,
-
-status:
-"در انتظار بررسی",
-
-items
-
-};
-
-orders.push(order);
-
-user={
-name,
-phone
-};
-
-cart=[];
-
-saveAll();
-
-await saveOrderToSupabase(order);
-
-renderCart();
-
-renderAccount();
-
-toast(
-"سفارش با موفقیت ثبت شد 🌸"
-);
-
-setTimeout(
-()=>closePanel("drawer"),
-700
-);
-
-}
-
-async function loadProducts(){
-
-try{
-
-if(!db)
-throw new Error("Supabase unavailable");
-
-const {
-data,
-error
-}=await db
-.from("products")
-.select("*")
-.eq("is_active",true)
-.order(
-"created_at",
-{ascending:true}
-);
-
-if(error)
-throw error;
-
-if(data&&data.length){
-
-products=data;
-
-$("status").textContent=
-"اتصال به فروشگاه برقرار است";
-
-}else{
-
-products=[...DEFAULT_PRODUCTS];
-
-$("status").textContent=
-"فروشگاه آماده است";
-
-}
-
-}catch(error){
-
-console.warn(
-"Supabase product error:",
-error
-);
-
-products=[...DEFAULT_PRODUCTS];
-
-$("status").textContent=
-"حالت فروشگاه";
-
-}
-
-renderCategories();
-
-renderProducts();
-
-renderCart();
-
-updateBadges();
-
-}
-
-document.addEventListener(
-"click",
-function(event){
-
-const button=
-event.target.closest("button");
-
-const card=
-event.target.closest(".card");
-
-if(button){
-
-if(button.id==="accountBtn"){
-
-renderAccount();
-
-openPanel("accountOverlay");
+  }
 
 }
 
-if(button.id==="favBtn"){
 
-const oldProducts=
-[...products];
+function saveJSON(key,value){
 
-const oldCategory=
-category;
+  try{
 
-const oldQuery=
-query;
+    localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
 
-category="همه";
-
-query="";
-
-products=
-oldProducts.filter(
-p=>favorites.includes(p.id)
-);
-
-renderCategories();
-
-renderProducts();
-
-setTimeout(()=>{
-
-products=oldProducts;
-
-category=oldCategory;
-
-query=oldQuery;
-
-renderCategories();
-
-},100);
+  }catch(e){}
 
 }
 
-if(button.id==="cartBtn"){
 
-renderCart();
+function formatPrice(value){
 
-openPanel("drawer");
-
-}
-
-if(button.id==="drawerClose"){
-
-closePanel("drawer");
+  return Number(value || 0)
+    .toLocaleString("fa-IR") + " تومان";
 
 }
 
-if(button.id==="modalClose"){
 
-closePanel("modalOverlay");
+function escapeHTML(value){
 
-}
-
-if(button.id==="accountClose"){
-
-closePanel("accountOverlay");
-
-}
-
-if(button.dataset.category){
-
-category=
-button.dataset.category;
-
-renderCategories();
-
-renderProducts();
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
-if(button.dataset.add){
 
-addToCart(
-button.dataset.add
-);
+/* =========================================================
+   IMAGE URL
+   ========================================================= */
 
-}
+function getImageUrl(product){
 
-if(button.dataset.favorite){
+  let url = product?.image_url || "";
 
-const id=
-Number(button.dataset.favorite);
+  if(!url){
 
-if(favorites.includes(id)){
+    return "";
 
-favorites=
-favorites.filter(
-x=>x!==id
-);
+  }
 
-}else{
+  /*
+    اگر Supabase یا هر URL کامل باشد همان را استفاده می‌کنیم.
+  */
 
-favorites.push(id);
+  if(
+    url.startsWith("http://") ||
+    url.startsWith("https://") ||
+    url.startsWith("data:")
+  ){
 
-}
+    return url;
 
-saveAll();
+  }
 
-renderProducts();
-
-}
-
-if(button.dataset.plus){
-
-changeQuantity(
-button.data
+  /*
+    تصویر محصول او
