@@ -2638,17 +2638,35 @@ async function submitOrder(event){
 }
   <script>
 
-/* =========================
-   EVENTS
-========================= */
+/* =========================================
+   VELORA STORE - FINAL SAFE EVENTS
+========================================= */
+
+function bind(id, event, handler){
+
+  const el = document.getElementById(id);
+
+  if(!el){
+    console.warn("Element not found:", id);
+    return;
+  }
+
+  el.addEventListener(event, handler);
+
+}
 
 
-$("searchInput").addEventListener(
+/* =========================================
+   SEARCH
+========================================= */
+
+bind(
+  "searchInput",
   "input",
   function(event){
 
     searchText =
-      event.target.value;
+      event.target.value.trim();
 
     applyFilters();
 
@@ -2656,7 +2674,12 @@ $("searchInput").addEventListener(
 );
 
 
-$("categories").addEventListener(
+/* =========================================
+   CATEGORIES
+========================================= */
+
+bind(
+  "categories",
   "click",
   function(event){
 
@@ -2680,7 +2703,12 @@ $("categories").addEventListener(
 );
 
 
-$("products").addEventListener(
+/* =========================================
+   PRODUCTS
+========================================= */
+
+bind(
+  "products",
   "click",
   function(event){
 
@@ -2702,17 +2730,17 @@ $("products").addEventListener(
     }
 
 
-    const fav =
+    const favorite =
       event.target.closest(
         "[data-favorite]"
       );
 
-    if(fav){
+    if(favorite){
 
       event.stopPropagation();
 
       toggleFavorite(
-        fav.dataset.favorite
+        favorite.dataset.favorite
       );
 
       return;
@@ -2720,15 +2748,15 @@ $("products").addEventListener(
     }
 
 
-    const card =
+    const product =
       event.target.closest(
         "[data-product]"
       );
 
-    if(card){
+    if(product){
 
       openProduct(
-        card.dataset.product
+        product.dataset.product
       );
 
     }
@@ -2737,7 +2765,12 @@ $("products").addEventListener(
 );
 
 
-$("cartList").addEventListener(
+/* =========================================
+   CART
+========================================= */
+
+bind(
+  "cartList",
   "click",
   function(event){
 
@@ -2792,100 +2825,152 @@ $("cartList").addEventListener(
 );
 
 
-$("favoriteList").addEventListener(
+/* =========================================
+   FAVORITES
+========================================= */
+
+bind(
+  "favoriteList",
   "click",
   function(event){
 
-    const open =
+    const button =
       event.target.closest(
         "[data-fav-open]"
       );
 
-    if(!open){
+    if(!button){
       return;
     }
 
-    $("favoriteOverlay")
-      .classList.add("hidden");
+    const overlay =
+      document.getElementById(
+        "favoriteOverlay"
+      );
+
+    if(overlay){
+      overlay.classList.add(
+        "hidden"
+      );
+    }
 
     openProduct(
-      open.dataset.favOpen
+      button.dataset.favOpen
     );
 
   }
 );
 
 
-/* =========================
+/* =========================================
    HEADER BUTTONS
-========================= */
+========================================= */
 
-
-$("cartBtn").onclick =
+bind(
+  "cartBtn",
+  "click",
   function(){
 
     renderCart();
 
-    $("cartOverlay")
-      .classList.remove(
-        "hidden"
+    const overlay =
+      document.getElementById(
+        "cartOverlay"
       );
 
-  };
+    if(overlay){
+      overlay.classList.remove(
+        "hidden"
+      );
+    }
+
+  }
+);
 
 
-$("favoriteBtn").onclick =
+bind(
+  "favoriteBtn",
+  "click",
   function(){
 
     renderFavorites();
 
-    $("favoriteOverlay")
-      .classList.remove(
-        "hidden"
+    const overlay =
+      document.getElementById(
+        "favoriteOverlay"
       );
 
-  };
+    if(overlay){
+      overlay.classList.remove(
+        "hidden"
+      );
+    }
+
+  }
+);
 
 
-$("accountBtn").onclick =
+bind(
+  "accountBtn",
+  "click",
   function(){
 
     renderAccount();
 
-    $("accountOverlay")
-      .classList.remove(
-        "hidden"
+    const overlay =
+      document.getElementById(
+        "accountOverlay"
       );
 
-  };
+    if(overlay){
+      overlay.classList.remove(
+        "hidden"
+      );
+    }
+
+  }
+);
 
 
-$("shopBtn").onclick =
+/* =========================================
+   SHOP BUTTON
+========================================= */
+
+bind(
+  "shopBtn",
+  "click",
   function(){
 
-    const productsSection =
+    const section =
       document.querySelector(
         ".products"
       );
 
-    if(!productsSection){
+    if(!section){
       return;
     }
 
     window.scrollTo({
 
       top:
-        productsSection.offsetTop -
-        90,
+        section.offsetTop - 80,
 
-      behavior:"smooth"
+      behavior:
+        "smooth"
 
     });
 
-  };
+  }
+);
 
 
-$("contactBtn").onclick =
+/* =========================================
+   CONTACT
+========================================= */
+
+bind(
+  "contactBtn",
+  "click",
   function(){
 
     window.open(
@@ -2893,40 +2978,43 @@ $("contactBtn").onclick =
       "_blank"
     );
 
-  };
+  }
+);
 
 
-/* =========================
+/* =========================================
    CLOSE BUTTONS
-========================= */
+========================================= */
+
+[
+  "closeProduct",
+  "closeCart",
+  "closeAccount",
+  "closeCheckout",
+  "closeFavorite"
+].forEach(
+  function(id){
+
+    bind(
+      id,
+      "click",
+      closeAllOverlays
+    );
+
+  }
+);
 
 
-$("closeProduct").onclick =
-  closeAllOverlays;
-
-
-$("closeCart").onclick =
-  closeAllOverlays;
-
-
-$("closeAccount").onclick =
-  closeAllOverlays;
-
-
-$("closeCheckout").onclick =
-  closeAllOverlays;
-
-
-$("closeFavorite").onclick =
-  closeAllOverlays;
-
+/* =========================================
+   OVERLAY CLICK
+========================================= */
 
 document
   .querySelectorAll(
     ".overlay"
   )
   .forEach(
-    overlay => {
+    function(overlay){
 
       overlay.addEventListener(
         "click",
@@ -2950,6 +3038,10 @@ document
   );
 
 
+/* =========================================
+   ESC
+========================================= */
+
 document.addEventListener(
   "keydown",
   function(event){
@@ -2966,12 +3058,13 @@ document.addEventListener(
 );
 
 
-/* =========================
+/* =========================================
    PRODUCT DETAIL
-========================= */
+========================================= */
 
-
-$("detailAdd").onclick =
+bind(
+  "detailAdd",
+  "click",
   function(){
 
     if(!currentProduct){
@@ -2982,10 +3075,13 @@ $("detailAdd").onclick =
       currentProduct.id
     );
 
-  };
+  }
+);
 
 
-$("detailFavorite").onclick =
+bind(
+  "detailFavorite",
+  "click",
   function(){
 
     if(!currentProduct){
@@ -2996,15 +3092,16 @@ $("detailFavorite").onclick =
       currentProduct.id
     );
 
-  };
+  }
+);
 
 
-/* =========================
+/* =========================================
    ACCOUNT
-========================= */
+========================================= */
 
-
-$("accountContent").addEventListener(
+bind(
+  "accountContent",
   "click",
   function(event){
 
@@ -3021,58 +3118,54 @@ $("accountContent").addEventListener(
 );
 
 
-/* =========================
+/* =========================================
    CHECKOUT
-========================= */
+========================================= */
+
+bind(
+  "checkoutBtn",
+  "click",
+  openCheckout
+);
 
 
-$("checkoutBtn").onclick =
-  openCheckout;
-
-
-$("checkoutForm").addEventListener(
+bind(
+  "checkoutForm",
   "submit",
   submitOrder
 );
 
 
-/* =========================
-   TELEGRAM MINI APP
-========================= */
+/* =========================================
+   TELEGRAM
+========================================= */
 
+if(
+  window.Telegram &&
+  window.Telegram.WebApp
+){
 
-function setupTelegram(){
+  try{
 
-  if(
-    window.Telegram &&
-    window.Telegram.WebApp
-  ){
+    window.Telegram.WebApp.ready();
 
-    const tg =
-      window.Telegram.WebApp;
+    window.Telegram.WebApp.expand();
 
-    tg.ready();
+  }catch(error){
 
-    tg.expand();
+    console.warn(
+      "Telegram WebApp:",
+      error
+    );
 
   }
 
 }
 
 
-setupTelegram();
-
-
-/* =========================
+/* =========================================
    REFRESH PRODUCTS
-=========================
-
-   اگر محصولی در پنل مدیریت
-   تغییر کند، وقتی کاربر دوباره
-   به فروشگاه برگردد، اطلاعات
-   جدید از Supabase خوانده می‌شود.
-*/
-
+========================================= */
 
 document.addEventListener(
   "visibilitychange",
@@ -3091,18 +3184,83 @@ document.addEventListener(
 );
 
 
-/* =========================
-   START STORE
-========================= */
+/* =========================================
+   START
+========================================= */
+
+try{
+
+  updateBadges();
+
+}catch(error){
+
+  console.error(
+    "updateBadges:",
+    error
+  );
+
+}
 
 
-updateBadges();
+try{
 
-renderCart();
+  renderCart();
 
-renderFavorites();
+}catch(error){
 
-loadProducts();
+  console.error(
+    "renderCart:",
+    error
+  );
+
+}
+
+
+try{
+
+  renderFavorites();
+
+}catch(error){
+
+  console.error(
+    "renderFavorites:",
+    error
+  );
+
+}
+
+
+/* مهم‌ترین قسمت:
+   حتی اگر یکی از بخش‌های بالا
+   خطا داشته باشد، محصولات
+   حتماً از Supabase خوانده شوند.
+*/
+
+loadProducts()
+  .then(
+    function(){
+
+      console.log(
+        "VELORA products loaded:",
+        products.length
+      );
+
+    }
+  )
+  .catch(
+    function(error){
+
+      console.error(
+        "Product loading error:",
+        error
+      );
+
+      toast(
+        "خطا در دریافت محصولات"
+      );
+
+    }
+  );
 
 
 </script>
