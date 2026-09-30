@@ -1,3 +1,1279 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>VELORA STORE 🌸</title>
+
+<meta
+  name="description"
+  content="VELORA STORE - فروشگاه آنلاین اکسسوری، تزئینات و لوازم آشپزخانه"
+>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:
+    Tahoma,
+    Arial,
+    sans-serif;
+  background:#fff8fb;
+  color:#382832;
+  min-height:100vh;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+
+/* =========================
+   Header
+========================= */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid #f5dce8;
+}
+
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  padding:13px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  flex:1;
+  font-size:22px;
+  font-weight:900;
+  color:#d85b91;
+}
+
+.logo small{
+  display:block;
+  font-size:10px;
+  color:#9c7c8b;
+  margin-top:2px;
+}
+
+.header-actions{
+  display:flex;
+  gap:7px;
+}
+
+.icon-btn{
+  width:42px;
+  height:42px;
+  border:1px solid #f0d5e2;
+  background:#fff;
+  border-radius:14px;
+  position:relative;
+  font-size:19px;
+  color:#633e51;
+}
+
+.badge{
+  position:absolute;
+  top:-5px;
+  left:-4px;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:20px;
+  background:#dc6195;
+  color:#fff;
+  font-size:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+
+/* =========================
+   Hero
+========================= */
+
+.hero{
+  max-width:1100px;
+  margin:20px auto 0;
+  padding:18px;
+}
+
+.hero-box{
+  background:
+    radial-gradient(
+      circle at top right,
+      #ffd9e8,
+      transparent 42%
+    ),
+    linear-gradient(
+      135deg,
+      #fff,
+      #fff0f6
+    );
+  border:1px solid #f6d6e4;
+  border-radius:30px;
+  padding:28px 22px;
+  overflow:hidden;
+  position:relative;
+}
+
+.hero-box:after{
+  content:"🌸";
+  position:absolute;
+  left:18px;
+  bottom:8px;
+  font-size:75px;
+  opacity:.15;
+}
+
+.hero-label{
+  color:#d45b91;
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.hero h1{
+  font-size:31px;
+  line-height:1.45;
+  margin-bottom:9px;
+}
+
+.hero p{
+  color:#806572;
+  line-height:1.9;
+  font-size:14px;
+  max-width:650px;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:9px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.primary-btn,
+.secondary-btn{
+  border:0;
+  border-radius:14px;
+  padding:12px 18px;
+  font-weight:bold;
+  font-size:13px;
+}
+
+.primary-btn{
+  background:#d85b91;
+  color:#fff;
+}
+
+.secondary-btn{
+  background:#fff;
+  color:#b34b78;
+  border:1px solid #edc8d8;
+}
+
+
+/* =========================
+   Search
+========================= */
+
+.search-wrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 18px 10px;
+}
+
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#fff;
+  border:1px solid #f0d8e4;
+  border-radius:18px;
+  padding:4px 14px;
+  box-shadow:0 6px 20px rgba(126,60,91,.04);
+}
+
+.search-box span{
+  font-size:18px;
+}
+
+.search-box input{
+  flex:1;
+  border:0;
+  outline:0;
+  padding:12px 4px;
+  background:transparent;
+  font-size:14px;
+  color:#432d38;
+}
+
+
+/* =========================
+   Categories
+========================= */
+
+.categories{
+  max-width:1100px;
+  margin:auto;
+  padding:10px 18px 20px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.cat-btn{
+  flex:none;
+  border:1px solid #efd3df;
+  background:#fff;
+  color:#805d6d;
+  padding:10px 16px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.cat-btn.active{
+  background:#d85b91;
+  color:#fff;
+  border-color:#d85b91;
+}
+
+
+/* =========================
+   Products
+========================= */
+
+.section{
+  max-width:1100px;
+  margin:auto;
+  padding:12px 18px 40px;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+
+.section-head h2{
+  font-size:20px;
+}
+
+.section-head span{
+  font-size:11px;
+  color:#a27e8d;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+
+.product-card{
+  background:#fff;
+  border:1px solid #f0dce5;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:
+    0 8px 25px
+    rgba(120,65,91,.05);
+  transition:.2s;
+}
+
+.product-card:active{
+  transform:scale(.98);
+}
+
+.product-image-wrap{
+  height:190px;
+  background:#fff3f7;
+  position:relative;
+  overflow:hidden;
+}
+
+.product-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.product-placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:55px;
+}
+
+.favorite-btn{
+  position:absolute;
+  top:9px;
+  left:9px;
+  width:37px;
+  height:37px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.94);
+  color:#c05a85;
+  font-size:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.favorite-btn.active{
+  color:#e14f89;
+}
+
+.product-content{
+  padding:14px;
+}
+
+.product-category{
+  font-size:10px;
+  color:#c05a85;
+  margin-bottom:7px;
+}
+
+.product-card h3{
+  font-size:14px;
+  line-height:1.7;
+  margin-bottom:5px;
+}
+
+.product-description{
+  color:#927682;
+  font-size:11px;
+  line-height:1.8;
+  min-height:40px;
+}
+
+.product-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:12px 0;
+  gap:5px;
+}
+
+.product-bottom strong{
+  font-size:13px;
+  color:#b44375;
+}
+
+.stock{
+  font-size:10px;
+  color:#67916d;
+  background:#eef9ef;
+  border-radius:10px;
+  padding:4px 7px;
+}
+
+.add-cart-btn{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  padding:10px;
+  background:#d85b91;
+  color:#fff;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.add-cart-btn:disabled{
+  background:#d5c9ce;
+  cursor:not-allowed;
+}
+
+
+/* =========================
+   Reviews
+========================= */
+
+.reviews{
+  max-width:1100px;
+  margin:auto;
+  padding:10px 18px 40px;
+}
+
+.review-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+
+.review{
+  background:#fff;
+  border:1px solid #f1dce6;
+  border-radius:19px;
+  padding:16px;
+}
+
+.review-stars{
+  color:#e3a32c;
+  margin-bottom:7px;
+}
+
+.review p{
+  color:#745866;
+  font-size:12px;
+  line-height:1.9;
+}
+
+.review strong{
+  display:block;
+  margin-top:10px;
+  font-size:11px;
+}
+
+
+/* =========================
+   Footer
+========================= */
+
+.footer{
+  background:#fff;
+  border-top:1px solid #f1dce6;
+  padding:25px 18px 90px;
+  text-align:center;
+}
+
+.footer-logo{
+  color:#d85b91;
+  font-size:22px;
+  font-weight:900;
+}
+
+.footer p{
+  color:#957683;
+  font-size:11px;
+  margin:8px 0 17px;
+}
+
+.footer-links{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.footer-links button{
+  border:1px solid #edd5e0;
+  background:#fff;
+  border-radius:13px;
+  padding:9px 12px;
+  font-size:11px;
+  color:#795666;
+}
+
+
+/* =========================
+   Overlays
+========================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(43,25,35,.42);
+  z-index:100;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+}
+
+.overlay.show{
+  display:flex;
+}
+
+.panel{
+  width:100%;
+  max-width:650px;
+  max-height:92vh;
+  overflow-y:auto;
+  background:#fff;
+  border-radius:27px 27px 0 0;
+  padding:18px;
+  animation:up .22s ease;
+}
+
+@keyframes up{
+  from{
+    transform:translateY(100%);
+  }
+  to{
+    transform:translateY(0);
+  }
+}
+
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+
+.panel-head h2{
+  font-size:18px;
+}
+
+.close-btn{
+  width:37px;
+  height:37px;
+  border:0;
+  border-radius:12px;
+  background:#fff0f5;
+  color:#b74d7a;
+  font-size:18px;
+}
+
+
+/* =========================
+   Forms
+========================= */
+
+.form{
+  display:grid;
+  gap:11px;
+}
+
+.form input,
+.form textarea,
+.form select{
+  width:100%;
+  border:1px solid #ead5df;
+  background:#fffafd;
+  border-radius:13px;
+  padding:12px;
+  outline:0;
+  font-size:13px;
+  color:#48323c;
+}
+
+.form textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.form button{
+  border:0;
+  border-radius:14px;
+  padding:13px;
+  background:#d85b91;
+  color:#fff;
+  font-weight:bold;
+}
+
+
+/* =========================
+   Cart
+========================= */
+
+.cart-list{
+  display:grid;
+  gap:10px;
+}
+
+.cart-item{
+  display:flex;
+  gap:11px;
+  padding:10px;
+  border:1px solid #f0dce5;
+  border-radius:17px;
+}
+
+.cart-item-image{
+  width:70px;
+  height:70px;
+  flex:none;
+  border-radius:13px;
+  background:#fff0f5;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.cart-item-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.cart-item-info{
+  flex:1;
+}
+
+.cart-item-info strong{
+  display:block;
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.cart-item-info > span{
+  color:#b64b78;
+  font-size:11px;
+}
+
+.quantity{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+}
+
+.quantity button{
+  width:27px;
+  height:27px;
+  border:1px solid #edcfdb;
+  background:#fff;
+  border-radius:8px;
+}
+
+.remove-cart{
+  border:0;
+  background:none;
+  color:#c95579;
+  font-size:10px;
+  margin-top:6px;
+}
+
+.cart-total{
+  display:flex;
+  justify-content:space-between;
+  padding:17px 4px;
+  margin-top:10px;
+  border-top:1px solid #f0dce5;
+}
+
+.checkout-btn{
+  width:100%;
+  border:0;
+  background:#d85b91;
+  color:#fff;
+  padding:14px;
+  border-radius:15px;
+  font-weight:bold;
+}
+
+
+/* =========================
+   Product Detail
+========================= */
+
+.detail-image{
+  height:300px;
+  background:#fff1f6;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:16px;
+}
+
+.detail-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.detail-info h2{
+  font-size:21px;
+  margin:7px 0;
+}
+
+.detail-price{
+  color:#bd4679;
+  font-size:18px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+.detail-info p{
+  color:#765a66;
+  font-size:13px;
+  line-height:2;
+}
+
+.detail-stock{
+  margin:13px 0;
+  font-size:12px;
+  color:#67896d;
+}
+
+.detail-actions{
+  display:grid;
+  gap:8px;
+}
+
+.detail-actions button{
+  border:0;
+  border-radius:14px;
+  padding:13px;
+  background:#d85b91;
+  color:#fff;
+  font-weight:bold;
+}
+
+.detail-actions button:last-child{
+  background:#fff0f5;
+  color:#b84d7a;
+}
+
+
+/* =========================
+   Empty
+========================= */
+
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  color:#967583;
+  line-height:2;
+}
+
+
+/* =========================
+   Account
+========================= */
+
+.account-section h2{
+  margin-bottom:10px;
+}
+
+.account-section p{
+  color:#876c78;
+  font-size:12px;
+  line-height:1.9;
+  margin-bottom:15px;
+}
+
+.account-section button{
+  width:100%;
+  border:0;
+  border-radius:14px;
+  padding:13px;
+  margin-top:8px;
+  background:#d85b91;
+  color:#fff;
+  font-weight:bold;
+}
+
+.order-row,
+.favorite-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px;
+  border:1px solid #f0dce5;
+  border-radius:13px;
+  margin:7px 0;
+}
+
+.order-row span,
+.favorite-row span{
+  display:block;
+  color:#b54b77;
+  font-size:11px;
+  margin-top:4px;
+}
+
+
+/* =========================
+   Toast
+========================= */
+
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:
+    translate(-50%,20px);
+  background:#3f2934;
+  color:#fff;
+  padding:11px 17px;
+  border-radius:14px;
+  font-size:12px;
+  opacity:0;
+  pointer-events:none;
+  z-index:300;
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:
+    translate(-50%,0);
+}
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media(max-width:850px){
+
+  .products{
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:620px){
+
+  .products{
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .product-image-wrap{
+    height:165px;
+  }
+
+  .review-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    font-size:26px;
+  }
+
+}
+
+@media(max-width:390px){
+
+  .products{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .product-image-wrap{
+    height:145px;
+  }
+
+  .product-content{
+    padding:10px;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+  <div class="header-inner">
+
+    <div class="logo">
+      VELORA STORE
+      <small>زیبایی، ظرافت، انتخاب تو 🌸</small>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        class="icon-btn"
+        id="accountBtn"
+        type="button"
+      >
+        👤
+      </button>
+
+      <button
+        class="icon-btn"
+        id="favBtn"
+        type="button"
+      >
+        ♡
+        <span
+          class="badge"
+          id="favCount"
+        >0</span>
+      </button>
+
+      <button
+        class="icon-btn"
+        id="cartBtn"
+        type="button"
+      >
+        🛍️
+        <span
+          class="badge"
+          id="cartCount"
+        >0</span>
+      </button>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<section class="hero">
+
+  <div class="hero-box">
+
+    <div class="hero-label">
+      VELORA STORE 🌸
+    </div>
+
+    <h1>
+      انتخاب‌های ظریف<br>
+      برای سبک خاص تو
+    </h1>
+
+    <p>
+      گل‌سر، اکسسوری، تزئینات و لوازم کاربردی
+      با انتخابی خاص و دوست‌داشتنی.
+    </p>
+
+    <div class="hero-buttons">
+
+      <button
+        class="primary-btn"
+        id="heroProducts"
+        type="button"
+      >
+        مشاهده محصولات
+      </button>
+
+      <button
+        class="secondary-btn"
+        id="heroReviews"
+        type="button"
+      >
+        نظرات مشتریان
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<div class="search-wrap">
+
+  <div class="search-box">
+
+    <span>🔎</span>
+
+    <input
+      id="search"
+      type="search"
+      placeholder="جستجوی محصول..."
+      autocomplete="off"
+    >
+
+  </div>
+
+</div>
+
+
+<div
+  class="categories"
+  id="cats"
+></div>
+
+
+<section class="section">
+
+  <div class="section-head">
+
+    <h2>
+      محصولات
+    </h2>
+
+    <span id="status">
+      در حال بارگذاری...
+    </span>
+
+  </div>
+
+  <div
+    class="products"
+    id="products"
+  ></div>
+
+</section>
+
+
+<section
+  class="reviews"
+  id="reviews"
+>
+
+  <div class="section-head">
+
+    <h2>
+      نظر مشتریان ⭐
+    </h2>
+
+  </div>
+
+  <div class="review-grid">
+
+    <div class="review">
+
+      <div class="review-stars">
+        ★★★★★
+      </div>
+
+      <p>
+        کیفیت گل‌سر خیلی خوب بود و دقیقاً
+        شبیه عکسش بود. بسته‌بندی هم خیلی قشنگ بود.
+      </p>
+
+      <strong>
+        سارا
+      </strong>
+
+    </div>
+
+
+    <div class="review">
+
+      <div class="review-stars">
+        ★★★★★
+      </div>
+
+      <p>
+        خیلی ظریف و خوشگله 😍
+        برای هدیه گرفتم و خیلی دوستش داشت.
+      </p>
+
+      <strong>
+        نازنین
+      </strong>
+
+    </div>
+
+
+    <div class="review">
+
+      <div class="review-stars">
+        ★★★★☆
+      </div>
+
+      <p>
+        ارسال خوب بود و محصول سالم به دستم رسید.
+        حتماً دوباره خرید می‌کنم.
+      </p>
+
+      <strong>
+        مریم
+      </strong>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<footer class="footer">
+
+  <div class="footer-logo">
+    VELORA STORE
+  </div>
+
+  <p>
+    فروشگاه آنلاین با عشق برای شما 🌸
+  </p>
+
+  <div class="footer-links">
+
+    <button
+      id="footerCart"
+      type="button"
+    >
+      🛍️ سبد خرید
+    </button>
+
+    <button
+      id="footerFav"
+      type="button"
+    >
+      ❤️ علاقه‌مندی
+    </button>
+
+    <button
+      id="footerAccount"
+      type="button"
+    >
+      👤 حساب من
+    </button>
+
+    <button
+      id="contactBtn"
+      type="button"
+    >
+      💬 تماس با فروشنده
+    </button>
+
+  </div>
+
+</footer>
+
+
+<!-- سبد خرید -->
+
+<div
+  class="overlay"
+  id="drawer"
+>
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <h2>
+        سبد خرید 🛍️
+      </h2>
+
+      <button
+        class="close-btn"
+        id="drawerClose"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="drawerBody"></div>
+
+  </div>
+
+</div>
+
+
+<!-- جزئیات محصول -->
+
+<div
+  class="overlay"
+  id="modalOverlay"
+>
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <h2>
+        جزئیات محصول
+      </h2>
+
+      <button
+        class="close-btn"
+        id="modalClose"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="modalBody"></div>
+
+  </div>
+
+</div>
+
+
+<!-- حساب کاربری -->
+
+<div
+  class="overlay"
+  id="accountOverlay"
+>
+
+  <div class="panel">
+
+    <div class="panel-head">
+
+      <h2>
+        حساب کاربری 👤
+      </h2>
+
+      <button
+        class="close-btn"
+        id="accountClose"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="accountBody"></div>
+
+  </div>
+
+</div>
+
+
+<div
+  class="toast"
+  id="toast"
+></div>
 <script>
 
 const SUPABASE_URL =
@@ -10,7 +1286,10 @@ let db = null;
 
 try{
 
-  if(window.supabase){
+  if(
+    window.supabase &&
+    typeof window.supabase.createClient === "function"
+  ){
 
     db =
       window.supabase.createClient(
@@ -31,7 +1310,7 @@ try{
 
 
 /* =========================
-   ابزارهای عمومی
+   ابزارها
 ========================= */
 
 function $(id){
@@ -44,7 +1323,8 @@ function $(id){
 function money(value){
 
   return Number(value || 0)
-    .toLocaleString("fa-IR") + " تومان";
+    .toLocaleString("fa-IR") +
+    " تومان";
 
 }
 
@@ -63,29 +1343,30 @@ function escapeHTML(value){
 
 function toast(message){
 
-  const el = $("toast");
+  const el =
+    $("toast");
 
   if(!el) return;
 
-  el.textContent = message;
+  el.textContent =
+    message;
 
   el.classList.add("show");
 
-  clearTimeout(window.__toastTimer);
+  clearTimeout(
+    window.__veloraToast
+  );
 
-  window.__toastTimer =
-    setTimeout(() => {
-
-      el.classList.remove("show");
-
-    },2200);
+  window.__veloraToast =
+    setTimeout(
+      () => {
+        el.classList.remove("show");
+      },
+      2200
+    );
 
 }
 
-
-/* =========================
-   آدرس عکس
-========================= */
 
 function getImageUrl(product){
 
@@ -119,7 +1400,7 @@ function getImageUrl(product){
 
 
 /* =========================
-   محصولات پیش فرض
+   محصولات پیش‌فرض
 ========================= */
 
 const DEFAULT_PRODUCTS = [
@@ -272,42 +1553,53 @@ const DEFAULT_PRODUCTS = [
 
 
 /* =========================
-   وضعیت فروشگاه
+   وضعیت
 ========================= */
 
 let products = [];
 
 let filteredProducts = [];
 
-let currentCategory = "همه";
+let currentCategory =
+  "همه";
 
-let searchText = "";
+let searchText =
+  "";
 
-let currentProduct = null;
+let currentProduct =
+  null;
 
 
 /* =========================
-   LocalStorage
+   ذخیره محلی
 ========================= */
 
 let cart =
   JSON.parse(
-    localStorage.getItem("velora_cart") || "[]"
+    localStorage.getItem(
+      "velora_cart"
+    ) || "[]"
   );
 
 let favorites =
   JSON.parse(
-    localStorage.getItem("velora_favorites") || "[]"
+    localStorage.getItem(
+      "velora_favorites"
+    ) || "[]"
   );
 
 let orders =
   JSON.parse(
-    localStorage.getItem("velora_orders") || "[]"
+    localStorage.getItem(
+      "velora_orders"
+    ) || "[]"
   );
 
 let user =
   JSON.parse(
-    localStorage.getItem("velora_user") || "null"
+    localStorage.getItem(
+      "velora_user"
+    ) || "null"
   );
 
 
@@ -361,7 +1653,8 @@ function normalizeProduct(item){
 
     ...item,
 
-    id:String(item.id),
+    id:
+      String(item.id),
 
     name:
       item.name ||
@@ -396,7 +1689,7 @@ function normalizeProduct(item){
 
 
 /* =========================
-   بارگذاری محصولات از Supabase
+   بارگذاری محصولات
 ========================= */
 
 async function loadProducts(){
@@ -406,30 +1699,22 @@ async function loadProducts(){
   );
 
 
-  /* اول نسخه محلی را نمایش بده */
+  /* اول صفحه خالی نباشد */
 
   products = [
     ...DEFAULT_PRODUCTS
   ];
 
-
   renderCategories();
-
   renderProducts();
-
   renderCart();
-
   updateBadges();
 
 
   if(!db){
 
-    if($("status")){
-
-      $("status").textContent =
-        "فروشگاه آماده است";
-
-    }
+    $("status").textContent =
+      "فروشگاه آماده است";
 
     return;
 
@@ -457,13 +1742,8 @@ async function loadProducts(){
         response.error
       );
 
-
-      if($("status")){
-
-        $("status").textContent =
-          "فروشگاه آماده است";
-
-      }
+      $("status").textContent =
+        "فروشگاه آماده است";
 
       return;
 
@@ -480,30 +1760,20 @@ async function loadProducts(){
           normalizeProduct
         );
 
-
-      if($("status")){
-
-        $("status").textContent =
-          products.length +
-          " محصول";
-
-      }
+      $("status").textContent =
+        products.length +
+        " محصول";
 
     }else{
 
-      products = [
-        ...DEFAULT_PRODUCTS
-      ];
+      products =
+        [...DEFAULT_PRODUCTS];
 
-
-      if($("status")){
-
-        $("status").textContent =
-          "فروشگاه آماده است";
-
-      }
+      $("status").textContent =
+        "فروشگاه آماده است";
 
     }
+
 
   }catch(error){
 
@@ -512,40 +1782,31 @@ async function loadProducts(){
       error
     );
 
+    products =
+      [...DEFAULT_PRODUCTS];
 
-    products = [
-      ...DEFAULT_PRODUCTS
-    ];
-
-
-    if($("status")){
-
-      $("status").textContent =
-        "فروشگاه آماده است";
-
-    }
+    $("status").textContent =
+      "فروشگاه آماده است";
 
   }
 
 
   renderCategories();
-
   renderProducts();
-
   renderCart();
-
   updateBadges();
 
 }
 
 
 /* =========================
-   دسته‌بندی‌ها
+   دسته‌بندی
 ========================= */
 
 function renderCategories(){
 
-  const box = $("cats");
+  const box =
+    $("cats");
 
   if(!box) return;
 
@@ -553,41 +1814,41 @@ function renderCategories(){
   const categories = [
 
     "همه",
-
     "اکسسوری",
-
     "تزئینات",
-
     "آشپزخانه"
 
   ];
 
 
   box.innerHTML =
-    categories.map(
-      category => `
+    categories
+      .map(
+        category => `
 
-        <button
-          class="cat-btn ${
-            currentCategory === category
-              ? "active"
-              : ""
-          }"
-          data-category="${escapeHTML(category)}"
-        >
+          <button
+            class="cat-btn ${
+              currentCategory === category
+                ? "active"
+                : ""
+            }"
+            data-category="${escapeHTML(category)}"
+            type="button"
+          >
 
-          ${escapeHTML(category)}
+            ${escapeHTML(category)}
 
-        </button>
+          </button>
 
-      `
-    ).join("");
+        `
+      )
+      .join("");
 
 }
 
 
 /* =========================
-   فیلتر محصولات
+   فیلتر
 ========================= */
 
 function applyFilters(){
@@ -599,38 +1860,42 @@ function applyFilters(){
 
 
   filteredProducts =
-    products.filter(product => {
+    products.filter(
+      product => {
 
-      const categoryMatch =
-        currentCategory === "همه" ||
-        product.category === currentCategory;
-
-
-      const searchMatch =
-        !q ||
-        String(product.name)
-          .toLowerCase()
-          .includes(q) ||
-
-        String(product.description)
-          .toLowerCase()
-          .includes(q) ||
-
-        String(product.category)
-          .toLowerCase()
-          .includes(q) ||
-
-        String(product.sub)
-          .toLowerCase()
-          .includes(q);
+        const categoryOK =
+          currentCategory === "همه" ||
+          product.category ===
+          currentCategory;
 
 
-      return (
-        categoryMatch &&
-        searchMatch
-      );
+        const searchOK =
+          !q ||
 
-    });
+          String(product.name)
+            .toLowerCase()
+            .includes(q) ||
+
+          String(product.description)
+            .toLowerCase()
+            .includes(q) ||
+
+          String(product.category)
+            .toLowerCase()
+            .includes(q) ||
+
+          String(product.sub)
+            .toLowerCase()
+            .includes(q);
+
+
+        return (
+          categoryOK &&
+          searchOK
+        );
+
+      }
+    );
 
 }
 
@@ -641,7 +1906,8 @@ function applyFilters(){
 
 function renderProducts(){
 
-  const box = $("products");
+  const box =
+    $("products");
 
   if(!box) return;
 
@@ -649,7 +1915,9 @@ function renderProducts(){
   applyFilters();
 
 
-  if(filteredProducts.length === 0){
+  if(
+    filteredProducts.length === 0
+  ){
 
     box.innerHTML = `
 
@@ -668,145 +1936,151 @@ function renderProducts(){
 
   box.innerHTML =
     filteredProducts
-      .map(product => {
+      .map(
+        product => {
 
-        const image =
-          getImageUrl(product);
+          const image =
+            getImageUrl(product);
 
-
-        const favorite =
-          favorites.includes(
-            String(product.id)
-          );
-
-
-        return `
-
-          <article
-            class="product-card"
-            data-product-id="${escapeHTML(product.id)}"
-          >
-
-            <div class="product-image-wrap">
-
-              ${
-                image
-
-                ? `
-
-                  <img
-                    class="product-image"
-                    src="${escapeHTML(image)}"
-                    alt="${escapeHTML(product.name)}"
-                    loading="lazy"
-                    onerror="this.style.display='none'"
-                  >
-
-                `
-
-                : `
-
-                  <div class="product-placeholder">
-                    🌸
-                  </div>
-
-                `
-              }
+          const liked =
+            favorites.includes(
+              String(product.id)
+            );
 
 
-              <button
-                class="favorite-btn ${
-                  favorite ? "active" : ""
-                }"
-                data-favorite="${escapeHTML(product.id)}"
-                type="button"
-              >
+          return `
 
-                ${favorite ? "♥" : "♡"}
+            <article
+              class="product-card"
+              data-product-id="${escapeHTML(product.id)}"
+            >
 
-              </button>
+              <div class="product-image-wrap">
 
-            </div>
+                ${
+                  image
+
+                  ? `
+
+                    <img
+                      class="product-image"
+                      src="${escapeHTML(image)}"
+                      alt="${escapeHTML(product.name)}"
+                      loading="lazy"
+                    >
+
+                  `
+
+                  : `
+
+                    <div class="product-placeholder">
+                      🌸
+                    </div>
+
+                  `
+                }
 
 
-            <div class="product-content">
+                <button
+                  class="favorite-btn ${
+                    liked ? "active" : ""
+                  }"
+                  data-favorite="${escapeHTML(product.id)}"
+                  type="button"
+                >
 
-              <div class="product-category">
+                  ${
+                    liked
+                    ? "♥"
+                    : "♡"
+                  }
 
-                ${escapeHTML(
-                  product.sub ||
-                  product.category
-                )}
+                </button>
 
               </div>
 
 
-              <h3>
+              <div class="product-content">
 
-                ${escapeHTML(
-                  product.name
-                )}
+                <div class="product-category">
 
-              </h3>
+                  ${escapeHTML(
+                    product.sub ||
+                    product.category
+                  )}
 
-
-              <p class="product-description">
-
-                ${escapeHTML(
-                  product.description
-                )}
-
-              </p>
+                </div>
 
 
-              <div class="product-bottom">
+                <h3>
 
-                <strong>
+                  ${escapeHTML(
+                    product.name
+                  )}
 
-                  ${money(product.price)}
-
-                </strong>
+                </h3>
 
 
-                <span class="stock">
+                <p class="product-description">
+
+                  ${escapeHTML(
+                    product.description
+                  )}
+
+                </p>
+
+
+                <div class="product-bottom">
+
+                  <strong>
+
+                    ${money(
+                      product.price
+                    )}
+
+                  </strong>
+
+
+                  <span class="stock">
+
+                    ${
+                      product.stock > 0
+                      ? "موجود"
+                      : "ناموجود"
+                    }
+
+                  </span>
+
+                </div>
+
+
+                <button
+                  class="add-cart-btn"
+                  data-add-cart="${escapeHTML(product.id)}"
+                  type="button"
+                  ${
+                    product.stock <= 0
+                    ? "disabled"
+                    : ""
+                  }
+                >
 
                   ${
                     product.stock > 0
-                    ? "موجود"
+                    ? "افزودن به سبد 🛍️"
                     : "ناموجود"
                   }
 
-                </span>
+                </button>
 
               </div>
 
+            </article>
 
-              <button
-                class="add-cart-btn"
-                data-add-cart="${escapeHTML(product.id)}"
-                type="button"
-                ${
-                  product.stock <= 0
-                  ? "disabled"
-                  : ""
-                }
-              >
+          `;
 
-                ${
-                  product.stock > 0
-                  ? "افزودن به سبد 🛍️"
-                  : "ناموجود"
-                }
-
-              </button>
-
-            </div>
-
-          </article>
-
-        `;
-
-      })
+        }
+      )
       .join("");
 
 }
@@ -820,13 +2094,12 @@ function findProduct(id){
 
   return products.find(
     product =>
-      String(product.id) === String(id)
+      String(product.id) ===
+      String(id)
   );
 
 }
-
-
-/* =========================
+  /* =========================
    سبد خرید
 ========================= */
 
@@ -837,47 +2110,58 @@ function addToCart(id){
 
   if(!product){
 
-    toast("محصول پیدا نشد");
+    toast(
+      "محصول پیدا نشد"
+    );
 
     return;
 
   }
 
 
-  if(product.stock <= 0){
+  if(
+    Number(product.stock) <= 0
+  ){
 
-    toast("این محصول موجود نیست");
+    toast(
+      "این محصول موجود نیست"
+    );
 
     return;
 
   }
 
 
-  const existing =
+  const item =
     cart.find(
-      item =>
-        String(item.id) ===
+      x =>
+        String(x.id) ===
         String(id)
     );
 
 
-  if(existing){
+  if(item){
 
-    if(existing.qty >= product.stock){
+    if(
+      Number(item.qty) >=
+      Number(product.stock)
+    ){
 
-      toast("بیشتر از موجودی نمی‌توانید اضافه کنید");
+      toast(
+        "بیشتر از موجودی نمی‌توانید انتخاب کنید"
+      );
 
       return;
 
     }
 
-    existing.qty += 1;
+    item.qty++;
 
   }else{
 
     cart.push({
 
-      id:String(product.id),
+      id:String(id),
 
       qty:1
 
@@ -893,7 +2177,7 @@ function addToCart(id){
   updateBadges();
 
   toast(
-    "محصول به سبد خرید اضافه شد 🛍️"
+    "به سبد خرید اضافه شد 🛍️"
   );
 
 }
@@ -903,11 +2187,10 @@ function removeFromCart(id){
 
   cart =
     cart.filter(
-      item =>
-        String(item.id) !==
+      x =>
+        String(x.id) !==
         String(id)
     );
-
 
   saveCart();
 
@@ -918,7 +2201,10 @@ function removeFromCart(id){
 }
 
 
-function changeQuantity(id, delta){
+function changeQuantity(
+  id,
+  amount
+){
 
   const item =
     cart.find(
@@ -927,21 +2213,23 @@ function changeQuantity(id, delta){
         String(id)
     );
 
-
   if(!item) return;
 
 
   const product =
     findProduct(id);
 
-
   if(!product) return;
 
 
-  item.qty += delta;
+  item.qty =
+    Number(item.qty) +
+    amount;
 
 
-  if(item.qty <= 0){
+  if(
+    item.qty <= 0
+  ){
 
     removeFromCart(id);
 
@@ -950,12 +2238,17 @@ function changeQuantity(id, delta){
   }
 
 
-  if(item.qty > product.stock){
+  if(
+    item.qty >
+    Number(product.stock)
+  ){
 
     item.qty =
-      product.stock;
+      Number(product.stock);
 
-    toast("بیشتر از موجودی نمی‌توانید انتخاب کنید");
+    toast(
+      "بیشتر از موجودی نمی‌توانید انتخاب کنید"
+    );
 
   }
 
@@ -972,26 +2265,31 @@ function changeQuantity(id, delta){
 function getCartItems(){
 
   return cart
-    .map(item => {
+    .map(
+      item => {
 
-      const product =
-        findProduct(item.id);
+        const product =
+          findProduct(item.id);
 
-      if(!product){
+        if(!product){
 
-        return null;
+          return null;
+
+        }
+
+        return {
+
+          ...product,
+
+          qty:
+            Number(
+              item.qty || 1
+            )
+
+        };
 
       }
-
-      return {
-
-        ...product,
-
-        qty:Number(item.qty || 1)
-
-      };
-
-    })
+    )
     .filter(Boolean);
 
 }
@@ -1001,48 +2299,19 @@ function cartTotal(){
 
   return getCartItems()
     .reduce(
-      (sum,item) =>
-        sum +
+      (total,item) =>
+
+        total +
         (
-          Number(item.price || 0) *
-          Number(item.qty || 0)
+          Number(item.price) *
+          Number(item.qty)
         ),
+
       0
     );
 
 }
 
-
-function updateBadges(){
-
-  const count =
-    cart.reduce(
-      (sum,item) =>
-        sum +
-        Number(item.qty || 0),
-      0
-    );
-
-
-  if($("cartCount")){
-
-    $("cartCount").textContent =
-      count;
-
-  }
-
-
-  if($("favCount")){
-
-    $("favCount").textContent =
-      favorites.length;
-
-  }
-
-}
-  /* =========================
-   نمایش سبد خرید
-========================= */
 
 function renderCart(){
 
@@ -1062,7 +2331,7 @@ function renderCart(){
 
       <div class="empty">
 
-        <div style="font-size:42px">
+        <div style="font-size:45px">
           🛍️
         </div>
 
@@ -1088,95 +2357,92 @@ function renderCart(){
     <div class="cart-list">
 
       ${
-        items.map(item => `
+        items.map(
+          item => `
 
-          <div
-            class="cart-item"
-            data-cart-item="${escapeHTML(item.id)}"
-          >
+            <div class="cart-item">
 
-            <div class="cart-item-image">
+              <div class="cart-item-image">
 
-              ${
-                getImageUrl(item)
+                ${
+                  getImageUrl(item)
 
-                ? `
+                  ? `
 
-                  <img
-                    src="${escapeHTML(
-                      getImageUrl(item)
-                    )}"
-                    alt="${escapeHTML(item.name)}"
-                  >
+                    <img
+                      src="${escapeHTML(
+                        getImageUrl(item)
+                      )}"
+                      alt="${escapeHTML(item.name)}"
+                    >
 
-                `
+                  `
 
-                : "🌸"
-
-              }
-
-            </div>
-
-
-            <div class="cart-item-info">
-
-              <strong>
-
-                ${escapeHTML(item.name)}
-
-              </strong>
-
-
-              <span>
-
-                ${money(item.price)}
-
-              </span>
-
-
-              <div class="quantity">
-
-                <button
-                  type="button"
-                  data-qty-plus="${escapeHTML(item.id)}"
-                >
-                  +
-                </button>
-
-
-                <b>
-
-                  ${item.qty}
-
-                </b>
-
-
-                <button
-                  type="button"
-                  data-qty-minus="${escapeHTML(item.id)}"
-                >
-                  −
-                </button>
+                  : "🌸"
+                }
 
               </div>
 
 
-              <button
-                type="button"
-                class="remove-cart"
-                data-remove-cart="${escapeHTML(item.id)}"
-              >
+              <div class="cart-item-info">
 
-                حذف
+                <strong>
 
-              </button>
+                  ${escapeHTML(
+                    item.name
+                  )}
+
+                </strong>
+
+
+                <span>
+
+                  ${money(item.price)}
+
+                </span>
+
+
+                <div class="quantity">
+
+                  <button
+                    type="button"
+                    data-plus="${escapeHTML(item.id)}"
+                  >
+                    +
+                  </button>
+
+
+                  <b>
+                    ${item.qty}
+                  </b>
+
+
+                  <button
+                    type="button"
+                    data-minus="${escapeHTML(item.id)}"
+                  >
+                    −
+                  </button>
+
+                </div>
+
+
+                <button
+                  class="remove-cart"
+                  type="button"
+                  data-remove="${escapeHTML(item.id)}"
+                >
+
+                  حذف
+
+                </button>
+
+              </div>
 
             </div>
 
-          </div>
-
-        `).join("")
-
+          `
+        ).join("")
       }
 
     </div>
@@ -1196,9 +2462,9 @@ function renderCart(){
 
 
     <button
-      type="button"
       class="checkout-btn"
       id="checkoutBtn"
+      type="button"
     >
 
       ادامه و ثبت سفارش
@@ -1210,49 +2476,75 @@ function renderCart(){
 }
 
 
+function updateBadges(){
+
+  const cartCount =
+    cart.reduce(
+      (sum,item) =>
+        sum +
+        Number(item.qty || 0),
+
+      0
+    );
+
+
+  $("cartCount").textContent =
+    cartCount;
+
+
+  $("favCount").textContent =
+    favorites.length;
+
+}
+
+
 /* =========================
-   باز کردن پنل
+   پنل‌ها
 ========================= */
 
 function openPanel(id){
 
-  const el = $(id);
+  const el =
+    $(id);
 
-  if(!el) return;
+  if(el){
 
-  el.classList.add("show");
+    el.classList.add(
+      "show"
+    );
+
+  }
 
 }
 
 
 function closePanel(id){
 
-  const el = $(id);
+  const el =
+    $(id);
 
-  if(!el) return;
+  if(el){
 
-  el.classList.remove("show");
+    el.classList.remove(
+      "show"
+    );
+
+  }
 
 }
 
 
-function closeAllPanels(){
+function closeAll(){
 
   [
     "drawer",
     "modalOverlay",
     "accountOverlay"
-  ].forEach(id => {
 
-    const el = $(id);
-
-    if(el){
-
-      el.classList.remove("show");
-
-    }
-
-  });
+  ].forEach(
+    id =>
+      closePanel(id)
+  );
 
 }
 
@@ -1276,129 +2568,128 @@ function openProduct(id){
   const box =
     $("modalBody");
 
-  if(!box) return;
-
-
-  const favorite =
-    favorites.includes(
-      String(product.id)
-    );
-
 
   const image =
     getImageUrl(product);
 
 
+  const liked =
+    favorites.includes(
+      String(product.id)
+    );
+
+
   box.innerHTML = `
 
-    <div class="product-detail">
+    <div class="detail-image">
 
-      <div class="detail-image">
+      ${
+        image
+
+        ? `
+
+          <img
+            src="${escapeHTML(image)}"
+            alt="${escapeHTML(product.name)}"
+          >
+
+        `
+
+        : `
+
+          <div class="product-placeholder">
+            🌸
+          </div>
+
+        `
+      }
+
+    </div>
+
+
+    <div class="detail-info">
+
+      <div class="product-category">
+
+        ${escapeHTML(
+          product.sub ||
+          product.category
+        )}
+
+      </div>
+
+
+      <h2>
+
+        ${escapeHTML(
+          product.name
+        )}
+
+      </h2>
+
+
+      <div class="detail-price">
+
+        ${money(
+          product.price
+        )}
+
+      </div>
+
+
+      <p>
+
+        ${escapeHTML(
+          product.description
+        )}
+
+      </p>
+
+
+      <div class="detail-stock">
 
         ${
-          image
+          product.stock > 0
 
-          ? `
+          ? "موجودی: " +
+            product.stock +
+            " عدد"
 
-            <img
-              src="${escapeHTML(image)}"
-              alt="${escapeHTML(product.name)}"
-            >
-
-          `
-
-          : `
-
-            <div class="product-placeholder">
-              🌸
-            </div>
-
-          `
+          : "ناموجود"
         }
 
       </div>
 
 
-      <div class="detail-info">
+      <div class="detail-actions">
 
-        <div class="product-category">
+        <button
+          id="detailAdd"
+          type="button"
+          ${
+            product.stock <= 0
+            ? "disabled"
+            : ""
+          }
+        >
 
-          ${escapeHTML(
-            product.sub ||
-            product.category
-          )}
+          افزودن به سبد 🛍️
 
-        </div>
-
-
-        <h2>
-
-          ${escapeHTML(product.name)}
-
-        </h2>
+        </button>
 
 
-        <div class="detail-price">
-
-          ${money(product.price)}
-
-        </div>
-
-
-        <p>
-
-          ${escapeHTML(
-            product.description
-          )}
-
-        </p>
-
-
-        <div class="detail-stock">
+        <button
+          id="detailFav"
+          type="button"
+        >
 
           ${
-            product.stock > 0
-
-            ? `موجودی: ${product.stock} عدد`
-
-            : "ناموجود"
-
+            liked
+            ? "♥ حذف از علاقه‌مندی"
+            : "♡ افزودن به علاقه‌مندی"
           }
 
-        </div>
-
-
-        <div class="detail-actions">
-
-          <button
-            type="button"
-            id="detailAddCart"
-            ${
-              product.stock <= 0
-              ? "disabled"
-              : ""
-            }
-          >
-
-            افزودن به سبد 🛍️
-
-          </button>
-
-
-          <button
-            type="button"
-            id="detailFavorite"
-          >
-
-            ${
-              favorite
-              ? "♥ حذف از علاقه‌مندی"
-              : "♡ افزودن به علاقه‌مندی"
-            }
-
-          </button>
-
-        </div>
+        </button>
 
       </div>
 
@@ -1407,7 +2698,9 @@ function openProduct(id){
   `;
 
 
-  openPanel("modalOverlay");
+  openPanel(
+    "modalOverlay"
+  );
 
 }
 
@@ -1418,7 +2711,8 @@ function openProduct(id){
 
 function toggleFavorite(id){
 
-  id = String(id);
+  id =
+    String(id);
 
 
   const index =
@@ -1453,63 +2747,21 @@ function toggleFavorite(id){
 
   renderProducts();
 
-  renderFavorites();
-
-
-  if(
-    currentProduct &&
-    String(currentProduct.id) === id
-  ){
-
-    openProduct(id);
-
-  }
-
 }
 
-
-function renderFavorites(){
-
-  const box =
-    $("accountBody");
-
-  if(!box) return;
-
-
-  /*
-    این تابع فقط وقتی
-    بخش علاقه‌مندی را باز می‌کنیم
-    محتوای آن را می‌سازد.
-  */
-
-}
-
-
-function getFavoriteProducts(){
-
-  return favorites
-    .map(id =>
-      findProduct(id)
-    )
-    .filter(Boolean);
-
-}
-
-
-/* =========================
-   نمایش علاقه‌مندی‌ها
-========================= */
 
 function showFavorites(){
 
   const box =
     $("accountBody");
 
-  if(!box) return;
-
-
   const items =
-    getFavoriteProducts();
+    favorites
+      .map(
+        id =>
+          findProduct(id)
+      )
+      .filter(Boolean);
 
 
   box.innerHTML = `
@@ -1528,7 +2780,7 @@ function showFavorites(){
 
           <div class="empty">
 
-            هنوز محصولی به علاقه‌مندی‌ها اضافه نکرده‌اید.
+            هنوز محصولی اضافه نکرده‌اید.
 
           </div>
 
@@ -1536,51 +2788,55 @@ function showFavorites(){
 
         : `
 
-          <div class="favorite-list">
+          <div>
 
             ${
-              items.map(item => `
+              items.map(
+                item => `
 
-                <div
-                  class="favorite-row"
-                  data-favorite-product="${escapeHTML(item.id)}"
-                >
+                  <div
+                    class="favorite-row"
+                  >
 
-                  <div>
+                    <div>
 
-                    <strong>
+                      <strong>
 
-                      ${escapeHTML(item.name)}
+                        ${escapeHTML(
+                          item.name
+                        )}
 
-                    </strong>
+                      </strong>
 
-                    <span>
+                      <span>
 
-                      ${money(item.price)}
+                        ${money(
+                          item.price
+                        )}
 
-                    </span>
+                      </span>
+
+                    </div>
+
+
+                    <button
+                      type="button"
+                      data-fav-add="${escapeHTML(item.id)}"
+                    >
+
+                      🛍️
+
+                    </button>
 
                   </div>
 
-
-                  <button
-                    type="button"
-                    data-add-cart="${escapeHTML(item.id)}"
-                  >
-
-                    🛍️
-
-                  </button>
-
-                </div>
-
-              `).join("")
+                `
+              ).join("")
             }
 
           </div>
 
         `
-
       }
 
     </div>
@@ -1588,7 +2844,9 @@ function showFavorites(){
   `;
 
 
-  openPanel("accountOverlay");
+  openPanel(
+    "accountOverlay"
+  );
 
 }
 
@@ -1597,12 +2855,10 @@ function showFavorites(){
    حساب کاربری
 ========================= */
 
-function renderAccount(){
+function showAccount(){
 
   const box =
     $("accountBody");
-
-  if(!box) return;
 
 
   if(!user){
@@ -1615,17 +2871,19 @@ function renderAccount(){
           حساب کاربری 👤
         </h2>
 
-
         <p>
-          برای ذخیره اطلاعات خود، حساب کاربری بسازید.
+          برای ثبت سفارش سریع‌تر،
+          اطلاعات خود را ذخیره کنید.
         </p>
 
 
-        <form id="accountForm">
+        <form
+          class="form"
+          id="accountForm"
+        >
 
           <input
             id="accountName"
-            type="text"
             placeholder="نام و نام خانوادگی"
             required
           >
@@ -1640,26 +2898,18 @@ function renderAccount(){
 
 
           <button type="submit">
-
             ساخت حساب
-
           </button>
 
         </form>
 
 
-        <div style="margin-top:20px">
-
-          <button
-            type="button"
-            id="showFavoritesFromAccount"
-          >
-
-            ❤️ علاقه‌مندی‌ها
-
-          </button>
-
-        </div>
+        <button
+          type="button"
+          id="accountFavButton"
+        >
+          ❤️ علاقه‌مندی‌ها
+        </button>
 
       </div>
 
@@ -1672,19 +2922,14 @@ function renderAccount(){
       <div class="account-section">
 
         <h2>
-          سلام ${escapeHTML(user.name)} 🌸
+          سلام
+          ${escapeHTML(user.name)}
+          🌸
         </h2>
 
-
         <p>
-
-          موبایل:
           ${escapeHTML(user.phone)}
-
         </p>
-
-
-        <hr>
 
 
         <h3>
@@ -1699,7 +2944,7 @@ function renderAccount(){
 
             <div class="empty">
 
-              هنوز سفارشی ثبت نشده است.
+              هنوز سفارشی ثبت نکرده‌اید.
 
             </div>
 
@@ -1707,56 +2952,47 @@ function renderAccount(){
 
           : `
 
-            <div class="orders-list">
-
-              ${
-                orders.map(order => `
+            ${
+              orders.map(
+                order => `
 
                   <div class="order-row">
 
-                    <strong>
+                    <div>
 
-                      سفارش #${escapeHTML(order.id)}
+                      <strong>
+                        سفارش #${escapeHTML(order.id)}
+                      </strong>
 
-                    </strong>
+                      <span>
+                        ${money(order.total)}
+                      </span>
 
-
-                    <span>
-
-                      ${money(order.total)}
-
-                    </span>
-
+                    </div>
 
                   </div>
 
-                `).join("")
-              }
-
-            </div>
+                `
+              ).join("")
+            }
 
           `
-
         }
 
 
         <button
           type="button"
-          id="accountFavoritesBtn"
+          id="accountFavButton"
         >
-
           ❤️ علاقه‌مندی‌ها
-
         </button>
 
 
         <button
           type="button"
-          id="logoutBtn"
+          id="logoutButton"
         >
-
           خروج از حساب
-
         </button>
 
       </div>
@@ -1766,13 +3002,13 @@ function renderAccount(){
   }
 
 
-  openPanel("accountOverlay");
+  openPanel(
+    "accountOverlay"
+  );
 
-}
-
-
-/* =========================
-   فرم ساخت حساب
+  }
+  /* =========================
+   ساخت حساب
 ========================= */
 
 function createAccount(event){
@@ -1781,17 +3017,21 @@ function createAccount(event){
 
 
   const name =
-    $("accountName")?.value.trim();
+    $("accountName")
+      .value
+      .trim();
 
 
   const phone =
-    $("accountPhone")?.value.trim();
+    $("accountPhone")
+      .value
+      .trim();
 
 
   if(!name || !phone){
 
     toast(
-      "نام و شماره موبایل را وارد کنید"
+      "نام و موبایل را وارد کنید"
     );
 
     return;
@@ -1801,8 +3041,9 @@ function createAccount(event){
 
   user = {
 
-    name,
-    phone,
+    name:name,
+
+    phone:phone,
 
     createdAt:
       new Date().toISOString()
@@ -1816,24 +3057,23 @@ function createAccount(event){
     "حساب شما ساخته شد 🌸"
   );
 
-
-  renderAccount();
+  showAccount();
 
 }
-  /* =========================
-   ثبت سفارش
+
+
+/* =========================
+   فرم سفارش
 ========================= */
 
 function openCheckout(){
 
-  const items =
-    getCartItems();
-
-
-  if(items.length === 0){
+  if(
+    getCartItems().length === 0
+  ){
 
     toast(
-      "سبد خرید شما خالی است"
+      "سبد خرید خالی است"
     );
 
     return;
@@ -1844,8 +3084,6 @@ function openCheckout(){
   const box =
     $("accountBody");
 
-  if(!box) return;
-
 
   box.innerHTML = `
 
@@ -1855,12 +3093,18 @@ function openCheckout(){
         ثبت سفارش 🛍️
       </h2>
 
+      <p>
+        اطلاعات ارسال را وارد کنید.
+      </p>
 
-      <form id="checkoutForm">
+
+      <form
+        class="form"
+        id="checkoutForm"
+      >
 
         <input
           id="checkoutName"
-          type="text"
           placeholder="نام و نام خانوادگی"
           value="${
             escapeHTML(
@@ -1890,7 +3134,7 @@ function openCheckout(){
         >
 
           <option value="">
-            استان
+            انتخاب استان
           </option>
 
           <option>تهران</option>
@@ -1903,34 +3147,21 @@ function openCheckout(){
           <option>مازندران</option>
           <option>گیلان</option>
           <option>قم</option>
-          <option>یزد</option>
           <option>کرمان</option>
-          <option>همدان</option>
-          <option>مرکزی</option>
-          <option>بوشهر</option>
-          <option>هرمزگان</option>
-          <option>کرمانشاه</option>
-          <option>کردستان</option>
-          <option>گلستان</option>
-          <option>زنجان</option>
-          <option>قزوین</option>
-          <option>اردبیل</option>
-          <option>لرستان</option>
+          <option>یزد</option>
           <option>خوزستان</option>
-          <option>سیستان و بلوچستان</option>
-          <option>ایلام</option>
-          <option>چهارمحال و بختیاری</option>
-          <option>کهگیلویه و بویراحمد</option>
-          <option>سمنان</option>
-          <option>خراسان شمالی</option>
-          <option>خراسان جنوبی</option>
+          <option>هرمزگان</option>
+          <option>بوشهر</option>
+          <option>گلستان</option>
+          <option>همدان</option>
+          <option>قزوین</option>
+          <option>زنجان</option>
 
         </select>
 
 
         <input
           id="checkoutCity"
-          type="text"
           placeholder="شهر"
           required
         >
@@ -1945,7 +3176,6 @@ function openCheckout(){
 
         <input
           id="checkoutPostal"
-          type="text"
           placeholder="کد پستی"
         >
 
@@ -1956,10 +3186,10 @@ function openCheckout(){
         ></textarea>
 
 
-        <div class="checkout-summary">
+        <div class="cart-total">
 
           <span>
-            مبلغ کالاها
+            مبلغ سفارش
           </span>
 
           <strong>
@@ -1972,9 +3202,7 @@ function openCheckout(){
         <button
           type="submit"
         >
-
           ثبت سفارش
-
         </button>
 
       </form>
@@ -1984,117 +3212,15 @@ function openCheckout(){
   `;
 
 
-  openPanel("accountOverlay");
+  openPanel(
+    "accountOverlay"
+  );
 
 }
 
 
 /* =========================
-   ذخیره سفارش در Supabase
-========================= */
-
-async function saveOrderToSupabase(order){
-
-  if(!db){
-
-    return {
-      success:false,
-      error:"Supabase unavailable"
-    };
-
-  }
-
-
-  try{
-
-    /*
-      فعلاً تلاش می‌کنیم سفارش را
-      در جدول orders ذخیره کنیم.
-
-      اگر ساختار دقیق جدول با این
-      فیلدها متفاوت باشد، سفارش محلی
-      همچنان ذخیره خواهد شد.
-    */
-
-    const payload = {
-
-      customer_name:
-        order.name,
-
-      customer_phone:
-        order.phone,
-
-      province:
-        order.province,
-
-      city:
-        order.city,
-
-      address:
-        order.address,
-
-      postal_code:
-        order.postal,
-
-      note:
-        order.note,
-
-      total:
-        order.total
-
-    };
-
-
-    const result =
-      await db
-        .from("orders")
-        .insert(payload)
-        .select()
-        .single();
-
-
-    if(result.error){
-
-      console.error(
-        "Order Supabase error:",
-        result.error
-      );
-
-
-      return {
-        success:false,
-        error:result.error
-      };
-
-    }
-
-
-    return {
-      success:true,
-      data:result.data
-    };
-
-
-  }catch(error){
-
-    console.error(
-      "Order save error:",
-      error
-    );
-
-
-    return {
-      success:false,
-      error
-    };
-
-  }
-
-}
-
-
-/* =========================
-   ثبت نهایی سفارش
+   ثبت سفارش
 ========================= */
 
 async function submitOrder(event){
@@ -2117,84 +3243,60 @@ async function submitOrder(event){
   }
 
 
-  const name =
-    $("checkoutName")?.value.trim();
-
-
-  const phone =
-    $("checkoutPhone")?.value.trim();
-
-
-  const province =
-    $("checkoutProvince")?.value;
-
-
-  const city =
-    $("checkoutCity")?.value.trim();
-
-
-  const address =
-    $("checkoutAddress")?.value.trim();
-
-
-  const postal =
-    $("checkoutPostal")?.value.trim();
-
-
-  const note =
-    $("checkoutNote")?.value.trim();
-
-
-  if(
-    !name ||
-    !phone ||
-    !province ||
-    !city ||
-    !address
-  ){
-
-    toast(
-      "لطفاً اطلاعات ضروری سفارش را کامل کنید"
-    );
-
-    return;
-
-  }
-
-
   const order = {
 
     id:
       "V" +
       Date.now(),
 
-    name,
+    name:
+      $("checkoutName")
+        .value
+        .trim(),
 
-    phone,
+    phone:
+      $("checkoutPhone")
+        .value
+        .trim(),
 
-    province,
+    province:
+      $("checkoutProvince")
+        .value,
 
-    city,
+    city:
+      $("checkoutCity")
+        .value
+        .trim(),
 
-    address,
+    address:
+      $("checkoutAddress")
+        .value
+        .trim(),
 
-    postal,
+    postal:
+      $("checkoutPostal")
+        .value
+        .trim(),
 
-    note,
+    note:
+      $("checkoutNote")
+        .value
+        .trim(),
 
     items:
+      items.map(
+        item => ({
 
-      items.map(item => ({
+          id:item.id,
 
-        id:item.id,
+          name:item.name,
 
-        name:item.name,
+          price:item.price,
 
-        price:item.price,
+          qty:item.qty
 
-        qty:item.qty
-
-      })),
+        })
+      ),
 
     total:
       cartTotal(),
@@ -2205,45 +3307,94 @@ async function submitOrder(event){
   };
 
 
-  const button =
-    event.target.querySelector(
-      'button[type="submit"]'
+  if(
+    !order.name ||
+    !order.phone ||
+    !order.province ||
+    !order.city ||
+    !order.address
+  ){
+
+    toast(
+      "لطفاً اطلاعات ضروری را کامل کنید"
     );
 
-
-  if(button){
-
-    button.disabled = true;
-
-    button.textContent =
-      "در حال ثبت سفارش...";
+    return;
 
   }
 
 
   /*
-    ابتدا محلی ذخیره می‌کنیم
-    تا سفارش مشتری از بین نرود.
+    ذخیره محلی مطمئن
   */
 
-  orders.unshift(order);
+  orders.unshift(
+    order
+  );
 
   saveOrders();
 
 
   /*
-    ذخیره در Supabase
+    تلاش برای ذخیره در Supabase
   */
 
-  const remote =
-    await saveOrderToSupabase(
-      order
-    );
+  if(db){
+
+    try{
+
+      const result =
+        await db
+          .from("orders")
+          .insert({
+
+            customer_name:
+              order.name,
+
+            customer_phone:
+              order.phone,
+
+            province:
+              order.province,
+
+            city:
+              order.city,
+
+            address:
+              order.address,
+
+            postal_code:
+              order.postal,
+
+            note:
+              order.note,
+
+            total:
+              order.total
+
+          });
 
 
-  /*
-    پاک کردن سبد
-  */
+      if(result.error){
+
+        console.warn(
+          "Supabase order:",
+          result.error
+        );
+
+      }
+
+    }catch(error){
+
+      console.warn(
+        "Order error:",
+        error
+      );
+
+    }
+
+  }
+
 
   cart = [];
 
@@ -2254,82 +3405,31 @@ async function submitOrder(event){
   updateBadges();
 
 
-  if(button){
-
-    button.disabled = false;
-
-    button.textContent =
-      "ثبت سفارش";
-
-  }
-
-
   closePanel(
     "accountOverlay"
   );
 
+  closePanel(
+    "drawer"
+  );
 
-  if(remote.success){
 
-    toast(
-      "سفارش با موفقیت ثبت شد 🌸"
-    );
-
-  }else{
-
-    toast(
-      "سفارش ثبت شد 🌸"
-    );
-
-  }
+  toast(
+    "سفارش شما با موفقیت ثبت شد 🌸"
+  );
 
 
   /*
-    ارسال پیام به تلگرام
-    فعلاً از طریق لینک باز می‌شود.
-    برای ارسال خودکار واقعی باید
-    Telegram Bot + Edge Function
-    اضافه شود.
+    برای مرحله بعد:
+    اتصال خودکار سفارش به تلگرام
+    و درگاه پرداخت اضافه خواهد شد.
   */
 
 }
 
 
 /* =========================
-   نمایش سفارش‌ها
-========================= */
-
-function renderOrders(){
-
-  if(!user){
-
-    return;
-
-  }
-
-
-  renderAccount();
-
-}
-
-
-/* =========================
-   وضعیت فعلی
-========================= */
-
-function refreshEverything(){
-
-  updateBadges();
-
-  renderCategories();
-
-  renderProducts();
-
-  renderCart();
-
-}
-  /* =========================
-   رویدادهای کلیک
+   رویداد کلیک
 ========================= */
 
 document.addEventListener(
@@ -2340,24 +3440,17 @@ document.addEventListener(
       event.target;
 
 
-    /* -------------------------
-       دسته‌بندی
-    ------------------------- */
+    /* دسته‌بندی */
 
-    const categoryButton =
+    const cat =
       target.closest(
         "[data-category]"
       );
 
-
-    if(categoryButton){
+    if(cat){
 
       currentCategory =
-        categoryButton
-          .getAttribute(
-            "data-category"
-          );
-
+        cat.dataset.category;
 
       renderCategories();
 
@@ -2368,22 +3461,17 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       افزودن به سبد
-    ------------------------- */
+    /* افزودن به سبد */
 
-    const addButton =
+    const add =
       target.closest(
         "[data-add-cart]"
       );
 
-
-    if(addButton){
+    if(add){
 
       addToCart(
-        addButton.getAttribute(
-          "data-add-cart"
-        )
+        add.dataset.addCart
       );
 
       return;
@@ -2391,22 +3479,17 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       علاقه‌مندی
-    ------------------------- */
+    /* علاقه‌مندی محصول */
 
-    const favoriteButton =
+    const fav =
       target.closest(
         "[data-favorite]"
       );
 
-
-    if(favoriteButton){
+    if(fav){
 
       toggleFavorite(
-        favoriteButton.getAttribute(
-          "data-favorite"
-        )
+        fav.dataset.favorite
       );
 
       return;
@@ -2414,22 +3497,17 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       افزایش تعداد
-    ------------------------- */
+    /* افزایش */
 
-    const plusButton =
+    const plus =
       target.closest(
-        "[data-qty-plus]"
+        "[data-plus]"
       );
 
-
-    if(plusButton){
+    if(plus){
 
       changeQuantity(
-        plusButton.getAttribute(
-          "data-qty-plus"
-        ),
+        plus.dataset.plus,
         1
       );
 
@@ -2438,22 +3516,17 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       کاهش تعداد
-    ------------------------- */
+    /* کاهش */
 
-    const minusButton =
+    const minus =
       target.closest(
-        "[data-qty-minus]"
+        "[data-minus]"
       );
 
-
-    if(minusButton){
+    if(minus){
 
       changeQuantity(
-        minusButton.getAttribute(
-          "data-qty-minus"
-        ),
+        minus.dataset.minus,
         -1
       );
 
@@ -2462,22 +3535,17 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       حذف از سبد
-    ------------------------- */
+    /* حذف */
 
-    const removeButton =
+    const remove =
       target.closest(
-        "[data-remove-cart]"
+        "[data-remove]"
       );
 
-
-    if(removeButton){
+    if(remove){
 
       removeFromCart(
-        removeButton.getAttribute(
-          "data-remove-cart"
-        )
+        remove.dataset.remove
       );
 
       return;
@@ -2485,27 +3553,38 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       باز کردن محصول
-    ------------------------- */
+    /* افزودن از علاقه‌مندی */
 
-    const productCard =
+    const favAdd =
+      target.closest(
+        "[data-fav-add]"
+      );
+
+    if(favAdd){
+
+      addToCart(
+        favAdd.dataset.favAdd
+      );
+
+      return;
+
+    }
+
+
+    /* کارت محصول */
+
+    const card =
       target.closest(
         ".product-card"
       );
 
-
     if(
-      productCard &&
-      !target.closest(
-        "button"
-      )
+      card &&
+      !target.closest("button")
     ){
 
       openProduct(
-        productCard.getAttribute(
-          "data-product-id"
-        )
+        card.dataset.productId
       );
 
       return;
@@ -2513,72 +3592,11 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       علاقه‌مندی‌های حساب
-    ------------------------- */
+    /* افزودن از جزئیات */
 
     if(
       target.id ===
-      "showFavoritesFromAccount" ||
-
-      target.id ===
-      "accountFavoritesBtn"
-    ){
-
-      showFavorites();
-
-      return;
-
-    }
-
-
-    /* -------------------------
-       خروج
-    ------------------------- */
-
-    if(
-      target.id ===
-      "logoutBtn"
-    ){
-
-      user = null;
-
-      saveUser();
-
-      toast(
-        "از حساب خارج شدید"
-      );
-
-      renderAccount();
-
-      return;
-
-    }
-
-
-    /* -------------------------
-       ثبت سفارش
-    ------------------------- */
-
-    if(
-      target.id ===
-      "checkoutBtn"
-    ){
-
-      openCheckout();
-
-      return;
-
-    }
-
-
-    /* -------------------------
-       افزودن از جزئیات محصول
-    ------------------------- */
-
-    if(
-      target.id ===
-      "detailAddCart"
+      "detailAdd"
     ){
 
       if(currentProduct){
@@ -2594,13 +3612,11 @@ document.addEventListener(
     }
 
 
-    /* -------------------------
-       علاقه‌مندی از جزئیات
-    ------------------------- */
+    /* علاقه‌مندی از جزئیات */
 
     if(
       target.id ===
-      "detailFavorite"
+      "detailFav"
     ){
 
       if(currentProduct){
@@ -2609,7 +3625,61 @@ document.addEventListener(
           currentProduct.id
         );
 
+        openProduct(
+          currentProduct.id
+        );
+
       }
+
+      return;
+
+    }
+
+
+    /* سبد خرید */
+
+    if(
+      target.id ===
+      "checkoutBtn"
+    ){
+
+      openCheckout();
+
+      return;
+
+    }
+
+
+    /* علاقه‌مندی حساب */
+
+    if(
+      target.id ===
+      "accountFavButton"
+    ){
+
+      showFavorites();
+
+      return;
+
+    }
+
+
+    /* خروج */
+
+    if(
+      target.id ===
+      "logoutButton"
+    ){
+
+      user = null;
+
+      saveUser();
+
+      toast(
+        "از حساب خارج شدید"
+      );
+
+      showAccount();
 
       return;
 
@@ -2620,360 +3690,7 @@ document.addEventListener(
 
 
 /* =========================
-   کارت محصول
-========================= */
-
-const productsBox =
-  $("products");
-
-
-if(productsBox){
-
-  productsBox.addEventListener(
-    "click",
-    function(event){
-
-      const favorite =
-        event.target.closest(
-          "[data-favorite]"
-        );
-
-
-      if(favorite){
-
-        event.stopPropagation();
-
-      }
-
-    }
-  );
-
-}
-
-
-/* =========================
-   جستجو
-========================= */
-
-const search =
-  $("search");
-
-
-if(search){
-
-  search.addEventListener(
-    "input",
-    function(){
-
-      searchText =
-        this.value || "";
-
-      renderProducts();
-
-    }
-  );
-
-}
-
-
-/* =========================
-   دکمه حساب کاربری
-========================= */
-
-if($("accountBtn")){
-
-  $("accountBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        renderAccount();
-
-      }
-    );
-
-}
-
-
-/* =========================
-   دکمه علاقه‌مندی
-========================= */
-
-if($("favBtn")){
-
-  $("favBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        showFavorites();
-
-      }
-    );
-
-}
-
-
-/* =========================
-   دکمه سبد
-========================= */
-
-if($("cartBtn")){
-
-  $("cartBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        renderCart();
-
-        openPanel(
-          "drawer"
-        );
-
-      }
-    );
-
-}
-
-
-if($("footerCart")){
-
-  $("footerCart")
-    .addEventListener(
-      "click",
-      function(){
-
-        renderCart();
-
-        openPanel(
-          "drawer"
-        );
-
-      }
-    );
-
-}
-
-
-if($("footerFav")){
-
-  $("footerFav")
-    .addEventListener(
-      "click",
-      function(){
-
-        showFavorites();
-
-      }
-    );
-
-}
-
-
-if($("footerAccount")){
-
-  $("footerAccount")
-    .addEventListener(
-      "click",
-      function(){
-
-        renderAccount();
-
-      }
-    );
-
-}
-
-
-/* =========================
-   دکمه محصولات هیرو
-========================= */
-
-if($("heroProducts")){
-
-  $("heroProducts")
-    .addEventListener(
-      "click",
-      function(){
-
-        const section =
-          $("products");
-
-        if(section){
-
-          section.scrollIntoView({
-            behavior:"smooth"
-          });
-
-        }
-
-      }
-    );
-
-}
-
-
-/* =========================
-   دکمه نظرات
-========================= */
-
-if($("heroReviews")){
-
-  $("heroReviews")
-    .addEventListener(
-      "click",
-      function(){
-
-        const section =
-          document.querySelector(
-            ".reviews"
-          );
-
-        if(section){
-
-          section.scrollIntoView({
-            behavior:"smooth"
-          });
-
-        }else{
-
-          toast(
-            "بخش نظرات در حال آماده‌سازی است 🌸"
-          );
-
-        }
-
-      }
-    );
-
-}
-
-
-/* =========================
-   تماس با فروشنده
-========================= */
-
-if($("contactBtn")){
-
-  $("contactBtn")
-    .addEventListener(
-      "click",
-      function(){
-
-        window.open(
-          "https://t.me/it1tahaBot",
-          "_blank"
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================
-   بستن سبد
-========================= */
-
-if($("drawerClose")){
-
-  $("drawerClose")
-    .addEventListener(
-      "click",
-      function(){
-
-        closePanel(
-          "drawer"
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================
-   بستن جزئیات
-========================= */
-
-if($("modalClose")){
-
-  $("modalClose")
-    .addEventListener(
-      "click",
-      function(){
-
-        closePanel(
-          "modalOverlay"
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================
-   بستن حساب
-========================= */
-
-if($("accountClose")){
-
-  $("accountClose")
-    .addEventListener(
-      "click",
-      function(){
-
-        closePanel(
-          "accountOverlay"
-        );
-
-      }
-    );
-
-}
-
-
-/* =========================
-   کلیک روی خود Overlay
-========================= */
-
-[
-  "drawer",
-  "modalOverlay",
-  "accountOverlay"
-].forEach(id => {
-
-  const overlay =
-    $(id);
-
-  if(!overlay) return;
-
-
-  overlay.addEventListener(
-    "click",
-    function(event){
-
-      if(
-        event.target ===
-        overlay
-      ){
-
-        overlay.classList.remove(
-          "show"
-        );
-
-      }
-
-    }
-  );
-
-});
-
-
-/* =========================
-   فرم حساب و سفارش
+   فرم‌ها
 ========================= */
 
 document.addEventListener(
@@ -2989,8 +3706,6 @@ document.addEventListener(
         event
       );
 
-      return;
-
     }
 
 
@@ -3003,9 +3718,247 @@ document.addEventListener(
         event
       );
 
-      return;
+    }
+
+  }
+);
+  /* =========================
+   جستجو
+========================= */
+
+$("search")
+  .addEventListener(
+    "input",
+    function(){
+
+      searchText =
+        this.value || "";
+
+      renderProducts();
 
     }
+  );
+
+
+/* =========================
+   حساب
+========================= */
+
+$("accountBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      showAccount();
+
+    }
+  );
+
+
+/* =========================
+   علاقه‌مندی
+========================= */
+
+$("favBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      showFavorites();
+
+    }
+  );
+
+
+/* =========================
+   سبد
+========================= */
+
+$("cartBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      renderCart();
+
+      openPanel(
+        "drawer"
+      );
+
+    }
+  );
+
+
+$("footerCart")
+  .addEventListener(
+    "click",
+    function(){
+
+      renderCart();
+
+      openPanel(
+        "drawer"
+      );
+
+    }
+  );
+
+
+/* =========================
+   فوتر علاقه‌مندی
+========================= */
+
+$("footerFav")
+  .addEventListener(
+    "click",
+    function(){
+
+      showFavorites();
+
+    }
+  );
+
+
+/* =========================
+   فوتر حساب
+========================= */
+
+$("footerAccount")
+  .addEventListener(
+    "click",
+    function(){
+
+      showAccount();
+
+    }
+  );
+
+
+/* =========================
+   محصولات هیرو
+========================= */
+
+$("heroProducts")
+  .addEventListener(
+    "click",
+    function(){
+
+      $("products")
+        .scrollIntoView({
+          behavior:"smooth"
+        });
+
+    }
+  );
+
+
+/* =========================
+   نظرات
+========================= */
+
+$("heroReviews")
+  .addEventListener(
+    "click",
+    function(){
+
+      $("reviews")
+        .scrollIntoView({
+          behavior:"smooth"
+        });
+
+    }
+  );
+
+
+/* =========================
+   تماس
+========================= */
+
+$("contactBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      window.open(
+        "https://t.me/it1tahaBot",
+        "_blank"
+      );
+
+    }
+  );
+
+
+/* =========================
+   بستن پنل‌ها
+========================= */
+
+$("drawerClose")
+  .addEventListener(
+    "click",
+    function(){
+
+      closePanel(
+        "drawer"
+      );
+
+    }
+  );
+
+
+$("modalClose")
+  .addEventListener(
+    "click",
+    function(){
+
+      closePanel(
+        "modalOverlay"
+      );
+
+    }
+  );
+
+
+$("accountClose")
+  .addEventListener(
+    "click",
+    function(){
+
+      closePanel(
+        "accountOverlay"
+      );
+
+    }
+  );
+
+
+/* =========================
+   کلیک روی بیرون پنل
+========================= */
+
+[
+  "drawer",
+  "modalOverlay",
+  "accountOverlay"
+
+].forEach(
+  id => {
+
+    $(id)
+      .addEventListener(
+        "click",
+        function(event){
+
+          if(
+            event.target ===
+            this
+          ){
+
+            closePanel(id);
+
+          }
+
+        }
+      );
 
   }
 );
@@ -3024,28 +3977,7 @@ document.addEventListener(
       "Escape"
     ){
 
-      closeAllPanels();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   وقتی کاربر برمی‌گردد
-========================= */
-
-document.addEventListener(
-  "visibilitychange",
-  function(){
-
-    if(
-      document.visibilityState ===
-      "visible"
-    ){
-
-      loadProducts();
+      closeAll();
 
     }
 
@@ -3081,10 +4013,12 @@ try{
 
 
 /* =========================
-   اجرای اولیه
+   شروع فروشگاه
 ========================= */
 
-updateBadges();
+products = [
+  ...DEFAULT_PRODUCTS
+];
 
 renderCategories();
 
@@ -3092,17 +4026,19 @@ renderProducts();
 
 renderCart();
 
+updateBadges();
+
 
 /*
-  مهم:
-  این تابع بعد از نمایش اولیه اجرا می‌شود
-  و اطلاعات واقعی Supabase را جایگزین
-  محصولات پیش‌فرض می‌کند.
+  حالا اطلاعات واقعی Supabase
+  خوانده می‌شود.
 */
 
 loadProducts();
 
 
 </script>
+
 </body>
+
 </html>
