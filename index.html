@@ -1,1062 +1,50 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#ff5c9d">
-<title>VELORA STORE</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-
-body{
-  margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#fff8fb;
-  color:#342530;
-}
-
-button,input,select,textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-:root{
-  --pink:#ff5b9d;
-  --pink2:#ff8cbc;
-  --light:#fff0f6;
-  --border:#f0dce6;
-  --text:#342530;
-  --muted:#8b7882;
-  --white:#fff;
-  --shadow:0 10px 35px rgba(190,70,120,.10);
-}
-
-.header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:rgba(255,255,255,.94);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid #f4e3ea;
-}
-
-.header-inner{
-  max-width:1150px;
-  margin:auto;
-  padding:13px 16px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo{
-  color:var(--pink);
-  font-weight:900;
-  font-size:23px;
-  white-space:nowrap;
-}
-
-.logo small{
-  display:block;
-  color:#a38d97;
-  font-size:9px;
-  letter-spacing:2px;
-  margin-top:2px;
-}
-
-.search{
-  flex:1;
-  position:relative;
-}
-
-.search input{
-  width:100%;
-  border:1px solid var(--border);
-  background:#fffafd;
-  border-radius:14px;
-  padding:12px 15px;
-  outline:none;
-}
-
-.search input:focus{
-  border-color:var(--pink2);
-  box-shadow:0 0 0 3px #ff5b9d18;
-}
-
-.header-actions{
-  display:flex;
-  gap:7px;
-}
-
-.icon-btn{
-  border:0;
-  background:var(--light);
-  color:#c72d6b;
-  width:43px;
-  height:43px;
-  border-radius:13px;
-  position:relative;
-}
-
-.badge{
-  position:absolute;
-  top:-5px;
-  left:-4px;
-  min-width:19px;
-  height:19px;
-  padding:0 5px;
-  border-radius:20px;
-  background:#e83d7e;
-  color:white;
-  font-size:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.hero{
-  max-width:1150px;
-  margin:18px auto;
-  padding:34px 25px;
-  border-radius:28px;
-  background:linear-gradient(135deg,#ffe5f0,#fff);
-  box-shadow:var(--shadow);
-  position:relative;
-  overflow:hidden;
-}
-
-.hero:after{
-  content:"";
-  position:absolute;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  background:#ff8cbc33;
-  left:-55px;
-  bottom:-80px;
-}
-
-.hero h1{
-  margin:0 0 10px;
-  font-size:32px;
-  color:#c92e6c;
-}
-
-.hero p{
-  margin:0;
-  color:#765f69;
-  line-height:2;
-  max-width:600px;
-}
-
-.hero-btn{
-  margin-top:18px;
-  border:0;
-  background:var(--pink);
-  color:white;
-  padding:13px 22px;
-  border-radius:14px;
-  font-weight:bold;
-}
-
-.container{
-  max-width:1150px;
-  margin:auto;
-  padding:0 16px 35px;
-}
-
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin:25px 0 14px;
-}
-
-.section-title h2{
-  margin:0;
-  font-size:20px;
-}
-
-.section-title span{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.categories{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding-bottom:4px;
-}
-
-.category{
-  flex:0 0 auto;
-  border:1px solid var(--border);
-  background:white;
-  color:#8c4e69;
-  padding:10px 16px;
-  border-radius:30px;
-}
-
-.category.active{
-  background:var(--pink);
-  color:white;
-  border-color:var(--pink);
-}
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-}
-
-.product-card{
-  background:white;
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:var(--shadow);
-  border:1px solid #f6e8ee;
-  transition:.2s;
-}
-
-.product-card:hover{
-  transform:translateY(-2px);
-}
-
-.product-image-wrap{
-  aspect-ratio:1/1;
-  background:#fff0f6;
-  position:relative;
-  overflow:hidden;
-}
-
-.product-image{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.favorite{
-  position:absolute;
-  top:9px;
-  left:9px;
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:50%;
-  background:#ffffffdd;
-  color:#d64d80;
-  font-size:18px;
-}
-
-.favorite.active{
-  background:#ff5b9d;
-  color:white;
-}
-
-.product-body{
-  padding:13px;
-}
-
-.product-name{
-  font-weight:bold;
-  line-height:1.7;
-  min-height:45px;
-}
-
-.product-desc{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.8;
-  height:40px;
-  overflow:hidden;
-}
-
-.product-bottom{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:7px;
-  margin-top:10px;
-}
-
-.price{
-  color:#d42d6e;
-  font-weight:900;
-  font-size:14px;
-}
-
-.stock{
-  color:#8b7882;
-  font-size:10px;
-}
-
-.add-btn{
-  width:100%;
-  border:0;
-  background:var(--pink);
-  color:white;
-  border-radius:12px;
-  padding:11px;
-  margin-top:10px;
-  font-weight:bold;
-}
-
-.out{
-  background:#ddd;
-  color:#777;
-}
-
-.loading,
-.error-box,
-.empty{
-  grid-column:1/-1;
-  background:white;
-  padding:35px;
-  text-align:center;
-  border-radius:20px;
-  color:var(--muted);
-}
-
-.error-box{
-  color:#b52b4c;
-  background:#fff0f3;
-}
-
-.footer{
-  background:#fff;
-  border-top:1px solid #f2dfe8;
-  padding:30px 16px;
-  text-align:center;
-  color:var(--muted);
-  line-height:2;
-}
-
-.overlay{
-  position:fixed;
-  inset:0;
-  background:#0008;
-  z-index:100;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:14px;
-}
-
-.modal{
-  width:100%;
-  max-width:560px;
-  max-height:92vh;
-  overflow:auto;
-  background:white;
-  border-radius:24px;
-  padding:20px;
-}
-
-.modal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.close{
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:50%;
-  background:#ffe7f0;
-  color:#d02d6c;
-  font-size:22px;
-}
-
-.detail-image{
-  width:100%;
-  max-height:330px;
-  object-fit:cover;
-  border-radius:18px;
-  background:#fff0f6;
-}
-
-.detail-price{
-  color:#d42d6e;
-  font-weight:900;
-  font-size:22px;
-  margin:12px 0;
-}
-
-.detail-desc{
-  color:#76636d;
-  line-height:2;
-}
-
-.primary{
-  width:100%;
-  border:0;
-  border-radius:13px;
-  background:var(--pink);
-  color:white;
-  padding:13px;
-  font-weight:bold;
-  margin-top:12px;
-}
-
-.cart-list{
-  display:grid;
-  gap:10px;
-}
-
-.cart-item{
-  display:grid;
-  grid-template-columns:65px 1fr;
-  gap:10px;
-  border-bottom:1px solid #f1e3e9;
-  padding-bottom:12px;
-}
-
-.cart-item img{
-  width:65px;
-  height:65px;
-  object-fit:cover;
-  border-radius:12px;
-}
-
-.cart-name{
-  font-weight:bold;
-  font-size:13px;
-}
-
-.qty{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-top:8px;
-}
-
-.qty button{
-  border:0;
-  width:30px;
-  height:30px;
-  border-radius:9px;
-  background:#ffe8f1;
-  color:#c72d6b;
-}
-
-.remove{
-  border:0;
-  background:none;
-  color:#d83255;
-  font-size:11px;
-}
-
-.total{
-  display:flex;
-  justify-content:space-between;
-  margin-top:18px;
-  padding-top:14px;
-  border-top:1px solid #eadce2;
-  font-weight:bold;
-}
-
-.form{
-  display:grid;
-  gap:10px;
-}
-
-.form label{
-  font-size:12px;
-  font-weight:bold;
-}
-
-.form input,
-.form textarea,
-.form select{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  outline:none;
-  background:#fffafd;
-}
-
-.form textarea{
-  min-height:85px;
-  resize:vertical;
-}
-
-.toast{
-  position:fixed;
-  bottom:20px;
-  right:50%;
-  transform:translateX(50%);
-  z-index:300;
-  background:#342530;
-  color:white;
-  padding:12px 18px;
-  border-radius:13px;
-  font-size:12px;
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-}
-
-.toast.show{
-  opacity:1;
-}
-
-.account-box{
-  text-align:center;
-}
-
-.order{
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:12px;
-  margin-bottom:10px;
-}
-
-.order strong{
-  color:#d32f6d;
-}
-
-@media(max-width:850px){
-  .products{
-    grid-template-columns:repeat(3,1fr);
-  }
-}
-
-@media(max-width:600px){
-
-  .header-inner{
-    flex-wrap:wrap;
-  }
-
-  .logo{
-    width:100%;
-  }
-
-  .search{
-    order:3;
-    width:100%;
-    flex-basis:100%;
-  }
-
-  .products{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
-
-  .hero{
-    margin:10px 0;
-    border-radius:20px;
-    padding:25px 18px;
-  }
-
-  .hero h1{
-    font-size:25px;
-  }
-
-}
-
-</style>
-</head>
-
-<body>
-
-<header class="header">
-
-  <div class="header-inner">
-
-    <div class="logo">
-      VELORA
-      <small>STORE</small>
-    </div>
-
-    <div class="search">
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="جستجوی محصول..."
-      >
-    </div>
-
-    <div class="header-actions">
-
-      <button
-        id="accountBtn"
-        class="icon-btn"
-        type="button"
-      >
-        👤
-      </button>
-
-      <button
-        id="favoriteBtn"
-        class="icon-btn"
-        type="button"
-      >
-        ♡
-        <span id="favoriteCount" class="badge">۰</span>
-      </button>
-
-      <button
-        id="cartBtn"
-        class="icon-btn"
-        type="button"
-      >
-        🛒
-        <span id="cartCount" class="badge">۰</span>
-      </button>
-
-    </div>
-
-  </div>
-
-</header>
-
-
-<section class="hero">
-
-  <div class="container">
-
-    <h1>
-      VELORA STORE 🌸
-    </h1>
-
-    <p>
-      فروشگاه آنلاین اکسسوری، تزئینات و لوازم کاربردی
-      با انتخاب‌های خاص و دوست‌داشتنی.
-    </p>
-
-    <button
-      id="shopBtn"
-      class="hero-btn"
-      type="button"
-    >
-      مشاهده محصولات
-    </button>
-
-  </div>
-
-</section>
-
-
-<main class="container">
-
-  <div class="section-title">
-
-    <h2>
-      دسته‌بندی‌ها
-    </h2>
-
-    <span id="productStatus">
-      در حال دریافت...
-    </span>
-
-  </div>
-
-  <div
-    id="categories"
-    class="categories"
-  ></div>
-
-
-  <div
-    id="products"
-    class="products"
-  >
-
-    <div class="loading">
-      در حال آماده‌سازی فروشگاه...
-    </div>
-
-  </div>
-
-</main>
-
-
-<footer class="footer">
-
-  <strong>
-    VELORA STORE 🌸
-  </strong>
-
-  <br>
-
-  خرید آسان، سریع و دوست‌داشتنی
-
-  <br>
-
-  <button
-    id="contactBtn"
-    class="hero-btn"
-    type="button"
-  >
-    تماس با فروشنده
-  </button>
-
-</footer>
-
-
-<div
-  id="productOverlay"
-  class="overlay hidden"
->
-
-  <div class="modal">
-
-    <div class="modal-head">
-
-      <h2 id="detailName">
-        محصول
-      </h2>
-
-      <button
-        id="closeProduct"
-        class="close"
-        type="button"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <img
-      id="detailImage"
-      class="detail-image"
-      src=""
-      alt=""
-    >
-
-    <div
-      id="detailPrice"
-      class="detail-price"
-    ></div>
-
-    <div
-      id="detailStock"
-      class="stock"
-    ></div>
-
-    <p
-      id="detailDescription"
-      class="detail-desc"
-    ></p>
-
-    <button
-      id="detailAdd"
-      class="primary"
-      type="button"
-    >
-      افزودن به سبد خرید
-    </button>
-
-    <button
-      id="detailFavorite"
-      class="primary"
-      type="button"
-    >
-      ♡ افزودن به علاقه‌مندی
-    </button>
-
-  </div>
-
-</div>
-
-
-<div
-  id="cartOverlay"
-  class="overlay hidden"
->
-
-  <div class="modal">
-
-    <div class="modal-head">
-
-      <h2>
-        سبد خرید 🛒
-      </h2>
-
-      <button
-        id="closeCart"
-        class="close"
-        type="button"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div
-      id="cartList"
-      class="cart-list"
-    ></div>
-
-    <div class="total">
-
-      <span>
-        مجموع
-      </span>
-
-      <strong id="cartTotal">
-        ۰ تومان
-      </strong>
-
-    </div>
-
-    <button
-      id="checkoutBtn"
-      class="primary"
-      type="button"
-    >
-      ادامه برای ثبت سفارش
-    </button>
-
-  </div>
-
-</div>
-
-
-<div
-  id="accountOverlay"
-  class="overlay hidden"
->
-
-  <div class="modal">
-
-    <div class="modal-head">
-
-      <h2>
-        حساب کاربری 👤
-      </h2>
-
-      <button
-        id="closeAccount"
-        class="close"
-        type="button"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div
-      id="accountContent"
-      class="account-box"
-    ></div>
-
-  </div>
-
-</div>
-
-
-<div
-  id="checkoutOverlay"
-  class="overlay hidden"
->
-
-  <div class="modal">
-
-    <div class="modal-head">
-
-      <h2>
-        ثبت سفارش 📦
-      </h2>
-
-      <button
-        id="closeCheckout"
-        class="close"
-        type="button"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <form
-      id="checkoutForm"
-      class="form"
-    >
-
-      <label>
-        نام و نام خانوادگی
-      </label>
-
-      <input
-        id="customerName"
-        required
-      >
-
-      <label>
-        شماره موبایل
-      </label>
-
-      <input
-        id="customerPhone"
-        type="tel"
-        required
-      >
-
-      <label>
-        استان
-      </label>
-
-      <input
-        id="province"
-        required
-      >
-
-      <label>
-        شهر
-      </label>
-
-      <input
-        id="city"
-        required
-      >
-
-      <label>
-        آدرس کامل
-      </label>
-
-      <textarea
-        id="address"
-        required
-      ></textarea>
-
-      <label>
-        کد پستی
-      </label>
-
-      <input
-        id="postalCode"
-      >
-
-      <label>
-        توضیحات سفارش
-      </label>
-
-      <textarea
-        id="orderNote"
-      ></textarea>
-
-      <button
-        class="primary"
-        type="submit"
-      >
-        ثبت سفارش
-      </button>
-
-    </form>
-
-  </div>
-
-</div>
-
-
-<div
-  id="favoriteOverlay"
-  class="overlay hidden"
->
-
-  <div class="modal">
-
-    <div class="modal-head">
-
-      <h2>
-        علاقه‌مندی‌ها ❤️
-      </h2>
-
-      <button
-        id="closeFavorite"
-        class="close"
-        type="button"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div
-      id="favoriteList"
-      class="cart-list"
-    ></div>
-
-  </div>
-
-</div>
-
-
-<div
-  id="toast"
-  class="toast"
-></div>
 <script>
 
 const SUPABASE_URL =
-  "https://wyqxeoscfaypyghrtumf.supabase.co";
+"https://wyqxeoscfaypyghrtumf.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_rsIfojM5qx8_vlE82eHL0w_jzymrVX4";
+const SUPABASE_KEY =
+"sb_publishable_rsIfojM5qx8_vlE82EHL0w_jzymrVX4";
 
-const { createClient } = supabase;
+let db = null;
 
-const db = createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+try{
 
+  if(window.supabase){
 
-let products = [];
-let filteredProducts = [];
+    db =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
 
-let currentCategory = "همه";
-let searchText = "";
-let currentProduct = null;
+  }
 
+}catch(error){
 
-let cart =
-  JSON.parse(
-    localStorage.getItem("velora_cart") || "[]"
+  console.error(
+    "Supabase init error:",
+    error
   );
 
-let favorites =
-  JSON.parse(
-    localStorage.getItem("velora_favorites") || "[]"
-  );
-
-let user =
-  JSON.parse(
-    localStorage.getItem("velora_user") || "null"
-  );
-
-let orders =
-  JSON.parse(
-    localStorage.getItem("velora_orders") || "[]"
-  );
+}
 
 
-const $ = id =>
-  document.getElementById(id);
+/* =========================
+   ابزارهای عمومی
+========================= */
+
+function $(id){
+
+  return document.getElementById(id);
+
+}
 
 
 function money(value){
 
   return Number(value || 0)
-    .toLocaleString("fa-IR") +
-    " تومان";
+    .toLocaleString("fa-IR") + " تومان";
 
 }
 
@@ -1077,19 +65,250 @@ function toast(message){
 
   const el = $("toast");
 
+  if(!el) return;
+
   el.textContent = message;
 
   el.classList.add("show");
 
-  clearTimeout(window.__toast);
+  clearTimeout(window.__toastTimer);
 
-  window.__toast =
-    setTimeout(
-      () => el.classList.remove("show"),
-      2200
-    );
+  window.__toastTimer =
+    setTimeout(() => {
+
+      el.classList.remove("show");
+
+    },2200);
 
 }
+
+
+/* =========================
+   آدرس عکس
+========================= */
+
+function getImageUrl(product){
+
+  const image =
+    product?.image_url ||
+    product?.image ||
+    "";
+
+  if(!image){
+
+    return "";
+
+  }
+
+  if(
+    image.startsWith("http://") ||
+    image.startsWith("https://") ||
+    image.startsWith("data:")
+  ){
+
+    return image;
+
+  }
+
+  return (
+    "https://tj468633-hash.github.io/Taha-mini-app/" +
+    image.replace(/^\/+/,"")
+  );
+
+}
+
+
+/* =========================
+   محصولات پیش فرض
+========================= */
+
+const DEFAULT_PRODUCTS = [
+
+  {
+    id:"1",
+    name:"گل‌سر پاپیونی توری",
+    price:290000,
+    stock:13,
+    category:"اکسسوری",
+    sub:"گیر سر",
+    description:
+      "گل‌سر پاپیونی ظریف با تور گل‌دار و طراحی خاص؛ مناسب استفاده روزمره، مهمانی و هدیه.",
+    image_url:"product1.jpg"
+  },
+
+  {
+    id:"2",
+    name:"دستبند ظریف صورتی",
+    price:180000,
+    stock:8,
+    category:"اکسسوری",
+    sub:"دستبند",
+    description:
+      "دستبند ظریف و دخترانه مناسب استفاده روزمره و هدیه.",
+    image_url:""
+  },
+
+  {
+    id:"3",
+    name:"دستبند مرواریدی",
+    price:220000,
+    stock:6,
+    category:"اکسسوری",
+    sub:"دستبند",
+    description:
+      "دستبند مرواریدی شیک با طراحی ظریف.",
+    image_url:""
+  },
+
+  {
+    id:"4",
+    name:"گیر سر پاپیونی",
+    price:240000,
+    stock:10,
+    category:"اکسسوری",
+    sub:"گیر سر",
+    description:
+      "گیر سر پاپیونی زیبا و مناسب استایل روزمره.",
+    image_url:""
+  },
+
+  {
+    id:"5",
+    name:"کش موی ساتن",
+    price:120000,
+    stock:15,
+    category:"اکسسوری",
+    sub:"کش مو",
+    description:
+      "کش موی ساتن نرم و زیبا.",
+    image_url:""
+  },
+
+  {
+    id:"6",
+    name:"کش موی پاپیونی",
+    price:140000,
+    stock:12,
+    category:"اکسسوری",
+    sub:"کش مو",
+    description:
+      "کش موی دخترانه با طراحی پاپیونی.",
+    image_url:""
+  },
+
+  {
+    id:"7",
+    name:"تزئین دکوری گل",
+    price:320000,
+    stock:5,
+    category:"تزئینات",
+    sub:"",
+    description:
+      "تزئین دکوری زیبا برای اتاق و میز.",
+    image_url:""
+  },
+
+  {
+    id:"8",
+    name:"شمع دکوری",
+    price:260000,
+    stock:7,
+    category:"تزئینات",
+    sub:"",
+    description:
+      "شمع دکوری مناسب فضای اتاق و هدیه.",
+    image_url:""
+  },
+
+  {
+    id:"9",
+    name:"ظرف نگهدارنده آشپزخانه",
+    price:290000,
+    stock:9,
+    category:"آشپزخانه",
+    sub:"",
+    description:
+      "ظرف کاربردی و زیبا برای آشپزخانه.",
+    image_url:""
+  },
+
+  {
+    id:"10",
+    name:"لیوان فانتزی",
+    price:210000,
+    stock:11,
+    category:"آشپزخانه",
+    sub:"",
+    description:
+      "لیوان فانتزی مناسب استفاده روزمره.",
+    image_url:""
+  },
+
+  {
+    id:"11",
+    name:"جا قاشقی رومیزی",
+    price:190000,
+    stock:6,
+    category:"آشپزخانه",
+    sub:"",
+    description:
+      "جا قاشقی کاربردی و زیبا.",
+    image_url:""
+  },
+
+  {
+    id:"12",
+    name:"اکسسوری دکوری کوچک",
+    price:170000,
+    stock:14,
+    category:"تزئینات",
+    sub:"",
+    description:
+      "اکسسوری دکوری کوچک برای زیبایی فضای خانه.",
+    image_url:""
+  }
+
+];
+
+
+/* =========================
+   وضعیت فروشگاه
+========================= */
+
+let products = [];
+
+let filteredProducts = [];
+
+let currentCategory = "همه";
+
+let searchText = "";
+
+let currentProduct = null;
+
+
+/* =========================
+   LocalStorage
+========================= */
+
+let cart =
+  JSON.parse(
+    localStorage.getItem("velora_cart") || "[]"
+  );
+
+let favorites =
+  JSON.parse(
+    localStorage.getItem("velora_favorites") || "[]"
+  );
+
+let orders =
+  JSON.parse(
+    localStorage.getItem("velora_orders") || "[]"
+  );
+
+let user =
+  JSON.parse(
+    localStorage.getItem("velora_user") || "null"
+  );
 
 
 function saveCart(){
@@ -1112,16 +331,6 @@ function saveFavorites(){
 }
 
 
-function saveUser(){
-
-  localStorage.setItem(
-    "velora_user",
-    JSON.stringify(user)
-  );
-
-}
-
-
 function saveOrders(){
 
   localStorage.setItem(
@@ -1132,70 +341,53 @@ function saveOrders(){
 }
 
 
-function getImageUrl(product){
+function saveUser(){
 
-  const image =
-    product?.image_url || "";
-
-  if(!image){
-
-    return "https://placehold.co/600x600/fff0f6/d42d6e?text=VELORA";
-
-  }
-
-
-  if(
-    image.startsWith("http://") ||
-    image.startsWith("https://") ||
-    image.startsWith("data:")
-  ){
-
-    return image;
-
-  }
-
-
-  return (
-    "https://tj468633-hash.github.io/" +
-    "Taha-mini-app/" +
-    image.replace(/^\.?\//,"")
+  localStorage.setItem(
+    "velora_user",
+    JSON.stringify(user)
   );
 
 }
 
 
-function normalizeProduct(product){
+/* =========================
+   نرمال‌سازی محصول
+========================= */
+
+function normalizeProduct(item){
 
   return {
 
-    ...product,
+    ...item,
 
-    id:String(product.id),
+    id:String(item.id),
 
     name:
-      product.name ||
+      item.name ||
       "محصول VELORA",
 
     price:
-      Number(product.price || 0),
+      Number(item.price || 0),
 
     stock:
-      Number(product.stock || 0),
+      Number(item.stock || 0),
 
     category:
-      product.category ||
+      item.category ||
       "اکسسوری",
 
-    subcategory:
-      product.subcategory ||
+    sub:
+      item.sub ||
+      item.subcategory ||
       "",
 
     description:
-      product.description ||
-      "",
+      item.description ||
+      "محصول زیبا از فروشگاه VELORA STORE",
 
     image_url:
-      product.image_url ||
+      item.image_url ||
       ""
 
   };
@@ -1203,458 +395,449 @@ function normalizeProduct(product){
 }
 
 
-/*
-========================================
-دریافت محصولات واقعی از Supabase
-========================================
-
-نکته مهم:
-
-اینجا دیگر DEFAULT_PRODUCTS نداریم.
-
-اطلاعاتی که در پنل مدیریت تغییر می‌دهی،
-مستقیماً از جدول products خوانده می‌شود.
-
-پس اگر مثلاً اسم محصول را در پنل
-از «گل‌سر پاپیونی توری» به اسم دیگری
-تغییر بدهی، بعد از رفرش سایت همان
-اسم جدید نمایش داده خواهد شد.
-*/
-
+/* =========================
+   بارگذاری محصولات از Supabase
+========================= */
 
 async function loadProducts(){
 
-  $("productStatus").textContent =
-    "در حال دریافت...";
+  console.log(
+    "VELORA: loading products..."
+  );
 
 
-  $("products").innerHTML =
-    `
-      <div class="loading">
-        در حال دریافت محصولات از فروشگاه...
-      </div>
-    `;
+  /* اول نسخه محلی را نمایش بده */
 
-
-  const result =
-    await db
-      .from("products")
-      .select("*")
-      .order(
-        "created_at",
-        {
-          ascending:true
-        }
-      );
-
-
-  if(result.error){
-
-    console.error(
-      "Supabase products error:",
-      result.error
-    );
-
-
-    $("productStatus").textContent =
-      "خطا";
-
-
-    $("products").innerHTML =
-      `
-        <div class="error-box">
-
-          دریافت محصولات از پایگاه داده انجام نشد.
-
-          <br><br>
-
-          ${escapeHTML(
-            result.error.message
-          )}
-
-        </div>
-      `;
-
-
-    return;
-
-  }
-
-
-  /*
-    این خط خیلی مهم است.
-
-    اطلاعات قبلی products کاملاً
-    با اطلاعات فعلی دیتابیس جایگزین
-    می‌شود.
-
-    یعنی دیگر اطلاعات قدیمی یا
-    DEFAULT_PRODUCTS روی اطلاعات
-    پنل مدیریت غلبه نمی‌کند.
-  */
-
-  products =
-    (result.data || [])
-      .map(normalizeProduct);
-
-
-  if(!products.length){
-
-    $("productStatus").textContent =
-      "۰ محصول";
-
-
-    $("products").innerHTML =
-      `
-        <div class="empty">
-
-          هنوز محصولی در فروشگاه ثبت نشده است.
-
-        </div>
-      `;
-
-
-    renderCategories();
-
-    updateBadges();
-
-    return;
-
-  }
-
-
-  $("productStatus").textContent =
-    products.length.toLocaleString("fa-IR") +
-    " محصول";
+  products = [
+    ...DEFAULT_PRODUCTS
+  ];
 
 
   renderCategories();
 
-  applyFilters();
+  renderProducts();
 
   renderCart();
 
-  renderFavorites();
+  updateBadges();
+
+
+  if(!db){
+
+    if($("status")){
+
+      $("status").textContent =
+        "فروشگاه آماده است";
+
+    }
+
+    return;
+
+  }
+
+
+  try{
+
+    const response =
+      await db
+        .from("products")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:true
+          }
+        );
+
+
+    if(response.error){
+
+      console.error(
+        "Supabase products error:",
+        response.error
+      );
+
+
+      if($("status")){
+
+        $("status").textContent =
+          "فروشگاه آماده است";
+
+      }
+
+      return;
+
+    }
+
+
+    if(
+      Array.isArray(response.data) &&
+      response.data.length > 0
+    ){
+
+      products =
+        response.data.map(
+          normalizeProduct
+        );
+
+
+      if($("status")){
+
+        $("status").textContent =
+          products.length +
+          " محصول";
+
+      }
+
+    }else{
+
+      products = [
+        ...DEFAULT_PRODUCTS
+      ];
+
+
+      if($("status")){
+
+        $("status").textContent =
+          "فروشگاه آماده است";
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "VELORA Supabase error:",
+      error
+    );
+
+
+    products = [
+      ...DEFAULT_PRODUCTS
+    ];
+
+
+    if($("status")){
+
+      $("status").textContent =
+        "فروشگاه آماده است";
+
+    }
+
+  }
+
+
+  renderCategories();
+
+  renderProducts();
+
+  renderCart();
 
   updateBadges();
 
 }
 
 
+/* =========================
+   دسته‌بندی‌ها
+========================= */
+
 function renderCategories(){
+
+  const box = $("cats");
+
+  if(!box) return;
+
 
   const categories = [
 
     "همه",
 
-    ...new Set(
+    "اکسسوری",
 
-      products
-        .map(
-          product =>
-            product.category
-        )
-        .filter(Boolean)
+    "تزئینات",
 
-    )
+    "آشپزخانه"
 
   ];
 
 
-  $("categories").innerHTML =
+  box.innerHTML =
+    categories.map(
+      category => `
 
-    categories
-      .map(
-        category => `
+        <button
+          class="cat-btn ${
+            currentCategory === category
+              ? "active"
+              : ""
+          }"
+          data-category="${escapeHTML(category)}"
+        >
 
-          <button
+          ${escapeHTML(category)}
 
-            class="category ${
-              currentCategory === category
-                ? "active"
-                : ""
-            }"
+        </button>
 
-            type="button"
-
-            data-category="${escapeHTML(
-              category
-            )}"
-
-          >
-
-            ${escapeHTML(category)}
-
-          </button>
-
-        `
-      )
-      .join("");
+      `
+    ).join("");
 
 }
 
+
+/* =========================
+   فیلتر محصولات
+========================= */
 
 function applyFilters(){
 
+  const q =
+    searchText
+      .trim()
+      .toLowerCase();
+
+
   filteredProducts =
-    products.filter(
-      product => {
+    products.filter(product => {
 
-        const categoryOK =
-          currentCategory === "همه" ||
-          product.category ===
-            currentCategory;
+      const categoryMatch =
+        currentCategory === "همه" ||
+        product.category === currentCategory;
 
 
-        const q =
-          searchText
-            .trim()
-            .toLowerCase();
+      const searchMatch =
+        !q ||
+        String(product.name)
+          .toLowerCase()
+          .includes(q) ||
+
+        String(product.description)
+          .toLowerCase()
+          .includes(q) ||
+
+        String(product.category)
+          .toLowerCase()
+          .includes(q) ||
+
+        String(product.sub)
+          .toLowerCase()
+          .includes(q);
 
 
-        const text =
-          (
-            product.name +
-            " " +
-            product.description +
-            " " +
-            product.category +
-            " " +
-            product.subcategory
-          )
-          .toLowerCase();
+      return (
+        categoryMatch &&
+        searchMatch
+      );
 
-
-        const searchOK =
-          !q ||
-          text.includes(q);
-
-
-        return (
-          categoryOK &&
-          searchOK
-        );
-
-      }
-    );
-
-
-  renderProducts();
+    });
 
 }
 
 
+/* =========================
+   نمایش محصولات
+========================= */
+
 function renderProducts(){
 
-  if(!filteredProducts.length){
+  const box = $("products");
 
-    $("products").innerHTML =
-      `
-        <div class="empty">
+  if(!box) return;
 
-          محصولی مطابق جستجو پیدا نشد.
 
-        </div>
-      `;
+  applyFilters();
+
+
+  if(filteredProducts.length === 0){
+
+    box.innerHTML = `
+
+      <div class="empty">
+
+        محصولی پیدا نشد 🌸
+
+      </div>
+
+    `;
 
     return;
 
   }
 
 
-  $("products").innerHTML =
-
+  box.innerHTML =
     filteredProducts
-      .map(
-        product => {
+      .map(product => {
 
-          const liked =
-            favorites.includes(
-              String(product.id)
-            );
+        const image =
+          getImageUrl(product);
 
 
-          const soldOut =
-            product.stock <= 0;
+        const favorite =
+          favorites.includes(
+            String(product.id)
+          );
 
 
-          return `
+        return `
 
-            <article
+          <article
+            class="product-card"
+            data-product-id="${escapeHTML(product.id)}"
+          >
 
-              class="product-card"
+            <div class="product-image-wrap">
 
-              data-product="${escapeHTML(
-                product.id
-              )}"
+              ${
+                image
 
-            >
+                ? `
 
-              <div
-                class="product-image-wrap"
+                  <img
+                    class="product-image"
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(product.name)}"
+                    loading="lazy"
+                    onerror="this.style.display='none'"
+                  >
+
+                `
+
+                : `
+
+                  <div class="product-placeholder">
+                    🌸
+                  </div>
+
+                `
+              }
+
+
+              <button
+                class="favorite-btn ${
+                  favorite ? "active" : ""
+                }"
+                data-favorite="${escapeHTML(product.id)}"
+                type="button"
               >
 
-                <img
+                ${favorite ? "♥" : "♡"}
 
-                  class="product-image"
+              </button>
 
-                  src="${escapeHTML(
-                    getImageUrl(product)
-                  )}"
-
-                  alt="${escapeHTML(
-                    product.name
-                  )}"
-
-                  loading="lazy"
-
-                  onerror="
-                    this.src='https://placehold.co/600x600/fff0f6/d42d6e?text=VELORA'
-                  "
-
-                >
+            </div>
 
 
-                <button
+            <div class="product-content">
 
-                  class="favorite ${
-                    liked
-                      ? "active"
-                      : ""
-                  }"
+              <div class="product-category">
 
-                  type="button"
-
-                  data-favorite="${escapeHTML(
-                    product.id
-                  )}"
-
-                  aria-label="علاقه‌مندی"
-
-                >
-
-                  ${
-                    liked
-                      ? "♥"
-                      : "♡"
-                  }
-
-                </button>
+                ${escapeHTML(
+                  product.sub ||
+                  product.category
+                )}
 
               </div>
 
 
-              <div class="product-body">
+              <h3>
 
-                <div class="product-name">
+                ${escapeHTML(
+                  product.name
+                )}
 
-                  ${escapeHTML(
-                    product.name
-                  )}
-
-                </div>
+              </h3>
 
 
-                <div class="product-desc">
+              <p class="product-description">
 
-                  ${escapeHTML(
-                    product.description
-                  )}
+                ${escapeHTML(
+                  product.description
+                )}
 
-                </div>
-
-
-                <div class="product-bottom">
-
-                  <span class="price">
-
-                    ${money(
-                      product.price
-                    )}
-
-                  </span>
+              </p>
 
 
-                  <span class="stock">
+              <div class="product-bottom">
 
-                    ${
-                      soldOut
+                <strong>
 
-                        ? "ناموجود"
+                  ${money(product.price)}
 
-                        : "موجودی " +
-                          product.stock
-                            .toLocaleString(
-                              "fa-IR"
-                            )
-                    }
-
-                  </span>
-
-                </div>
+                </strong>
 
 
-                <button
-
-                  class="add-btn ${
-                    soldOut
-                      ? "out"
-                      : ""
-                  }"
-
-                  type="button"
-
-                  data-add="${escapeHTML(
-                    product.id
-                  )}"
+                <span class="stock">
 
                   ${
-                    soldOut
-                      ? "disabled"
-                      : ""
+                    product.stock > 0
+                    ? "موجود"
+                    : "ناموجود"
                   }
 
-                >
-
-                  ${
-                    soldOut
-                      ? "ناموجود"
-                      : "افزودن به سبد"
-                  }
-
-                </button>
+                </span>
 
               </div>
 
-            </article>
 
-          `;
+              <button
+                class="add-cart-btn"
+                data-add-cart="${escapeHTML(product.id)}"
+                type="button"
+                ${
+                  product.stock <= 0
+                  ? "disabled"
+                  : ""
+                }
+              >
 
-        }
-      )
+                ${
+                  product.stock > 0
+                  ? "افزودن به سبد 🛍️"
+                  : "ناموجود"
+                }
+
+              </button>
+
+            </div>
+
+          </article>
+
+        `;
+
+      })
       .join("");
 
 }
 
 
+/* =========================
+   پیدا کردن محصول
+========================= */
+
 function findProduct(id){
 
   return products.find(
     product =>
-      String(product.id) ===
-      String(id)
+      String(product.id) === String(id)
   );
 
 }
 
+
+/* =========================
+   سبد خرید
+========================= */
 
 function addToCart(id){
 
   const product =
     findProduct(id);
 
-
   if(!product){
+
+    toast("محصول پیدا نشد");
 
     return;
 
@@ -1663,9 +846,7 @@ function addToCart(id){
 
   if(product.stock <= 0){
 
-    toast(
-      "این محصول موجود نیست."
-    );
+    toast("این محصول موجود نیست");
 
     return;
 
@@ -1682,19 +863,13 @@ function addToCart(id){
 
   if(existing){
 
-    if(
-      existing.qty >=
-      product.stock
-    ){
+    if(existing.qty >= product.stock){
 
-      toast(
-        "بیشتر از موجودی نمی‌توانی اضافه کنی."
-      );
+      toast("بیشتر از موجودی نمی‌توانید اضافه کنید");
 
       return;
 
     }
-
 
     existing.qty += 1;
 
@@ -1702,9 +877,7 @@ function addToCart(id){
 
     cart.push({
 
-      id:String(
-        product.id
-      ),
+      id:String(product.id),
 
       qty:1
 
@@ -1720,7 +893,7 @@ function addToCart(id){
   updateBadges();
 
   toast(
-    "محصول به سبد اضافه شد 🛒"
+    "محصول به سبد خرید اضافه شد 🛍️"
   );
 
 }
@@ -1745,10 +918,7 @@ function removeFromCart(id){
 }
 
 
-function changeQuantity(
-  id,
-  delta
-){
+function changeQuantity(id, delta){
 
   const item =
     cart.find(
@@ -1758,22 +928,14 @@ function changeQuantity(
     );
 
 
-  if(!item){
-
-    return;
-
-  }
+  if(!item) return;
 
 
   const product =
     findProduct(id);
 
 
-  if(!product){
-
-    return;
-
-  }
+  if(!product) return;
 
 
   item.qty += delta;
@@ -1788,18 +950,12 @@ function changeQuantity(
   }
 
 
-  if(
-    item.qty >
-    product.stock
-  ){
+  if(item.qty > product.stock){
 
     item.qty =
       product.stock;
 
-
-    toast(
-      "به سقف موجودی رسیدی."
-    );
+    toast("بیشتر از موجودی نمی‌توانید انتخاب کنید");
 
   }
 
@@ -1813,17 +969,13 @@ function changeQuantity(
 }
 
 
-function cartItems(){
+function getCartItems(){
 
   return cart
-
     .map(item => {
 
       const product =
-        findProduct(
-          item.id
-        );
-
+        findProduct(item.id);
 
       if(!product){
 
@@ -1831,20 +983,15 @@ function cartItems(){
 
       }
 
-
       return {
 
-        product,
+        ...product,
 
-        qty:
-          Number(
-            item.qty || 0
-          )
+        qty:Number(item.qty || 1)
 
       };
 
     })
-
     .filter(Boolean);
 
 }
@@ -1852,160 +999,15 @@ function cartItems(){
 
 function cartTotal(){
 
-  return cartItems()
+  return getCartItems()
     .reduce(
-
-      (
-        sum,
-        item
-      ) =>
-
+      (sum,item) =>
         sum +
-        item.product.price *
-        item.qty,
-
+        (
+          Number(item.price || 0) *
+          Number(item.qty || 0)
+        ),
       0
-
-    );
-
-}
-
-
-function renderCart(){
-
-  const items =
-    cartItems();
-
-
-  if(!items.length){
-
-    $("cartList").innerHTML =
-      `
-        <div class="empty">
-
-          سبد خرید خالی است 🛒
-
-        </div>
-      `;
-
-
-    $("cartTotal").textContent =
-      "۰ تومان";
-
-
-    return;
-
-  }
-
-
-  $("cartList").innerHTML =
-
-    items
-      .map(
-        ({
-          product,
-          qty
-        }) => `
-
-          <div class="cart-item">
-
-            <img
-
-              src="${escapeHTML(
-                getImageUrl(product)
-              )}"
-
-              alt=""
-
-            >
-
-
-            <div>
-
-              <div class="cart-name">
-
-                ${escapeHTML(
-                  product.name
-                )}
-
-              </div>
-
-
-              <div class="price">
-
-                ${money(
-                  product.price *
-                  qty
-                )}
-
-              </div>
-
-
-              <div class="qty">
-
-                <button
-
-                  type="button"
-
-                  data-minus="${escapeHTML(
-                    product.id
-                  )}"
-
-                >
-                  −
-                </button>
-
-
-                <strong>
-
-                  ${qty.toLocaleString(
-                    "fa-IR"
-                  )}
-
-                </strong>
-
-
-                <button
-
-                  type="button"
-
-                  data-plus="${escapeHTML(
-                    product.id
-                  )}"
-
-                >
-                  +
-                </button>
-
-
-                <button
-
-                  class="remove"
-
-                  type="button"
-
-                  data-remove="${escapeHTML(
-                    product.id
-                  )}"
-
-                >
-                  حذف
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        `
-      )
-      .join("");
-
-
-  $("cartTotal").textContent =
-    money(
-      cartTotal()
     );
 
 }
@@ -2013,121 +1015,425 @@ function renderCart(){
 
 function updateBadges(){
 
-  const cartCount =
+  const count =
     cart.reduce(
-
-      (
-        sum,
-        item
-      ) =>
-
+      (sum,item) =>
         sum +
-        Number(
-          item.qty || 0
-        ),
-
+        Number(item.qty || 0),
       0
-
     );
 
 
-  $("cartCount").textContent =
-    cartCount.toLocaleString(
-      "fa-IR"
-    );
+  if($("cartCount")){
+
+    $("cartCount").textContent =
+      count;
+
+  }
 
 
-  $("favoriteCount").textContent =
-    favorites.length.toLocaleString(
-      "fa-IR"
-    );
+  if($("favCount")){
+
+    $("favCount").textContent =
+      favorites.length;
+
+  }
 
 }
-  function openProduct(id){
+  /* =========================
+   نمایش سبد خرید
+========================= */
+
+function renderCart(){
+
+  const box =
+    $("drawerBody");
+
+  if(!box) return;
+
+
+  const items =
+    getCartItems();
+
+
+  if(items.length === 0){
+
+    box.innerHTML = `
+
+      <div class="empty">
+
+        <div style="font-size:42px">
+          🛍️
+        </div>
+
+        <h3>
+          سبد خرید خالی است
+        </h3>
+
+        <p>
+          هنوز محصولی به سبد خرید اضافه نکرده‌اید.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML = `
+
+    <div class="cart-list">
+
+      ${
+        items.map(item => `
+
+          <div
+            class="cart-item"
+            data-cart-item="${escapeHTML(item.id)}"
+          >
+
+            <div class="cart-item-image">
+
+              ${
+                getImageUrl(item)
+
+                ? `
+
+                  <img
+                    src="${escapeHTML(
+                      getImageUrl(item)
+                    )}"
+                    alt="${escapeHTML(item.name)}"
+                  >
+
+                `
+
+                : "🌸"
+
+              }
+
+            </div>
+
+
+            <div class="cart-item-info">
+
+              <strong>
+
+                ${escapeHTML(item.name)}
+
+              </strong>
+
+
+              <span>
+
+                ${money(item.price)}
+
+              </span>
+
+
+              <div class="quantity">
+
+                <button
+                  type="button"
+                  data-qty-plus="${escapeHTML(item.id)}"
+                >
+                  +
+                </button>
+
+
+                <b>
+
+                  ${item.qty}
+
+                </b>
+
+
+                <button
+                  type="button"
+                  data-qty-minus="${escapeHTML(item.id)}"
+                >
+                  −
+                </button>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="remove-cart"
+                data-remove-cart="${escapeHTML(item.id)}"
+              >
+
+                حذف
+
+              </button>
+
+            </div>
+
+          </div>
+
+        `).join("")
+
+      }
+
+    </div>
+
+
+    <div class="cart-total">
+
+      <span>
+        مبلغ کل
+      </span>
+
+      <strong>
+        ${money(cartTotal())}
+      </strong>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="checkout-btn"
+      id="checkoutBtn"
+    >
+
+      ادامه و ثبت سفارش
+
+    </button>
+
+  `;
+
+}
+
+
+/* =========================
+   باز کردن پنل
+========================= */
+
+function openPanel(id){
+
+  const el = $(id);
+
+  if(!el) return;
+
+  el.classList.add("show");
+
+}
+
+
+function closePanel(id){
+
+  const el = $(id);
+
+  if(!el) return;
+
+  el.classList.remove("show");
+
+}
+
+
+function closeAllPanels(){
+
+  [
+    "drawer",
+    "modalOverlay",
+    "accountOverlay"
+  ].forEach(id => {
+
+    const el = $(id);
+
+    if(el){
+
+      el.classList.remove("show");
+
+    }
+
+  });
+
+}
+
+
+/* =========================
+   جزئیات محصول
+========================= */
+
+function openProduct(id){
 
   const product =
     findProduct(id);
 
-  if(!product){
-    return;
-  }
+  if(!product) return;
+
 
   currentProduct =
     product;
 
-  $("detailName").textContent =
-    product.name;
 
-  $("detailImage").src =
-    getImageUrl(product);
+  const box =
+    $("modalBody");
 
-  $("detailImage").alt =
-    product.name;
-
-  $("detailPrice").textContent =
-    money(product.price);
-
-  $("detailStock").textContent =
-    product.stock > 0
-      ? "موجودی: " +
-        product.stock.toLocaleString("fa-IR")
-      : "ناموجود";
-
-  $("detailDescription").textContent =
-    product.description ||
-    "توضیحاتی برای این محصول ثبت نشده است.";
-
-  $("detailAdd").disabled =
-    product.stock <= 0;
-
-  $("detailAdd").textContent =
-    product.stock > 0
-      ? "افزودن به سبد خرید"
-      : "ناموجود";
-
-  updateDetailFavorite();
-
-  $("productOverlay")
-    .classList.remove("hidden");
-
-}
+  if(!box) return;
 
 
-function updateDetailFavorite(){
-
-  if(!currentProduct){
-    return;
-  }
-
-  const liked =
+  const favorite =
     favorites.includes(
-      String(currentProduct.id)
+      String(product.id)
     );
 
-  $("detailFavorite").textContent =
-    liked
-      ? "♥ حذف از علاقه‌مندی"
-      : "♡ افزودن به علاقه‌مندی";
+
+  const image =
+    getImageUrl(product);
+
+
+  box.innerHTML = `
+
+    <div class="product-detail">
+
+      <div class="detail-image">
+
+        ${
+          image
+
+          ? `
+
+            <img
+              src="${escapeHTML(image)}"
+              alt="${escapeHTML(product.name)}"
+            >
+
+          `
+
+          : `
+
+            <div class="product-placeholder">
+              🌸
+            </div>
+
+          `
+        }
+
+      </div>
+
+
+      <div class="detail-info">
+
+        <div class="product-category">
+
+          ${escapeHTML(
+            product.sub ||
+            product.category
+          )}
+
+        </div>
+
+
+        <h2>
+
+          ${escapeHTML(product.name)}
+
+        </h2>
+
+
+        <div class="detail-price">
+
+          ${money(product.price)}
+
+        </div>
+
+
+        <p>
+
+          ${escapeHTML(
+            product.description
+          )}
+
+        </p>
+
+
+        <div class="detail-stock">
+
+          ${
+            product.stock > 0
+
+            ? `موجودی: ${product.stock} عدد`
+
+            : "ناموجود"
+
+          }
+
+        </div>
+
+
+        <div class="detail-actions">
+
+          <button
+            type="button"
+            id="detailAddCart"
+            ${
+              product.stock <= 0
+              ? "disabled"
+              : ""
+            }
+          >
+
+            افزودن به سبد 🛍️
+
+          </button>
+
+
+          <button
+            type="button"
+            id="detailFavorite"
+          >
+
+            ${
+              favorite
+              ? "♥ حذف از علاقه‌مندی"
+              : "♡ افزودن به علاقه‌مندی"
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  openPanel("modalOverlay");
 
 }
 
+
+/* =========================
+   علاقه‌مندی
+========================= */
 
 function toggleFavorite(id){
 
   id = String(id);
 
-  if(
-    favorites.includes(id)
-  ){
 
-    favorites =
-      favorites.filter(
-        x =>
-          String(x) !== id
-      );
+  const index =
+    favorites.indexOf(id);
+
+
+  if(index >= 0){
+
+    favorites.splice(
+      index,
+      1
+    );
 
     toast(
-      "از علاقه‌مندی حذف شد."
+      "از علاقه‌مندی حذف شد"
     );
 
   }else{
@@ -2140,385 +1446,715 @@ function toggleFavorite(id){
 
   }
 
+
   saveFavorites();
+
+  updateBadges();
 
   renderProducts();
 
   renderFavorites();
 
-  updateBadges();
 
-  updateDetailFavorite();
+  if(
+    currentProduct &&
+    String(currentProduct.id) === id
+  ){
+
+    openProduct(id);
+
+  }
 
 }
 
 
 function renderFavorites(){
 
-  const items =
-    favorites
-      .map(
-        id =>
-          findProduct(id)
-      )
-      .filter(Boolean);
+  const box =
+    $("accountBody");
 
-  if(!items.length){
+  if(!box) return;
 
-    $("favoriteList").innerHTML =
-      `
-        <div class="empty">
-          هنوز محصولی به علاقه‌مندی‌ها
-          اضافه نکردی ❤️
-        </div>
-      `;
 
-    return;
-
-  }
-
-  $("favoriteList").innerHTML =
-    items
-      .map(
-        product => `
-
-          <div class="cart-item">
-
-            <img
-              src="${escapeHTML(
-                getImageUrl(product)
-              )}"
-              alt=""
-            >
-
-            <div>
-
-              <div class="cart-name">
-                ${escapeHTML(
-                  product.name
-                )}
-              </div>
-
-              <div class="price">
-                ${money(product.price)}
-              </div>
-
-              <button
-                class="primary"
-                type="button"
-                data-fav-open="${escapeHTML(
-                  product.id
-                )}"
-              >
-                مشاهده محصول
-              </button>
-
-            </div>
-
-          </div>
-
-        `
-      )
-      .join("");
+  /*
+    این تابع فقط وقتی
+    بخش علاقه‌مندی را باز می‌کنیم
+    محتوای آن را می‌سازد.
+  */
 
 }
 
 
-function renderAccount(){
+function getFavoriteProducts(){
 
-  if(!user){
+  return favorites
+    .map(id =>
+      findProduct(id)
+    )
+    .filter(Boolean);
 
-    $("accountContent").innerHTML = `
-
-      <div class="account-box">
-
-        <div style="font-size:45px">
-          👤
-        </div>
-
-        <h3>
-          حساب کاربری
-        </h3>
-
-        <p>
-          برای ثبت و مشاهده اطلاعات
-          سفارش‌ها، مشخصات خودت را
-          ذخیره کن.
-        </p>
-
-        <button
-          id="createAccount"
-          class="primary"
-          type="button"
-        >
-          ساخت حساب
-        </button>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
+}
 
 
-  $("accountContent").innerHTML = `
+/* =========================
+   نمایش علاقه‌مندی‌ها
+========================= */
 
-    <div class="account-box">
+function showFavorites(){
 
-      <div style="font-size:45px">
-        👋
-      </div>
+  const box =
+    $("accountBody");
 
-      <h3>
-        ${escapeHTML(user.name)}
-      </h3>
+  if(!box) return;
 
-      <p>
-        ${escapeHTML(user.phone)}
-      </p>
 
-      <button
-        id="ordersButton"
-        class="primary"
-        type="button"
-      >
-        سفارش‌های من
-      </button>
+  const items =
+    getFavoriteProducts();
 
-      <button
-        id="logoutLocal"
-        class="primary"
-        type="button"
-        style="
-          background:#ffe4ec;
-          color:#c72d6b
-        "
-      >
-        خروج از حساب
-      </button>
 
-      <div
-        id="ordersArea"
-        style="margin-top:15px"
-      ></div>
+  box.innerHTML = `
+
+    <div class="account-section">
+
+      <h2>
+        علاقه‌مندی‌های من ❤️
+      </h2>
+
+
+      ${
+        items.length === 0
+
+        ? `
+
+          <div class="empty">
+
+            هنوز محصولی به علاقه‌مندی‌ها اضافه نکرده‌اید.
+
+          </div>
+
+        `
+
+        : `
+
+          <div class="favorite-list">
+
+            ${
+              items.map(item => `
+
+                <div
+                  class="favorite-row"
+                  data-favorite-product="${escapeHTML(item.id)}"
+                >
+
+                  <div>
+
+                    <strong>
+
+                      ${escapeHTML(item.name)}
+
+                    </strong>
+
+                    <span>
+
+                      ${money(item.price)}
+
+                    </span>
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    data-add-cart="${escapeHTML(item.id)}"
+                  >
+
+                    🛍️
+
+                  </button>
+
+                </div>
+
+              `).join("")
+            }
+
+          </div>
+
+        `
+
+      }
 
     </div>
 
   `;
 
 
-  $("ordersButton").onclick =
-    renderOrders;
-
-
-  $("logoutLocal").onclick =
-    function(){
-
-      user = null;
-
-      saveUser();
-
-      renderAccount();
-
-      toast(
-        "از حساب خارج شدی."
-      );
-
-    };
+  openPanel("accountOverlay");
 
 }
 
 
-function createAccountForm(){
+/* =========================
+   حساب کاربری
+========================= */
 
-  $("accountContent").innerHTML = `
+function renderAccount(){
 
-    <h3>
-      ساخت حساب کاربری
-    </h3>
+  const box =
+    $("accountBody");
 
-    <form
-      id="accountForm"
-      class="form"
-    >
+  if(!box) return;
 
-      <label>
-        نام و نام خانوادگی
-      </label>
 
-      <input
-        id="accountName"
-        required
-      >
+  if(!user){
 
-      <label>
-        شماره موبایل
-      </label>
+    box.innerHTML = `
 
-      <input
-        id="accountPhone"
-        type="tel"
-        required
-      >
+      <div class="account-section">
 
-      <button
-        class="primary"
-        type="submit"
-      >
-        ذخیره حساب
-      </button>
+        <h2>
+          حساب کاربری 👤
+        </h2>
 
-    </form>
+
+        <p>
+          برای ذخیره اطلاعات خود، حساب کاربری بسازید.
+        </p>
+
+
+        <form id="accountForm">
+
+          <input
+            id="accountName"
+            type="text"
+            placeholder="نام و نام خانوادگی"
+            required
+          >
+
+
+          <input
+            id="accountPhone"
+            type="tel"
+            placeholder="شماره موبایل"
+            required
+          >
+
+
+          <button type="submit">
+
+            ساخت حساب
+
+          </button>
+
+        </form>
+
+
+        <div style="margin-top:20px">
+
+          <button
+            type="button"
+            id="showFavoritesFromAccount"
+          >
+
+            ❤️ علاقه‌مندی‌ها
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }else{
+
+    box.innerHTML = `
+
+      <div class="account-section">
+
+        <h2>
+          سلام ${escapeHTML(user.name)} 🌸
+        </h2>
+
+
+        <p>
+
+          موبایل:
+          ${escapeHTML(user.phone)}
+
+        </p>
+
+
+        <hr>
+
+
+        <h3>
+          سفارش‌های من
+        </h3>
+
+
+        ${
+          orders.length === 0
+
+          ? `
+
+            <div class="empty">
+
+              هنوز سفارشی ثبت نشده است.
+
+            </div>
+
+          `
+
+          : `
+
+            <div class="orders-list">
+
+              ${
+                orders.map(order => `
+
+                  <div class="order-row">
+
+                    <strong>
+
+                      سفارش #${escapeHTML(order.id)}
+
+                    </strong>
+
+
+                    <span>
+
+                      ${money(order.total)}
+
+                    </span>
+
+
+                  </div>
+
+                `).join("")
+              }
+
+            </div>
+
+          `
+
+        }
+
+
+        <button
+          type="button"
+          id="accountFavoritesBtn"
+        >
+
+          ❤️ علاقه‌مندی‌ها
+
+        </button>
+
+
+        <button
+          type="button"
+          id="logoutBtn"
+        >
+
+          خروج از حساب
+
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+
+  openPanel("accountOverlay");
+
+}
+
+
+/* =========================
+   فرم ساخت حساب
+========================= */
+
+function createAccount(event){
+
+  event.preventDefault();
+
+
+  const name =
+    $("accountName")?.value.trim();
+
+
+  const phone =
+    $("accountPhone")?.value.trim();
+
+
+  if(!name || !phone){
+
+    toast(
+      "نام و شماره موبایل را وارد کنید"
+    );
+
+    return;
+
+  }
+
+
+  user = {
+
+    name,
+    phone,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+
+  saveUser();
+
+  toast(
+    "حساب شما ساخته شد 🌸"
+  );
+
+
+  renderAccount();
+
+}
+  /* =========================
+   ثبت سفارش
+========================= */
+
+function openCheckout(){
+
+  const items =
+    getCartItems();
+
+
+  if(items.length === 0){
+
+    toast(
+      "سبد خرید شما خالی است"
+    );
+
+    return;
+
+  }
+
+
+  const box =
+    $("accountBody");
+
+  if(!box) return;
+
+
+  box.innerHTML = `
+
+    <div class="account-section">
+
+      <h2>
+        ثبت سفارش 🛍️
+      </h2>
+
+
+      <form id="checkoutForm">
+
+        <input
+          id="checkoutName"
+          type="text"
+          placeholder="نام و نام خانوادگی"
+          value="${
+            escapeHTML(
+              user?.name || ""
+            )
+          }"
+          required
+        >
+
+
+        <input
+          id="checkoutPhone"
+          type="tel"
+          placeholder="شماره موبایل"
+          value="${
+            escapeHTML(
+              user?.phone || ""
+            )
+          }"
+          required
+        >
+
+
+        <select
+          id="checkoutProvince"
+          required
+        >
+
+          <option value="">
+            استان
+          </option>
+
+          <option>تهران</option>
+          <option>البرز</option>
+          <option>اصفهان</option>
+          <option>فارس</option>
+          <option>خراسان رضوی</option>
+          <option>آذربایجان شرقی</option>
+          <option>آذربایجان غربی</option>
+          <option>مازندران</option>
+          <option>گیلان</option>
+          <option>قم</option>
+          <option>یزد</option>
+          <option>کرمان</option>
+          <option>همدان</option>
+          <option>مرکزی</option>
+          <option>بوشهر</option>
+          <option>هرمزگان</option>
+          <option>کرمانشاه</option>
+          <option>کردستان</option>
+          <option>گلستان</option>
+          <option>زنجان</option>
+          <option>قزوین</option>
+          <option>اردبیل</option>
+          <option>لرستان</option>
+          <option>خوزستان</option>
+          <option>سیستان و بلوچستان</option>
+          <option>ایلام</option>
+          <option>چهارمحال و بختیاری</option>
+          <option>کهگیلویه و بویراحمد</option>
+          <option>سمنان</option>
+          <option>خراسان شمالی</option>
+          <option>خراسان جنوبی</option>
+
+        </select>
+
+
+        <input
+          id="checkoutCity"
+          type="text"
+          placeholder="شهر"
+          required
+        >
+
+
+        <textarea
+          id="checkoutAddress"
+          placeholder="آدرس کامل"
+          required
+        ></textarea>
+
+
+        <input
+          id="checkoutPostal"
+          type="text"
+          placeholder="کد پستی"
+        >
+
+
+        <textarea
+          id="checkoutNote"
+          placeholder="توضیحات سفارش"
+        ></textarea>
+
+
+        <div class="checkout-summary">
+
+          <span>
+            مبلغ کالاها
+          </span>
+
+          <strong>
+            ${money(cartTotal())}
+          </strong>
+
+        </div>
+
+
+        <button
+          type="submit"
+        >
+
+          ثبت سفارش
+
+        </button>
+
+      </form>
+
+    </div>
 
   `;
 
 
-  $("accountForm").onsubmit =
-    function(event){
+  openPanel("accountOverlay");
 
-      event.preventDefault();
+}
 
-      user = {
 
-        name:
-          $("accountName")
-            .value
-            .trim(),
+/* =========================
+   ذخیره سفارش در Supabase
+========================= */
 
-        phone:
-          $("accountPhone")
-            .value
-            .trim()
+async function saveOrderToSupabase(order){
 
-      };
+  if(!db){
 
-      saveUser();
+    return {
+      success:false,
+      error:"Supabase unavailable"
+    };
 
-      renderAccount();
+  }
 
-      toast(
-        "حساب کاربری ساخته شد."
-      );
+
+  try{
+
+    /*
+      فعلاً تلاش می‌کنیم سفارش را
+      در جدول orders ذخیره کنیم.
+
+      اگر ساختار دقیق جدول با این
+      فیلدها متفاوت باشد، سفارش محلی
+      همچنان ذخیره خواهد شد.
+    */
+
+    const payload = {
+
+      customer_name:
+        order.name,
+
+      customer_phone:
+        order.phone,
+
+      province:
+        order.province,
+
+      city:
+        order.city,
+
+      address:
+        order.address,
+
+      postal_code:
+        order.postal,
+
+      note:
+        order.note,
+
+      total:
+        order.total
 
     };
 
-}
+
+    const result =
+      await db
+        .from("orders")
+        .insert(payload)
+        .select()
+        .single();
 
 
-function renderOrders(){
+    if(result.error){
 
-  const area =
-    $("ordersArea");
-
-  if(!area){
-    return;
-  }
-
-  if(!orders.length){
-
-    area.innerHTML =
-      `
-        <div class="empty">
-          هنوز سفارشی ثبت نکردی.
-        </div>
-      `;
-
-    return;
-
-  }
-
-  area.innerHTML =
-    orders
-      .slice()
-      .reverse()
-      .map(
-        order => `
-
-          <div class="order">
-
-            <strong>
-              سفارش
-              ${escapeHTML(
-                order.id
-              )}
-            </strong>
-
-            <br>
-
-            مبلغ:
-            ${money(order.total)}
-
-            <br>
-
-            تاریخ:
-            ${escapeHTML(
-              order.date
-            )}
-
-          </div>
-
-        `
-      )
-      .join("");
-
-}
+      console.error(
+        "Order Supabase error:",
+        result.error
+      );
 
 
-function openCheckout(){
+      return {
+        success:false,
+        error:result.error
+      };
 
-  if(!cartItems().length){
+    }
 
-    toast(
-      "سبد خرید خالی است."
+
+    return {
+      success:true,
+      data:result.data
+    };
+
+
+  }catch(error){
+
+    console.error(
+      "Order save error:",
+      error
     );
 
-    return;
+
+    return {
+      success:false,
+      error
+    };
 
   }
-
-  if(user){
-
-    $("customerName").value =
-      user.name || "";
-
-    $("customerPhone").value =
-      user.phone || "";
-
-  }
-
-  $("checkoutOverlay")
-    .classList.remove("hidden");
 
 }
 
 
-function closeAllOverlays(){
-
-  document
-    .querySelectorAll(".overlay")
-    .forEach(
-      el =>
-        el.classList.add(
-          "hidden"
-        )
-    );
-
-}
-
+/* =========================
+   ثبت نهایی سفارش
+========================= */
 
 async function submitOrder(event){
 
   event.preventDefault();
 
-  const items =
-    cartItems();
 
-  if(!items.length){
+  const items =
+    getCartItems();
+
+
+  if(items.length === 0){
 
     toast(
-      "سبد خرید خالی است."
+      "سبد خرید خالی است"
+    );
+
+    return;
+
+  }
+
+
+  const name =
+    $("checkoutName")?.value.trim();
+
+
+  const phone =
+    $("checkoutPhone")?.value.trim();
+
+
+  const province =
+    $("checkoutProvince")?.value;
+
+
+  const city =
+    $("checkoutCity")?.value.trim();
+
+
+  const address =
+    $("checkoutAddress")?.value.trim();
+
+
+  const postal =
+    $("checkoutPostal")?.value.trim();
+
+
+  const note =
+    $("checkoutNote")?.value.trim();
+
+
+  if(
+    !name ||
+    !phone ||
+    !province ||
+    !city ||
+    !address
+  ){
+
+    toast(
+      "لطفاً اطلاعات ضروری سفارش را کامل کنید"
     );
 
     return;
@@ -2529,97 +2165,85 @@ async function submitOrder(event){
   const order = {
 
     id:
-      "VLR-" +
-      Date.now()
-        .toString()
-        .slice(-8),
+      "V" +
+      Date.now(),
 
-    date:
-      new Date()
-        .toLocaleString(
-          "fa-IR"
-        ),
+    name,
+
+    phone,
+
+    province,
+
+    city,
+
+    address,
+
+    postal,
+
+    note,
+
+    items:
+
+      items.map(item => ({
+
+        id:item.id,
+
+        name:item.name,
+
+        price:item.price,
+
+        qty:item.qty
+
+      })),
 
     total:
       cartTotal(),
 
-    customer:{
-
-      name:
-        $("customerName")
-          .value
-          .trim(),
-
-      phone:
-        $("customerPhone")
-          .value
-          .trim(),
-
-      province:
-        $("province")
-          .value
-          .trim(),
-
-      city:
-        $("city")
-          .value
-          .trim(),
-
-      address:
-        $("address")
-          .value
-          .trim(),
-
-      postalCode:
-        $("postalCode")
-          .value
-          .trim(),
-
-      note:
-        $("orderNote")
-          .value
-          .trim()
-
-    },
-
-    items:
-      items.map(
-        ({
-          product,
-          qty
-        }) => ({
-
-          productId:
-            product.id,
-
-          name:
-            product.name,
-
-          price:
-            product.price,
-
-          qty:
-            qty
-
-        })
-      )
+    createdAt:
+      new Date().toISOString()
 
   };
 
 
-  orders.push(order);
+  const button =
+    event.target.querySelector(
+      'button[type="submit"]'
+    );
+
+
+  if(button){
+
+    button.disabled = true;
+
+    button.textContent =
+      "در حال ثبت سفارش...";
+
+  }
+
+
+  /*
+    ابتدا محلی ذخیره می‌کنیم
+    تا سفارش مشتری از بین نرود.
+  */
+
+  orders.unshift(order);
 
   saveOrders();
 
 
   /*
-    در این مرحله سفارش به صورت
-    محلی ذخیره می‌شود.
-    اتصال کامل و امن سفارش‌ها به
-    جدول orders را در مرحله بعد
-    انجام می‌دهیم.
+    ذخیره در Supabase
   */
 
+  const remote =
+    await saveOrderToSupabase(
+      order
+    );
+
+
+  /*
+    پاک کردن سبد
+  */
 
   cart = [];
 
@@ -2629,100 +2253,137 @@ async function submitOrder(event){
 
   updateBadges();
 
-  closeAllOverlays();
 
-  toast(
-    "سفارش با موفقیت ثبت شد 🎉"
+  if(button){
+
+    button.disabled = false;
+
+    button.textContent =
+      "ثبت سفارش";
+
+  }
+
+
+  closePanel(
+    "accountOverlay"
   );
 
+
+  if(remote.success){
+
+    toast(
+      "سفارش با موفقیت ثبت شد 🌸"
+    );
+
+  }else{
+
+    toast(
+      "سفارش ثبت شد 🌸"
+    );
+
+  }
+
+
+  /*
+    ارسال پیام به تلگرام
+    فعلاً از طریق لینک باز می‌شود.
+    برای ارسال خودکار واقعی باید
+    Telegram Bot + Edge Function
+    اضافه شود.
+  */
+
 }
-  <script>
 
-/* =========================================
-   VELORA STORE - FINAL SAFE EVENTS
-========================================= */
 
-function bind(id, event, handler){
+/* =========================
+   نمایش سفارش‌ها
+========================= */
 
-  const el = document.getElementById(id);
+function renderOrders(){
 
-  if(!el){
-    console.warn("Element not found:", id);
+  if(!user){
+
     return;
+
   }
 
-  el.addEventListener(event, handler);
+
+  renderAccount();
 
 }
 
 
-/* =========================================
-   SEARCH
-========================================= */
+/* =========================
+   وضعیت فعلی
+========================= */
 
-bind(
-  "searchInput",
-  "input",
-  function(event){
+function refreshEverything(){
 
-    searchText =
-      event.target.value.trim();
+  updateBadges();
 
-    applyFilters();
+  renderCategories();
 
-  }
-);
+  renderProducts();
 
+  renderCart();
 
-/* =========================================
-   CATEGORIES
-========================================= */
+}
+  /* =========================
+   رویدادهای کلیک
+========================= */
 
-bind(
-  "categories",
+document.addEventListener(
   "click",
   function(event){
 
-    const button =
-      event.target.closest(
+    const target =
+      event.target;
+
+
+    /* -------------------------
+       دسته‌بندی
+    ------------------------- */
+
+    const categoryButton =
+      target.closest(
         "[data-category]"
       );
 
-    if(!button){
+
+    if(categoryButton){
+
+      currentCategory =
+        categoryButton
+          .getAttribute(
+            "data-category"
+          );
+
+
+      renderCategories();
+
+      renderProducts();
+
       return;
+
     }
 
-    currentCategory =
-      button.dataset.category;
 
-    renderCategories();
+    /* -------------------------
+       افزودن به سبد
+    ------------------------- */
 
-    applyFilters();
-
-  }
-);
-
-
-/* =========================================
-   PRODUCTS
-========================================= */
-
-bind(
-  "products",
-  "click",
-  function(event){
-
-    const add =
-      event.target.closest(
-        "[data-add]"
+    const addButton =
+      target.closest(
+        "[data-add-cart]"
       );
 
-    if(add){
 
-      event.stopPropagation();
+    if(addButton){
 
       addToCart(
-        add.dataset.add
+        addButton.getAttribute(
+          "data-add-cart"
+        )
       );
 
       return;
@@ -2730,17 +2391,22 @@ bind(
     }
 
 
-    const favorite =
-      event.target.closest(
+    /* -------------------------
+       علاقه‌مندی
+    ------------------------- */
+
+    const favoriteButton =
+      target.closest(
         "[data-favorite]"
       );
 
-    if(favorite){
 
-      event.stopPropagation();
+    if(favoriteButton){
 
       toggleFavorite(
-        favorite.dataset.favorite
+        favoriteButton.getAttribute(
+          "data-favorite"
+        )
       );
 
       return;
@@ -2748,41 +2414,22 @@ bind(
     }
 
 
-    const product =
-      event.target.closest(
-        "[data-product]"
+    /* -------------------------
+       افزایش تعداد
+    ------------------------- */
+
+    const plusButton =
+      target.closest(
+        "[data-qty-plus]"
       );
 
-    if(product){
 
-      openProduct(
-        product.dataset.product
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================================
-   CART
-========================================= */
-
-bind(
-  "cartList",
-  "click",
-  function(event){
-
-    const plus =
-      event.target.closest(
-        "[data-plus]"
-      );
-
-    if(plus){
+    if(plusButton){
 
       changeQuantity(
-        plus.dataset.plus,
+        plusButton.getAttribute(
+          "data-qty-plus"
+        ),
         1
       );
 
@@ -2791,15 +2438,22 @@ bind(
     }
 
 
-    const minus =
-      event.target.closest(
-        "[data-minus]"
+    /* -------------------------
+       کاهش تعداد
+    ------------------------- */
+
+    const minusButton =
+      target.closest(
+        "[data-qty-minus]"
       );
 
-    if(minus){
+
+    if(minusButton){
 
       changeQuantity(
-        minus.dataset.minus,
+        minusButton.getAttribute(
+          "data-qty-minus"
+        ),
         -1
       );
 
@@ -2808,249 +2462,569 @@ bind(
     }
 
 
-    const remove =
-      event.target.closest(
-        "[data-remove]"
+    /* -------------------------
+       حذف از سبد
+    ------------------------- */
+
+    const removeButton =
+      target.closest(
+        "[data-remove-cart]"
       );
 
-    if(remove){
+
+    if(removeButton){
 
       removeFromCart(
-        remove.dataset.remove
+        removeButton.getAttribute(
+          "data-remove-cart"
+        )
       );
 
-    }
-
-  }
-);
-
-
-/* =========================================
-   FAVORITES
-========================================= */
-
-bind(
-  "favoriteList",
-  "click",
-  function(event){
-
-    const button =
-      event.target.closest(
-        "[data-fav-open]"
-      );
-
-    if(!button){
       return;
+
     }
 
-    const overlay =
-      document.getElementById(
-        "favoriteOverlay"
+
+    /* -------------------------
+       باز کردن محصول
+    ------------------------- */
+
+    const productCard =
+      target.closest(
+        ".product-card"
       );
 
-    if(overlay){
-      overlay.classList.add(
-        "hidden"
-      );
-    }
 
-    openProduct(
-      button.dataset.favOpen
-    );
+    if(
+      productCard &&
+      !target.closest(
+        "button"
+      )
+    ){
 
-  }
-);
-
-
-/* =========================================
-   HEADER BUTTONS
-========================================= */
-
-bind(
-  "cartBtn",
-  "click",
-  function(){
-
-    renderCart();
-
-    const overlay =
-      document.getElementById(
-        "cartOverlay"
+      openProduct(
+        productCard.getAttribute(
+          "data-product-id"
+        )
       );
 
-    if(overlay){
-      overlay.classList.remove(
-        "hidden"
-      );
-    }
-
-  }
-);
-
-
-bind(
-  "favoriteBtn",
-  "click",
-  function(){
-
-    renderFavorites();
-
-    const overlay =
-      document.getElementById(
-        "favoriteOverlay"
-      );
-
-    if(overlay){
-      overlay.classList.remove(
-        "hidden"
-      );
-    }
-
-  }
-);
-
-
-bind(
-  "accountBtn",
-  "click",
-  function(){
-
-    renderAccount();
-
-    const overlay =
-      document.getElementById(
-        "accountOverlay"
-      );
-
-    if(overlay){
-      overlay.classList.remove(
-        "hidden"
-      );
-    }
-
-  }
-);
-
-
-/* =========================================
-   SHOP BUTTON
-========================================= */
-
-bind(
-  "shopBtn",
-  "click",
-  function(){
-
-    const section =
-      document.querySelector(
-        ".products"
-      );
-
-    if(!section){
       return;
+
     }
 
-    window.scrollTo({
 
-      top:
-        section.offsetTop - 80,
+    /* -------------------------
+       علاقه‌مندی‌های حساب
+    ------------------------- */
 
-      behavior:
-        "smooth"
+    if(
+      target.id ===
+      "showFavoritesFromAccount" ||
 
-    });
+      target.id ===
+      "accountFavoritesBtn"
+    ){
 
-  }
-);
+      showFavorites();
 
+      return;
 
-/* =========================================
-   CONTACT
-========================================= */
-
-bind(
-  "contactBtn",
-  "click",
-  function(){
-
-    window.open(
-      "https://t.me/it1tahaBot",
-      "_blank"
-    );
-
-  }
-);
+    }
 
 
-/* =========================================
-   CLOSE BUTTONS
-========================================= */
+    /* -------------------------
+       خروج
+    ------------------------- */
 
-[
-  "closeProduct",
-  "closeCart",
-  "closeAccount",
-  "closeCheckout",
-  "closeFavorite"
-].forEach(
-  function(id){
+    if(
+      target.id ===
+      "logoutBtn"
+    ){
 
-    bind(
-      id,
-      "click",
-      closeAllOverlays
-    );
+      user = null;
 
-  }
-);
+      saveUser();
 
-
-/* =========================================
-   OVERLAY CLICK
-========================================= */
-
-document
-  .querySelectorAll(
-    ".overlay"
-  )
-  .forEach(
-    function(overlay){
-
-      overlay.addEventListener(
-        "click",
-        function(event){
-
-          if(
-            event.target ===
-            overlay
-          ){
-
-            overlay.classList.add(
-              "hidden"
-            );
-
-          }
-
-        }
+      toast(
+        "از حساب خارج شدید"
       );
+
+      renderAccount();
+
+      return;
+
+    }
+
+
+    /* -------------------------
+       ثبت سفارش
+    ------------------------- */
+
+    if(
+      target.id ===
+      "checkoutBtn"
+    ){
+
+      openCheckout();
+
+      return;
+
+    }
+
+
+    /* -------------------------
+       افزودن از جزئیات محصول
+    ------------------------- */
+
+    if(
+      target.id ===
+      "detailAddCart"
+    ){
+
+      if(currentProduct){
+
+        addToCart(
+          currentProduct.id
+        );
+
+      }
+
+      return;
+
+    }
+
+
+    /* -------------------------
+       علاقه‌مندی از جزئیات
+    ------------------------- */
+
+    if(
+      target.id ===
+      "detailFavorite"
+    ){
+
+      if(currentProduct){
+
+        toggleFavorite(
+          currentProduct.id
+        );
+
+      }
+
+      return;
+
+    }
+
+  }
+);
+
+
+/* =========================
+   کارت محصول
+========================= */
+
+const productsBox =
+  $("products");
+
+
+if(productsBox){
+
+  productsBox.addEventListener(
+    "click",
+    function(event){
+
+      const favorite =
+        event.target.closest(
+          "[data-favorite]"
+        );
+
+
+      if(favorite){
+
+        event.stopPropagation();
+
+      }
 
     }
   );
 
+}
 
-/* =========================================
-   ESC
-========================================= */
+
+/* =========================
+   جستجو
+========================= */
+
+const search =
+  $("search");
+
+
+if(search){
+
+  search.addEventListener(
+    "input",
+    function(){
+
+      searchText =
+        this.value || "";
+
+      renderProducts();
+
+    }
+  );
+
+}
+
+
+/* =========================
+   دکمه حساب کاربری
+========================= */
+
+if($("accountBtn")){
+
+  $("accountBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        renderAccount();
+
+      }
+    );
+
+}
+
+
+/* =========================
+   دکمه علاقه‌مندی
+========================= */
+
+if($("favBtn")){
+
+  $("favBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        showFavorites();
+
+      }
+    );
+
+}
+
+
+/* =========================
+   دکمه سبد
+========================= */
+
+if($("cartBtn")){
+
+  $("cartBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        renderCart();
+
+        openPanel(
+          "drawer"
+        );
+
+      }
+    );
+
+}
+
+
+if($("footerCart")){
+
+  $("footerCart")
+    .addEventListener(
+      "click",
+      function(){
+
+        renderCart();
+
+        openPanel(
+          "drawer"
+        );
+
+      }
+    );
+
+}
+
+
+if($("footerFav")){
+
+  $("footerFav")
+    .addEventListener(
+      "click",
+      function(){
+
+        showFavorites();
+
+      }
+    );
+
+}
+
+
+if($("footerAccount")){
+
+  $("footerAccount")
+    .addEventListener(
+      "click",
+      function(){
+
+        renderAccount();
+
+      }
+    );
+
+}
+
+
+/* =========================
+   دکمه محصولات هیرو
+========================= */
+
+if($("heroProducts")){
+
+  $("heroProducts")
+    .addEventListener(
+      "click",
+      function(){
+
+        const section =
+          $("products");
+
+        if(section){
+
+          section.scrollIntoView({
+            behavior:"smooth"
+          });
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================
+   دکمه نظرات
+========================= */
+
+if($("heroReviews")){
+
+  $("heroReviews")
+    .addEventListener(
+      "click",
+      function(){
+
+        const section =
+          document.querySelector(
+            ".reviews"
+          );
+
+        if(section){
+
+          section.scrollIntoView({
+            behavior:"smooth"
+          });
+
+        }else{
+
+          toast(
+            "بخش نظرات در حال آماده‌سازی است 🌸"
+          );
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================
+   تماس با فروشنده
+========================= */
+
+if($("contactBtn")){
+
+  $("contactBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        window.open(
+          "https://t.me/it1tahaBot",
+          "_blank"
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================
+   بستن سبد
+========================= */
+
+if($("drawerClose")){
+
+  $("drawerClose")
+    .addEventListener(
+      "click",
+      function(){
+
+        closePanel(
+          "drawer"
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================
+   بستن جزئیات
+========================= */
+
+if($("modalClose")){
+
+  $("modalClose")
+    .addEventListener(
+      "click",
+      function(){
+
+        closePanel(
+          "modalOverlay"
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================
+   بستن حساب
+========================= */
+
+if($("accountClose")){
+
+  $("accountClose")
+    .addEventListener(
+      "click",
+      function(){
+
+        closePanel(
+          "accountOverlay"
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================
+   کلیک روی خود Overlay
+========================= */
+
+[
+  "drawer",
+  "modalOverlay",
+  "accountOverlay"
+].forEach(id => {
+
+  const overlay =
+    $(id);
+
+  if(!overlay) return;
+
+
+  overlay.addEventListener(
+    "click",
+    function(event){
+
+      if(
+        event.target ===
+        overlay
+      ){
+
+        overlay.classList.remove(
+          "show"
+        );
+
+      }
+
+    }
+  );
+
+});
+
+
+/* =========================
+   فرم حساب و سفارش
+========================= */
+
+document.addEventListener(
+  "submit",
+  function(event){
+
+    if(
+      event.target.id ===
+      "accountForm"
+    ){
+
+      createAccount(
+        event
+      );
+
+      return;
+
+    }
+
+
+    if(
+      event.target.id ===
+      "checkoutForm"
+    ){
+
+      submitOrder(
+        event
+      );
+
+      return;
+
+    }
+
+  }
+);
+
+
+/* =========================
+   Escape
+========================= */
 
 document.addEventListener(
   "keydown",
   function(event){
 
     if(
-      event.key === "Escape"
+      event.key ===
+      "Escape"
     ){
 
-      closeAllOverlays();
+      closeAllPanels();
 
     }
 
@@ -3058,114 +3032,9 @@ document.addEventListener(
 );
 
 
-/* =========================================
-   PRODUCT DETAIL
-========================================= */
-
-bind(
-  "detailAdd",
-  "click",
-  function(){
-
-    if(!currentProduct){
-      return;
-    }
-
-    addToCart(
-      currentProduct.id
-    );
-
-  }
-);
-
-
-bind(
-  "detailFavorite",
-  "click",
-  function(){
-
-    if(!currentProduct){
-      return;
-    }
-
-    toggleFavorite(
-      currentProduct.id
-    );
-
-  }
-);
-
-
-/* =========================================
-   ACCOUNT
-========================================= */
-
-bind(
-  "accountContent",
-  "click",
-  function(event){
-
-    if(
-      event.target.id ===
-      "createAccount"
-    ){
-
-      createAccountForm();
-
-    }
-
-  }
-);
-
-
-/* =========================================
-   CHECKOUT
-========================================= */
-
-bind(
-  "checkoutBtn",
-  "click",
-  openCheckout
-);
-
-
-bind(
-  "checkoutForm",
-  "submit",
-  submitOrder
-);
-
-
-/* =========================================
-   TELEGRAM
-========================================= */
-
-if(
-  window.Telegram &&
-  window.Telegram.WebApp
-){
-
-  try{
-
-    window.Telegram.WebApp.ready();
-
-    window.Telegram.WebApp.expand();
-
-  }catch(error){
-
-    console.warn(
-      "Telegram WebApp:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =========================================
-   REFRESH PRODUCTS
-========================================= */
+/* =========================
+   وقتی کاربر برمی‌گردد
+========================= */
 
 document.addEventListener(
   "visibilitychange",
@@ -3184,86 +3053,56 @@ document.addEventListener(
 );
 
 
-/* =========================================
-   START
-========================================= */
+/* =========================
+   Telegram Mini App
+========================= */
 
 try{
 
-  updateBadges();
+  if(
+    window.Telegram &&
+    window.Telegram.WebApp
+  ){
+
+    window.Telegram.WebApp.ready();
+
+    window.Telegram.WebApp.expand();
+
+  }
 
 }catch(error){
 
-  console.error(
-    "updateBadges:",
+  console.log(
+    "Telegram WebApp:",
     error
   );
 
 }
 
 
-try{
+/* =========================
+   اجرای اولیه
+========================= */
 
-  renderCart();
+updateBadges();
 
-}catch(error){
+renderCategories();
 
-  console.error(
-    "renderCart:",
-    error
-  );
+renderProducts();
 
-}
-
-
-try{
-
-  renderFavorites();
-
-}catch(error){
-
-  console.error(
-    "renderFavorites:",
-    error
-  );
-
-}
+renderCart();
 
 
-/* مهم‌ترین قسمت:
-   حتی اگر یکی از بخش‌های بالا
-   خطا داشته باشد، محصولات
-   حتماً از Supabase خوانده شوند.
+/*
+  مهم:
+  این تابع بعد از نمایش اولیه اجرا می‌شود
+  و اطلاعات واقعی Supabase را جایگزین
+  محصولات پیش‌فرض می‌کند.
 */
 
-loadProducts()
-  .then(
-    function(){
-
-      console.log(
-        "VELORA products loaded:",
-        products.length
-      );
-
-    }
-  )
-  .catch(
-    function(error){
-
-      console.error(
-        "Product loading error:",
-        error
-      );
-
-      toast(
-        "خطا در دریافت محصولات"
-      );
-
-    }
-  );
+loadProducts();
 
 
 </script>
-
 </body>
 </html>
